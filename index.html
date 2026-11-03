@@ -454,7 +454,7 @@ function emo(b){
   if(LANG==="it"){if(EMOID[b])return b;for(const x of[b.replace(/[aie]$/,"o"),b.replace(/ch[ie]$/,"co"),b.replace(/i$/,"e")])if(x!=="freddo"&&x!=="caldo"&&EMOID[x])return x;return""}
   const m=EMOW[LANG];return m&&m[b]||""}
 /* simboli ARASAAC di default (parola: numero ARASAAC). Il docente può sempre cambiarli dal proprio dizionario */
-const DEFID={};
+const DEFID={voi:7306,riso:39387,basta:28429,compagno:39421,compagni:39421,compagna:39421,compagne:39421,arte:36139,geografia:5505,merenda:28835,merende:28835,stanza:33068,stanze:33068,sera:3176,sere:3176};
 function val(k){
   let u=uget(k);if(u!==undefined)return u;const b=base(k);
   if(stop(b))return"";u=uget(b);if(u!==undefined)return u;
