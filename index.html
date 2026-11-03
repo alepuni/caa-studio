@@ -399,6 +399,7 @@ const S=x=>'<svg viewBox="0 0 64 64" fill="none" stroke="#2b6cb0" stroke-width="
 const NT=n=>'<text x="32" y="46" font-size="'+(n.length>2?26:n.length>1?34:46)+'" text-anchor="middle" stroke="none" fill="#2b6cb0" font-weight="700">'+n+'</text>';
 const FC='<circle cx="32" cy="32" r="22"/>';
 const CUS={
+"ancora":'<path d="M50 32a18 18 0 1 1-5.3-12.7"/><path d="M44.7 7.3v12H32.7"/><circle cx="32" cy="32" r="3" fill="#2b6cb0" stroke="none"/>',
 "e":'<path d="M32 12v40M12 32h40"/>',
 "ma":'<path d="M10 20h40m-10-9l10 9-10 9M54 44H14m10-9l-10 9 10 9"/>',
 "che":'<circle cx="23" cy="32" r="13"/><circle cx="41" cy="32" r="13"/>',
@@ -434,11 +435,11 @@ const CUS={
 "dare":'<circle cx="14" cy="16" r="6"/><path d="M5 40c0-8 4-12 9-12s9 4 9 12zM26 34h14m-6-6l6 6-6 6"/><rect x="44" y="28" width="12" height="12" rx="1"/>'};
 "uno due tre quattro cinque sei sette otto nove dieci".split(" ").forEach((w,i)=>CUS[w]=NT(""+(i+1)));
 const AL={ed:"e",oppure:"o","perchè":"perché","però":"ma",no:"non",vero:"sì",falso:"non",sono:"è",era:"è",mai:"niente",nessuno:"niente",nulla:"niente",troppo:"molto",tanti:"molto",tante:"molto",tanto:"molto",pochi:"poco",poche:"poco",tutti:"tutto",tutte:"tutto",tutta:"tutto",dopo:"poi",quindi:"poi",allora:"poi","poiché":"perché",solito:"sempre",abitualmente:"sempre",indicare:"quello",essere:"è"};
-const CX={en:{and:"e",but:"ma",that:"che",or:"o",not:"non",no:"non",why:"perché",when:"quando",where:"dove",who:"chi",then:"poi",after:"poi",before:"prima",finally:"infine",also:"anche",too:"anche",all:"tutto",everything:"tutto",nothing:"niente",never:"niente",very:"molto",much:"molto",many:"molto",little:"poco",few:"poco",less:"meno",if:"se",is:"è",are:"è",am:"è",was:"è",were:"è","don't":"non","doesn't":"non","didn't":"non","can't":"non","won't":"non","isn't":"non","aren't":"non",be:"è",make:"fare",do:"fare",have:"avere",give:"dare",yes:"sì",true:"sì",false:"non",while:"mentre",how:"come",here:"qui",this:"quello",now:"subito",always:"sempre",sometimes:"volte",almost:"quasi",one:"uno",two:"due",three:"tre",four:"quattro",five:"cinque",six:"sei",seven:"sette",eight:"otto",nine:"nove",ten:"dieci"},
-es:{hacer:"fare",hace:"fare",hago:"fare",hecho:"fare",y:"e",pero:"ma",que:"che",o:"o",no:"non",cuando:"quando",donde:"dove",quien:"chi",luego:"poi",antes:"prima",todo:"tutto",nada:"niente",muy:"molto",mucho:"molto",poco:"poco",menos:"meno",si:"se",es:"è",son:"è",sí:"sì",mientras:"mentre",como:"come"},
-fr:{faire:"fare",fait:"fare",fais:"fare",et:"e",mais:"ma",que:"che",ou:"o",non:"non",pourquoi:"perché",quand:"quando",où:"dove",qui:"chi",puis:"poi",avant:"prima",aussi:"anche",tout:"tutto",rien:"niente",très:"molto",beaucoup:"molto",peu:"poco",moins:"meno",si:"se",est:"è",sont:"è",oui:"sì",pendant:"mentre",comme:"come"},
-de:{machen:"fare",macht:"fare",und:"e",aber:"ma",dass:"che",oder:"o",nicht:"non",warum:"perché",wann:"quando",wo:"dove",wer:"chi",dann:"poi",vor:"prima",auch:"anche",alles:"tutto",nichts:"niente",sehr:"molto",viel:"molto",wenig:"poco",weniger:"meno",wenn:"se",ist:"è",sind:"è",ja:"sì","während":"mentre",wie:"come"},
-pt:{fazer:"fare",faz:"fare",e:"e",mas:"ma",que:"che",ou:"o","não":"non",porque:"perché",quando:"quando",onde:"dove",quem:"chi",depois:"poi",antes:"prima","também":"anche",tudo:"tutto",nada:"niente",muito:"molto",pouco:"poco",menos:"meno",se:"se","é":"è","são":"è",sim:"sì",enquanto:"mentre",como:"come"}};
+const CX={en:{still:"ancora",again:"ancora",and:"e",but:"ma",that:"che",or:"o",not:"non",no:"non",why:"perché",when:"quando",where:"dove",who:"chi",then:"poi",after:"poi",before:"prima",finally:"infine",also:"anche",too:"anche",all:"tutto",everything:"tutto",nothing:"niente",never:"niente",very:"molto",much:"molto",many:"molto",little:"poco",few:"poco",less:"meno",if:"se",is:"è",are:"è",am:"è",was:"è",were:"è","don't":"non","doesn't":"non","didn't":"non","can't":"non","won't":"non","isn't":"non","aren't":"non",be:"è",make:"fare",do:"fare",have:"avere",give:"dare",yes:"sì",true:"sì",false:"non",while:"mentre",how:"come",here:"qui",this:"quello",now:"subito",always:"sempre",sometimes:"volte",almost:"quasi",one:"uno",two:"due",three:"tre",four:"quattro",five:"cinque",six:"sei",seven:"sette",eight:"otto",nine:"nove",ten:"dieci"},
+es:{aún:"ancora",todavía:"ancora",hacer:"fare",hace:"fare",hago:"fare",hecho:"fare",y:"e",pero:"ma",que:"che",o:"o",no:"non",cuando:"quando",donde:"dove",quien:"chi",luego:"poi",antes:"prima",todo:"tutto",nada:"niente",muy:"molto",mucho:"molto",poco:"poco",menos:"meno",si:"se",es:"è",son:"è",sí:"sì",mientras:"mentre",como:"come"},
+fr:{encore:"ancora",faire:"fare",fait:"fare",fais:"fare",et:"e",mais:"ma",que:"che",ou:"o",non:"non",pourquoi:"perché",quand:"quando",où:"dove",qui:"chi",puis:"poi",avant:"prima",aussi:"anche",tout:"tutto",rien:"niente",très:"molto",beaucoup:"molto",peu:"poco",moins:"meno",si:"se",est:"è",sont:"è",oui:"sì",pendant:"mentre",comme:"come"},
+de:{noch:"ancora",machen:"fare",macht:"fare",und:"e",aber:"ma",dass:"che",oder:"o",nicht:"non",warum:"perché",wann:"quando",wo:"dove",wer:"chi",dann:"poi",vor:"prima",auch:"anche",alles:"tutto",nichts:"niente",sehr:"molto",viel:"molto",wenig:"poco",weniger:"meno",wenn:"se",ist:"è",sind:"è",ja:"sì","während":"mentre",wie:"come"},
+pt:{ainda:"ancora",fazer:"fare",faz:"fare",e:"e",mas:"ma",que:"che",ou:"o","não":"non",porque:"perché",quando:"quando",onde:"dove",quem:"chi",depois:"poi",antes:"prima","também":"anche",tudo:"tutto",nada:"niente",muito:"molto",pouco:"poco",menos:"meno",se:"se","é":"è","são":"è",sim:"sì",enquanto:"mentre",como:"come"}};
 function cx(b){
   if(LANG==="it"){for(const c of[b,...cands(b)])for(const g of[c,c.replace(/[aie]$/,"o"),c.replace(/[aie]$/,"a"),c.replace(/[aie]$/,"e")]){const z=AL[g]||g;if(CUS[z])return z}return""}
   const m=CX[LANG]||{};for(const c of[b,...cands(b)]){const z=m[c];if(z&&CUS[z])return z}return""}
@@ -452,11 +453,14 @@ pt:{feliz:"felice",felizes:"felice",contente:"contento",triste:"triste",zangado:
 function emo(b){
   if(LANG==="it"){if(EMOID[b])return b;for(const x of[b.replace(/[aie]$/,"o"),b.replace(/ch[ie]$/,"co"),b.replace(/i$/,"e")])if(x!=="freddo"&&x!=="caldo"&&EMOID[x])return x;return""}
   const m=EMOW[LANG];return m&&m[b]||""}
+/* simboli ARASAAC di default (parola: numero ARASAAC). Il docente può sempre cambiarli dal proprio dizionario */
+const DEFID={};
 function val(k){
   let u=uget(k);if(u!==undefined)return u;const b=base(k);
   if(stop(b))return"";u=uget(b);if(u!==undefined)return u;
   if(/^\d{1,3}$/.test(b))return"num:"+b;
   for(const c of cands(b)){u=uget(c);if(u!==undefined)return u}
+  if(LANG==="it")for(const c of[b,...cands(b)])if(DEFID[c])return String(DEFID[c]);/* simboli ARASAAC di default scelti dal docente (parola: numero del pittogramma) */
   const em=emo(b);if(em)return String(EMOID[em]);
   const x=cx(b);if(x)return"svg:"+x;
   const q=ak(b);if(A[q])return String(A[q]);if(A[q]===undefined){look(b);return"…"}return"?";
@@ -875,7 +879,7 @@ const T={h:"# Nome ______________   Data ______________\n",
 mc:"1. Domanda?\nA. Risposta uno\nB. Risposta due\nC. Risposta tre\n",
 vf:"V/F: Scrivi qui l'affermazione.\n",
 col:"1. Collega.\n~ Uno = Primo\n~ Due = Secondo\n~ Tre = Terzo\n",
-cmp:"1. Completa la frase.\nParole: scuola, libro, penna\nNick è a __ con il suo __.\n",
+cmp:"1. Completa la frase.\nParole: scuola, libro, penna\nIl bambino è a __ con il suo __.\n",
 ord:"1. Metti in ordine: scrivi 1, 2, 3.\n> Prima cosa\n> Seconda cosa\n> Terza cosa\n",
 open:"?? Scrivi qui la domanda.\n",
 ad:"1. Calcola.\nM: 12 + 5\nM: 28 + 9 | stelle\n",
@@ -1011,7 +1015,7 @@ volere, mangiare, bere, giocare, dormire, andare, venire, vedere, ascoltare, leg
 # 🍎 Cibo e bevande
 acqua, latte, pane, pasta, pizza, mela, banana, biscotto, gelato, succo, carne, pesce, formaggio, riso, frutta, verdura, merenda, colazione
 # 😊 Emozioni e bisogni
-felice, triste, arrabbiato, spaventato, stanco, annoiato, contento, preoccupato, sorpreso, confuso, male, fame, sete, paura, caldo, freddo
+felice, triste, arrabbiato, spaventato, stanco, annoiato, contento, preoccupato, sorpreso, confuso, bene, male, fame, sete, paura, caldo, freddo
 # 🏫 Scuola
 scuola, classe, italiano, matematica, storia, geografia, educazione fisica, arte, musica, inglese, sostegno, libro, quaderno, penna, matita, zaino, banco, lavagna, compiti, verifica, ricreazione, bagno, colori, forbici, colla, gomma, righello, campanella
 # 🏠 Casa e luoghi
