@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CAA Studio – per la didattica inclusiva</title>
+<style>
+:root{--bg:#eef1f5;--fg:#1f2430;--line:#2b6cb0;--mut:#5b6472;--s:1;--bs:1;--tw:36%;--th:44%;--eh:34%}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Verdana,"Trebuchet MS",system-ui,sans-serif;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+button,input,textarea,select{font:inherit;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff;color:var(--fg)}
+button{cursor:pointer}button:hover{filter:brightness(.95)}button:disabled{opacity:.45;cursor:default;filter:none}
+:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+[hidden]{display:none!important}
+
+/* ---------- barra in alto ---------- */
+#hd{flex:none;display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;padding:6px 12px;background:var(--line);color:#fff;position:relative;z-index:30}
+.brand{display:flex;align-items:center;gap:9px;margin-right:2px;min-width:0}
+.brand svg{width:34px;height:34px;flex:none}
+.brand b{display:block;font-size:1.1rem;white-space:nowrap}
+.brand small{display:block;font-size:.66rem;line-height:1.3;opacity:.95;white-space:nowrap}
+.modes{display:flex;border:2px solid #fff;border-radius:10px;overflow:hidden;flex:none}
+.modes button{border:none;border-radius:0;background:transparent;color:#fff;padding:6px 14px;font-weight:600}
+.modes button+button{border-left:1px solid #ffffff70}
+.modes button.on{background:#fff;color:var(--line)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button,.menu>summary{padding:5px 11px;font-size:.88rem}
+.menu{position:relative}
+.menu>summary{list-style:none;cursor:pointer;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--fg);user-select:none}
+.menu>summary::-webkit-details-marker{display:none}
+.menu .pop{position:absolute;top:calc(100% + 5px);left:0;z-index:40;display:flex;flex-direction:column;gap:5px;padding:7px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px #0003;min-width:200px}
+.hsp{flex:1}
+#hd .lang{display:flex;align-items:center;gap:6px;font-size:.82rem;white-space:nowrap}
+#hd .lang select{padding:4px 6px;font-size:.85rem}
+#net{background:#fde68a;color:#7c2d12;border-radius:8px;padding:4px 9px;font-size:.78rem;font-weight:700}
+#fs{background:transparent;color:#fff;border-color:#ffffffa0;padding:4px 9px}
+body.m-stu .tools{display:none}
+#more{display:none;background:transparent;color:#fff;border-color:#ffffffa0;padding:4px 11px;margin-left:auto;font-weight:700}
+@media(max-width:1220px){.brand small{display:none}}
+@media(max-width:1100px){.tools button,.menu>summary{padding:4px 8px;font-size:.82rem}#hd .lang span{display:none}#hd{gap:8px}}
+@media(max-width:640px){.modes button{padding:6px 9px;font-size:.85rem}#more{display:inline-block}
+ body:not(.more) .tools,body:not(.more) #hd .lang,body:not(.more) #fs,body:not(.more) #hd .hsp{display:none!important}}
+@media(max-width:480px){.brand>div{display:none}}
+
+/* ---------- disposizione delle parti ---------- */
+#app{flex:1;min-height:0;display:grid}
+body.m-ins #app{grid-template-columns:minmax(270px,390px) minmax(0,1fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"ed sh"}
+body.m-stu #app{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"st"}
+body.m-comb #app{grid-template-columns:var(--tw) 14px minmax(0,1fr);grid-template-rows:var(--eh) minmax(0,1fr);grid-template-areas:"ed hd st" "sh hd st"}
+body.m-stu .ed,body.m-stu .shw,body.m-ins #sv2{display:none}
+@media(max-width:760px){body.m-ins #app{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(160px,40%) minmax(0,1fr);grid-template-areas:"ed" "sh"}}
+@media(orientation:portrait),(max-width:900px){body.m-comb #app{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);grid-template-rows:var(--th) 14px minmax(0,1fr);grid-template-areas:"ed sh" "hd hd" "st st"}}
+@media(max-width:560px){body.m-comb #app{grid-template-columns:minmax(0,1fr);grid-template-areas:"sh" "hd" "st"}body.m-comb .ed{display:none}}
+
+#hdl{grid-area:hd;display:none;align-items:center;justify-content:center;background:#cfd8e6;cursor:col-resize;touch-action:none;user-select:none;-webkit-user-select:none}
+body.m-comb #hdl{display:flex}
+#hdl::before{content:"";width:5px;height:56px;border-radius:3px;background:var(--line);opacity:.55}
+#hdl:hover::before,#hdl.drag::before,#hdl:focus-visible::before{opacity:1}
+@media(orientation:portrait),(max-width:900px){#hdl{cursor:row-resize}#hdl::before{width:56px;height:5px}}
+
+/* ---------- testo (docente) ---------- */
+.ed{grid-area:ed;display:flex;flex-direction:column;gap:8px;padding:10px;min-width:0;min-height:0}
+.edbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.tabs{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
+.tabs button{border:none;border-radius:0;padding:5px 10px;font-size:.8rem}
+.tabs button+button{border-left:1px solid #c9d6e8}
+.tabs button.on{background:var(--line);color:#fff}
+#mg{margin-left:auto;font-size:.8rem;padding:5px 9px}
+#tpt{display:none;font-size:.8rem;padding:5px 9px}
+.tp{display:flex;flex-wrap:wrap;gap:6px}
+.tp button{font-size:.8rem;padding:4px 8px}
+.taw{position:relative;flex:1;min-height:80px;background:#fff;border-radius:8px}
+#ta,#tab{margin:0;font-family:inherit;font-size:.95rem;line-height:1.45;padding:8px 10px;border:1px solid var(--line);border-radius:8px;white-space:pre-wrap;overflow-wrap:break-word;word-wrap:break-word;word-break:normal;letter-spacing:normal;tab-size:4}
+#ta{position:absolute;inset:0;width:100%;height:100%;resize:none;background:transparent;z-index:1;overflow-y:auto}
+#tab{position:absolute;inset:0;overflow:hidden;color:transparent;pointer-events:none;border-color:transparent;z-index:0}
+#tab mark{color:transparent;background:#ffd54f;border-radius:3px;box-shadow:0 0 0 2px #ffd54f}
+.ed details{font-size:.8rem;color:var(--mut);max-height:32vh;overflow:auto;flex:none}
+.ed details p{margin:.45em 0;line-height:1.45}
+body.m-comb #tpt{display:inline-block}body.m-comb .ed{overflow:auto}
+body.m-comb .ed:not(.open) .tabs,body.m-comb .ed:not(.open) .tp,body.m-comb .ed details{display:none}
+
+/* ---------- foglio ---------- */
+.shw{grid-area:sh;display:flex;flex-direction:column;min-width:0;min-height:0;background:#dde3ec}
+.shbar{flex:none;display:flex;gap:6px 14px;align-items:center;flex-wrap:wrap;padding:6px 12px;font-size:.8rem;background:#fff;border-bottom:1px solid #c6d0de}
+.shbar label{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.shbar input[type=range]{padding:0;width:110px}
+#st{margin-left:auto;color:var(--mut);white-space:nowrap}
+.sheet{flex:1;min-height:0;overflow:auto;padding:14px;touch-action:manipulation}
+.paper{background:#fff;border-radius:6px;box-shadow:0 2px 10px #0002;padding:22px;min-height:100%;max-width:1100px;margin:0 auto}
+body.m-comb .sheet{padding:8px}body.m-comb .paper{padding:14px}
+body.m-comb #st{display:none}body.m-comb .shbar{gap:4px 10px;padding:5px 10px}body.m-comb .shbar input[type=range]{width:80px}
+footer{margin-top:24px;font-size:.7rem;color:var(--mut);border-top:1px solid #ccc;padding-top:6px;line-height:1.45}
+
+.p{display:flex;flex-wrap:wrap;gap:calc(8px*var(--s));margin:0 0 18px}
+.c{display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#fff;border:2px solid var(--line);border-radius:10px;padding:5px 8px 4px;max-width:calc(160px*var(--s));text-align:center;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.c.miss{border-style:dashed}
+.c.bl{min-width:calc(110px*var(--s));min-height:calc(90px*var(--s));border-style:dashed;cursor:default}
+.e{font-size:calc(40px*var(--s));line-height:1.15;min-width:calc(56px*var(--s));min-height:calc(60px*var(--s));display:flex;align-items:center;justify-content:center;color:#aaa}
+.e svg{width:calc(70px*var(--s));height:calc(70px*var(--s))}
+.e img{width:calc(78px*var(--s));height:calc(78px*var(--s));object-fit:contain}
+.t{font-size:calc(15px*var(--s));font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:3px;overflow-wrap:normal;word-break:normal;white-space:normal}
+body.nu .t{text-transform:none}
+.c.hl{outline:4px solid #f59e0b;outline-offset:2px;background:#fff4cc}
+.c.loc{border-color:#7c3aed}
+h3{margin:0 0 14px;font-size:1.05rem;font-weight:700}
+.qh{display:flex;align-items:center;gap:12px;margin:0 0 8px}
+.qh .p,.o .p{margin:0}
+.n{font-size:1.5rem;font-weight:800;background:var(--line);color:#fff;border-radius:50%;min-width:2.3rem;height:2.3rem;display:flex;align-items:center;justify-content:center}
+.q{margin:0 0 24px;padding-top:12px;border-top:3px solid #bbb}
+.o{display:flex;align-items:center;gap:12px;border:2px dashed #888;border-radius:12px;padding:8px 10px;margin:8px 0;cursor:pointer}
+.o.on{background:#e3eefb;border:2px solid var(--line)}
+.b{font-size:1.5rem;font-weight:800}
+.k{margin-left:auto;width:34px;height:34px;border:3px solid #666;border-radius:50%;flex:none}
+.o.on .k{background:var(--line)}
+.mt{display:grid;grid-template-columns:1fr 1fr;column-gap:10vw;row-gap:14px}
+.mt>div{border:3px solid var(--line);border-radius:12px;padding:8px;cursor:pointer}
+.mt>div.sel{outline:4px solid #000}
+.mt .p{margin:0;justify-content:center}
+.bank{border:2px solid #888;border-radius:12px;padding:8px;margin:0 0 14px}
+.bank .p{margin:0}
+.ln{border-bottom:2px solid #555;height:2.2rem}
+.sq{display:flex;align-items:center;gap:12px;margin:8px 0}.sq .p{margin:0}
+
+/* matematica */
+.mw{margin:0 0 22px;break-inside:avoid;page-break-inside:avoid}
+.mw.err{color:#d64545;font-weight:700}
+.me{display:flex;align-items:center;gap:calc(14px*var(--s));margin:0 0 10px;flex-wrap:wrap}
+.mn,.op{font-size:calc(40px*var(--s));font-weight:800;line-height:1}
+.op{color:#555}
+.ans{min-width:calc(90px*var(--s));height:calc(60px*var(--s));border:3px dashed var(--line);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;padding:0 10px}
+.rs{font-size:calc(30px*var(--s));font-weight:800;visibility:hidden;white-space:nowrap}
+.rs.sh,body.sol .rs{visibility:visible}
+.mv{display:flex;flex-wrap:wrap;align-items:center;gap:calc(14px*var(--s))}
+.mg{display:grid;gap:calc(4px*var(--s))}
+.mo{width:calc(26px*var(--s));height:calc(26px*var(--s));display:inline-flex;align-items:center;justify-content:center;font-size:calc(22px*var(--s));line-height:1;position:relative}
+.mo svg{width:100%;height:100%}
+.mo.x svg,.mo.x .ei{opacity:.3}
+.mo.x::after{content:"✖";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#d64545;font-size:calc(24px*var(--s));font-weight:800}
+.bx{border:3px solid var(--line);border-radius:12px;padding:calc(6px*var(--s))}
+.bx.rest{border-color:#d97706;border-style:dashed}
+
+/* musica */
+.mus{position:relative;margin:0 0 22px;cursor:pointer;touch-action:manipulation;border-radius:8px}
+.mus svg{display:block;max-width:100%;height:auto;overflow:visible;margin:0 0 6px}
+.mhd{display:flex;gap:8px;margin:0 0 4px}
+.mplay{font-size:.8rem;padding:3px 10px}
+.mplay.on,#mply.on{background:#2f855a;color:#fff;border-color:#2f855a}
+.merr{color:#d64545;font-weight:700;font-size:.85rem}
+.mans{visibility:hidden}body.sol .mans{visibility:visible}
+.nt .hb{transition:opacity .08s}.nt.on .hb{opacity:.85}
+.mus.hl{outline:3px solid #f59e0b;outline-offset:4px}
+
+/* ---------- studente ---------- */
+#sv2{grid-area:st;--s:var(--bs);display:flex;flex-direction:column;position:relative;min-width:0;min-height:0;background:var(--bg)}
+.sbar{flex:none;display:flex;gap:8px;align-items:stretch;padding:8px;background:#fff;border-bottom:3px solid var(--line)}
+#sen{flex:1;min-width:0;display:flex;gap:6px;overflow-x:auto;min-height:calc(96px*var(--s));align-items:center;border:2px solid var(--line);border-radius:12px;padding:4px 8px;background:#fff}
+#sen .c{flex:none;cursor:default}
+.sbar button{font-size:1.1rem;padding:8px 14px}
+#sp{background:#2f855a;color:#fff;border-color:#2f855a;font-weight:800}
+#sset{display:none;position:absolute;right:8px;top:110px;z-index:25;flex-direction:column;gap:9px;width:min(350px,92%);overflow:auto;padding:12px;background:#fff;border:2px solid var(--line);border-radius:12px;box-shadow:0 10px 28px #0003;font-size:.9rem}
+#sset select{max-width:100%}
+#sset label{display:flex;flex-direction:column;gap:3px}
+#sset label.ck{flex-direction:row;align-items:flex-start;gap:6px}
+#stabs{flex:none;display:flex;gap:6px;overflow-x:auto;padding:8px;background:#fff}
+.tab{border:3px solid;border-radius:10px;background:#fff;padding:6px 12px;font-size:1rem;font-weight:700;white-space:nowrap;color:var(--fg)}
+.tab.on{color:#fff}
+#sgrid{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(calc(118px*var(--s)),1fr));gap:10px;padding:12px;align-content:start}
+#sgrid .c{max-width:none;border-width:4px}
+#sgrid .c:active{transform:scale(.96)}
+body.m-comb .sbar button{padding:6px 10px}
+body.m-comb #stabs .tab{font-size:.92rem;padding:5px 10px}
+
+/* ---------- finestre ---------- */
+.ovl{display:none;position:fixed;inset:0;background:#0007;align-items:center;justify-content:center;z-index:50;padding:10px}
+#bov{z-index:52}
+.dlg{background:#fff;border-radius:14px;padding:16px;width:min(580px,96vw);max-height:94vh;overflow:auto}
+.dh{display:flex;align-items:center;gap:10px;margin:0 0 6px}
+.dh b{font-size:1rem;flex:1;min-width:0;overflow-wrap:anywhere}
+.x{padding:4px 10px;font-weight:700}
+.dprev{width:56px;height:56px;flex:none;display:flex;align-items:center;justify-content:center;border:2px solid var(--line);border-radius:10px;font-size:34px;color:#aaa;overflow:hidden}
+.dprev img,.dprev svg{width:48px;height:48px;object-fit:contain}
+.dmsg{background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;padding:8px 10px;font-size:.85rem;margin:6px 0}
+#bx>label{display:block;margin:10px 0 3px;font-size:.82rem;color:var(--mut)}
+#bx>label.ck{color:var(--fg)}
+#bx input[type=text]{width:100%}
+.fl{display:flex;gap:6px}.fl input{flex:1;min-width:0}
+.mrg{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.mrg button{font-size:.82rem;padding:5px 9px}
+#rs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#rs button{padding:2px;background:#fff}#rs img{width:76px;height:76px;object-fit:contain;display:block}
+#eg{display:flex;flex-wrap:wrap;gap:2px;max-height:170px;overflow:auto;border:1px solid #ccc;border-radius:8px;padding:4px;margin-top:6px}
+#eg button{font-size:1.6rem;border:none;background:none;padding:2px 5px}
+.rw{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.pri{background:var(--line);color:#fff;font-weight:700}
+
+/* editor delle note */
+.mdlg{width:min(920px,97vw)}
+.mstaff{overflow-x:auto;overflow-y:hidden;border:2px solid #c9d6e8;border-radius:12px;background:#fbfdff;cursor:crosshair;touch-action:manipulation;margin-top:4px}
+.mstaff svg{display:block}
+.mrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:9px}
+.mrow label{display:flex;align-items:center;gap:5px;font-size:.85rem}
+.ml{font-size:.8rem;color:var(--mut);min-width:86px}
+.mgrp{display:flex;flex-wrap:wrap;gap:6px}
+.nk{min-width:54px;font-weight:800;border-width:2px}
+.dur{display:flex;align-items:center;gap:4px;font-size:.8rem;padding:3px 8px}
+.dur svg{width:16px;height:26px}
+.dur.on,.acc.on{background:var(--line);color:#fff}
+#mtxt{flex:1;min-width:220px}
+#mtmp{width:78px;padding:4px 6px}
+.hint{font-size:.78rem;color:var(--mut);margin:8px 0 0}
+
+#toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,16px);opacity:0;transition:opacity .2s,transform .2s;background:#1f2430;color:#fff;padding:10px 14px;border-radius:10px;z-index:70;max-width:min(560px,92vw);pointer-events:none;font-size:.9rem;line-height:1.4}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){#toast,.nt .hb{transition:none}}
+
+/* ---------- stampa ---------- */
+@page{margin:12mm}
+@media print{
+html,body{display:block;height:auto;overflow:visible;background:#fff}
+#hd,.ed,#hdl,#sv2,.shbar,.ovl,#toast,.mhd{display:none!important}
+#app{display:block!important}
+.shw{display:block!important;background:#fff}
+.sheet{overflow:visible;padding:0}
+.paper{box-shadow:none;padding:0;min-height:0;max-width:none;border-radius:0}
+.p{display:block}
+.c{display:inline-flex;vertical-align:top;margin:0 calc(8px*var(--s)) calc(8px*var(--s)) 0;break-inside:avoid;page-break-inside:avoid}
+.qh .p,.o .p,.mt .p,.sq .p{display:flex}
+.qh .c,.o .c,.mt .c,.sq .c{margin:0}
+.pb{break-before:page}
+.o,.q,.mt>div,.sq,.bank,.qh,.ln,.mus svg{break-inside:avoid;page-break-inside:avoid}
+.c.hl{outline:none;background:#fff}.c.loc{border-color:var(--line)}.mus.hl{outline:none}
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body class="m-ins">
+<header id="hd">
+<div class="brand"><svg viewBox="0 0 36 36" aria-hidden="true"><rect x="2.5" y="1.5" width="31" height="33" rx="7" fill="#fff"/><circle cx="18" cy="13.5" r="7.5" fill="none" stroke="#2b6cb0" stroke-width="2.4"/><circle cx="15.3" cy="12.2" r="1.25" fill="#2b6cb0"/><circle cx="20.7" cy="12.2" r="1.25" fill="#2b6cb0"/><path d="M14.6 15.6c1.9 2.2 4.9 2.2 6.8 0" fill="none" stroke="#2b6cb0" stroke-width="1.8" stroke-linecap="round"/><rect x="8.5" y="25" width="19" height="4.2" rx="2.1" fill="#2b6cb0"/></svg>
+<div><b>CAA Studio</b><small>per la didattica inclusiva<br>a cura del Prof. Marchitto</small></div></div>
+<nav class="modes" aria-label="Modalità"><button data-m="ins" title="Scrivi e prepara i fogli">Docente</button><button data-m="stu" title="Comunicatore a tutto schermo per l'alunno">Studente</button><button data-m="comb" title="Foglio del docente e comunicatore insieme">Combinata</button></nav>
+<div class="tools">
+<button id="nw" title="Cancella il testo e inizia un foglio nuovo">Nuovo</button>
+<button id="op" title="Apri una verifica salvata (.json)">Apri</button><input id="fo" type="file" accept=".json,application/json" hidden>
+<button id="sa" title="Salva la verifica in un file">Salva</button>
+<details class="menu" id="dmenu"><summary title="Copia di sicurezza dei simboli che hai scelto">Dizionario ▾</summary><div class="pop"><button id="ds">Salva dizionario</button><button id="dl">Carica dizionario</button></div></details><input id="fd" type="file" accept=".json,application/json" hidden>
+<button id="pr" title="Stampa o salva in PDF">Stampa</button>
+</div>
+<div class="hsp"></div>
+<span id="net" hidden>⚠ ARASAAC non raggiungibile: serve internet</span>
+<label class="lang"><span>Lingua simboli</span> <select id="lg" title="Lingua simboli"><option value="it">Italiano</option><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="pt">Português</option></select></label>
+<button id="fs" title="Schermo intero" hidden>⛶</button>
+<button id="more" title="Altri comandi" aria-expanded="false">⋯</button>
+</header>
+
+<div id="app">
+<section class="ed" aria-label="Testo">
+<div class="edbar">
+<button id="tpt" type="button" aria-expanded="false">Modelli ▾</button>
+<div class="tabs" role="tablist"><button data-g="ex" class="on">Esercizi</button><button data-g="ma">Matematica</button><button data-g="mu">Musica</button></div>
+<button id="mg" type="button" title="Unisci in un solo simbolo le parole selezionate">🔗 Unisci</button>
+</div>
+<div class="tp" id="tp">
+<button data-g="ex" data-t="h">Intestazione</button><button data-g="ex" data-t="mc">Scelta multipla</button><button data-g="ex" data-t="vf">Vero/Falso</button><button data-g="ex" data-t="col">Collegamento</button><button data-g="ex" data-t="cmp">Completa</button><button data-g="ex" data-t="ord">Ordina</button><button data-g="ex" data-t="open">Risposta aperta</button>
+<button data-g="ma" data-t="ad">Addizione</button><button data-g="ma" data-t="su">Sottrazione</button><button data-g="ma" data-t="mu">Moltiplicazione</button><button data-g="ma" data-t="di">Divisione</button>
+<button data-g="mu" data-t="mel">Melodia</button><button data-g="mu" data-t="nom">Nomi delle note</button><button data-g="mu" data-t="dur">Durate</button><button data-g="mu" data-t="vuo">Pentagramma vuoto</button><button data-g="mu" id="mopen">🎹 Scrivi le note…</button>
+</div>
+<div class="taw"><div id="tab" aria-hidden="true"></div><textarea id="ta" spellcheck="false" aria-label="Testo del foglio"></textarea></div>
+<details><summary>Come si scrive</summary>
+<p><b>Clic</b> su un riquadro: vai alla parola nel testo. <b>Doppio clic</b> (o tasto destro): cambia il simbolo. <b>Maiusc + clic</b> su un altro riquadro: scegli più parole, poi <b>🔗 Unisci</b>.</p>
+<p>Una riga = una frase con i simboli.<br><b>1. Domanda?</b> e sotto <b>A. / B. / C.</b> risposte<br><b>V/F: frase</b> vero o falso<br><b>~ Sinistra = Destra</b> collegamento<br><b>Parole: a, b, c</b> elenco di parole<br><b>__</b> spazio da completare<br><b>&gt; frase</b> da mettere in ordine<br><b>?? domanda</b> risposta aperta<br><b># titolo</b> testo senza simboli<br><b>---</b> pagina nuova</p>
+<p><b>M: 12 + 5</b> calcolo visivo fino a 100 (+ − x :). Aggiungi <b>| stelle</b> o un’emoji per cambiare gli oggetti, <b>= 17</b> per mostrare il risultato.</p>
+<p><b>N: do re mi | sol:2 sol:2</b> pentagramma. Durate: <b>:4</b> semibreve, <b>:2</b> minima, <b>:1</b> semiminima (se non scrivi niente), <b>:1/2</b> croma, <b>:1/4</b> semicroma, <b>:3</b> o <b>:1.5</b> col punto. <b>p</b> pausa, <b>|</b> battuta, <b>||</b> fine, <b>4/4</b> misura, <b>do5</b> ottava sopra, <b>fa#</b> diesis, <b>sib</b> bemolle, <b>t=100</b> velocità. <b>N?:</b> nasconde i nomi delle note.</p>
+</details>
+</section>
+
+<section class="shw" aria-label="Foglio">
+<div class="shbar">
+<label>Grandezza <input id="z" type="range" min="0.6" max="1.8" step="0.1" value="1"></label>
+<label><input id="up" type="checkbox" checked> MAIUSCOLO</label>
+<label title="Mostra i risultati dei calcoli e i nomi delle note nascosti"><input id="sol" type="checkbox"> Mostra risultati</label>
+<label><input id="mcol" type="checkbox" checked> Note colorate</label>
+<span id="st"></span>
+</div>
+<div class="sheet" id="sheet"><div class="paper"><div id="m"></div>
+<footer><b>CAA Studio</b>, per la didattica inclusiva. A cura del Prof. Marchitto.<br>Pittogrammi: ARASAAC (arasaac.org). Autore Sergio Palao, propriet&agrave; del Governo di Aragona. Licenza CC BY-NC-SA: solo uso non commerciale, con attribuzione.</footer></div></div>
+</section>
+
+<div id="hdl" role="separator" tabindex="0" aria-label="Divisore tra docente e studente" title="Trascina per allargare o stringere le due parti. Doppio clic: misure iniziali"></div>
+
+<section id="sv2" aria-label="Comunicatore">
+<div class="sbar" id="sbar"><div id="sen"></div><button id="sp">🔊 PARLA</button><button id="su2" title="Cancella l'ultima parola">⌫</button><button id="sc" title="Cancella tutta la frase">🗑</button><button id="sg" title="Impostazioni" aria-expanded="false">⚙</button></div>
+<div id="sset">
+<label>Voce <select id="vo"></select></label>
+<label>Velocità <input id="rt" type="range" min="0.5" max="1.3" step="0.1" value="0.9"></label>
+<label>Grandezza riquadri <input id="z2" type="range" min="0.6" max="1.8" step="0.1" value="1"></label>
+<label class="ck"><input id="aw" type="checkbox"> Pronuncia ogni parola toccata</label>
+<label class="ck"><input id="cj" type="checkbox" checked> Coniuga i verbi (italiano): IO + VOLERE = IO VOGLIO</label>
+<label class="ck"><input id="em2" type="checkbox"> Modifica simboli: tocca un riquadro per cambiarne il simbolo</label>
+<button id="bed">Modifica tabella</button>
+</div>
+<div id="stabs"></div><div id="sgrid"></div>
+</section>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div id="bov" class="ovl"><div class="dlg" id="bx2">
+<p style="margin:0 0 8px;font-size:.85rem">Una riga <b># 🍎 Nome</b> crea un campo (l&rsquo;emoji è solo l&rsquo;icona della scheda). Sotto, le parole separate da virgole. Una parola = un riquadro.</p>
+<textarea id="bt" style="width:100%;height:50vh" spellcheck="false"></textarea>
+<div class="rw"><button id="bs" class="pri">Salva</button><button id="bd">Tabella di base</button><button id="bc">Annulla</button></div>
+</div></div>
+
+<div id="ov" class="ovl"><div class="dlg" id="bx" role="dialog" aria-modal="true" aria-labelledby="bxh">
+<div class="dh"><div class="dprev" id="dpv"></div><b id="bxh">Cambia simbolo</b><button id="cl" class="x" title="Chiudi">✕</button></div>
+<p id="dmsg" class="dmsg" hidden></p>
+<label>Parola nel testo (puoi correggerla qui)</label><div class="fl"><input type="text" id="wd"><button id="cw">Cambia parola</button></div>
+<div class="mrg"><button id="mp" title="Un solo simbolo per questa parola e quella prima">⇤ Unisci con la parola prima</button><button id="mn" title="Un solo simbolo per questa parola e quella dopo">Unisci con la parola dopo ⇥</button><button id="spl" title="Torna a un simbolo per ogni parola">✂ Separa le parole</button></div>
+<label>Parole da coprire con questo simbolo</label><input type="text" id="kk">
+<label class="ck"><input type="checkbox" id="al" checked> Vale anche per le altre forme (es. fare, farò, faceva)</label>
+<label class="ck" id="lol"><input type="checkbox" id="lo"> Solo qui: cambia solo questo riquadro, non le altre volte che la parola compare (es. YOU = voi)</label>
+<label>Cerca in ARASAAC</label><div class="fl"><input type="text" id="sq"><button id="go">Cerca</button></div>
+<div id="rs"></div>
+<label>Emoji: scrivi una parola (es. sorriso) o scegli dall&rsquo;elenco</label><input type="text" id="es" placeholder="sorriso, casa, libro...">
+<div id="eg"></div>
+<label>Oppure incolla un&rsquo;emoji</label><div class="fl"><input type="text" id="em"><button id="sv">Usa emoji incollata</button></div>
+<label>Oppure un&rsquo;immagine dal computer</label><input type="file" id="fi" accept="image/*">
+<div class="rw"><button id="rm">Ripristina automatico</button><button id="jt">Vai al testo</button></div>
+</div></div>
+
+<div id="mov" class="ovl"><div class="dlg mdlg" role="dialog" aria-modal="true" aria-labelledby="mvh">
+<div class="dh"><b id="mvh">Scrivi le note</b><button id="mx" class="x" title="Chiudi">✕</button></div>
+<div id="mstaff" class="mstaff"></div>
+<div class="mrow" id="mkeys"><span class="ml">Metti</span></div>
+<div class="mrow"><span class="ml">Durata</span><span id="mdurs" class="mgrp"></span><label><input type="checkbox" id="mdot"> con il punto</label></div>
+<div class="mrow"><span class="ml">Nota scelta</span><button id="mup" title="Più acuta (freccia su)">▲ Su</button><button id="mdn" title="Più grave (freccia giù)">▼ Giù</button><button class="acc" data-a="1" title="Diesis">♯ Diesis</button><button class="acc" data-a="-1" title="Bemolle">♭ Bemolle</button><button id="mdel" title="Cancella (tasto ⌫)">⌫ Cancella</button></div>
+<div class="mrow"><span class="ml">Aggiungi</span><button id="mrest">Pausa</button><button id="mbar">| Battuta</button><button id="mend">‖ Fine</button><button id="mclr">Svuota tutto</button><button id="mply">▶ Ascolta</button></div>
+<div class="mrow"><span class="ml">Misura</span><select id="mtime"><option value="">nessuna</option><option>2/4</option><option>3/4</option><option>4/4</option><option>6/8</option></select><label>Velocità <input id="mtmp" type="number" min="40" max="220" step="5" value="90"></label><label><input type="checkbox" id="mhide"> Esercizio: nascondi i nomi delle note</label></div>
+<div class="mrow"><span class="ml">Come testo</span><input id="mtxt" type="text" spellcheck="false" aria-label="Le note scritte come testo"></div>
+<p class="hint" id="mhint">Clic sul pentagramma: la nota va dove clicchi, più in alto è più acuta. Clic su una nota per sceglierla e cambiarla.</p>
+<div class="rw"><button id="mok" class="pri">Inserisci nel foglio</button><button id="mcan">Annulla</button></div>
+</div></div>
+
+<script>
+/* ======================================================================
+   CAA Studio - per la didattica inclusiva - a cura del Prof. Marchitto
+   ====================================================================== */
+const IMG=i=>"https://static.arasaac.org/pictograms/"+i+"/"+i+"_300.png";
+const $=id=>document.getElementById(id),el=(t,c)=>{const e=document.createElement(t);if(c)e.className=c;return e};
+const ld=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v===null||v===undefined?d:v}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+let LANG=ld("caa_lg","it"),U=ld("caa_u",{}),A=ld("caa_a",{}),LM=ld("caa_l",{}),UL=ld("caa_ul",{}),PM=ld("caa_pm",[]);
+if(!Array.isArray(PM))PM=[];
+const ak=w=>LANG==="it"?w:LANG+":"+w;
+/* dizionario dell'utente: separato per lingua (le foto valgono in tutte le lingue) */
+function uget(k){let v=U[ak(k)];if(v==="auto")return undefined;if(v!==undefined||LANG==="it")return v;v=U[k];return typeof v==="string"&&v.startsWith("data:")?v:undefined}
+function uset(k,v){U[ak(k)]=v}
+function udel(k){if(LANG!=="it"&&typeof U[k]==="string"&&U[k].startsWith("data:"))U[ak(k)]="auto";else delete U[ak(k)]}
+function note(t){const n=$("toast");n.textContent=t;n.classList.add("on");clearTimeout(note.h);note.h=setTimeout(()=>n.classList.remove("on"),4200)}
+
+/* ---------- lingua: parole vuote, verbi ---------- */
+const SS={};Object.entries({it:"il lo la i gli le l un uno una di a da in con su per tra fra del dello della dei degli delle al allo alla ai agli alle dal dallo dalla dai dagli dalle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle si ci ne mi ti vi",en:"the a an my your his our their",es:"el la los las un una unos unas de del al",fr:"le la les l un une des du de d",de:"der die das den dem des ein eine einen einem einer",pt:"o a os as um uma de do da dos das"}).forEach(([k,v])=>SS[k]=new Set(v.split(" ")));
+const stop=w=>!!(SS[LANG]&&SS[LANG].has(w));
+const core=t=>t.replace(/’/g,"'").replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu,"").toLowerCase().replace(/\s+/g," ");
+const base=k=>/^(it|fr)$/.test(LANG)?k.replace(/^(?:l|un|dell|all|dall|nell|sull|quell|c|d|s|m|t|v|j|qu|n)'/,""):k;
+const pend=new Set();let rt=0;
+async function api(p){const r=await fetch("https://api.arasaac.org/v1/pictograms/"+LANG+"/"+p);if(!r.ok)return[];try{const j=await r.json();return Array.isArray(j)?j:[]}catch(e){return[]}}
+const IRM={it:{},en:{}};
+const irr=(o,s)=>s.split("|").forEach(x=>{const[a,b]=x.split(":");b.split(" ").forEach(f=>o[f]=a)});
+irr(IRM.it,"fare:faccio fai fa facciamo fate fanno facevo facevi faceva facevamo facevate facevano feci facesti fece facemmo faceste fecero farò farai farà faremo farete faranno farebbe farebbero fatto fatta fatti fatte facendo faccia|essere:sei siamo siete erano ero eri fu furono sarò sarà saranno sarebbe stato stata|avere:ho hai ha abbiamo avete hanno avevo aveva avevano ebbe ebbero avrò avrà avranno avrebbe avuto|andare:vado vai va andiamo andate vanno andò andarono andrà|venire:vengo vieni viene veniamo vengono venne vennero verrà venuto|dire:dico dici dice diciamo dite dicono diceva dicevano disse dissero dirà detto dimmi|dare:do dà danno diede diedero darà dato|stare:sto stai sta stanno stette stettero starà|sapere:so sai sa sanno sapeva sapevano seppe sapranno saputo|potere:posso puoi può possono poteva potevano poté potrà potuto|volere:voglio vuoi vuole vogliono voleva volevano volle vorrà voluto|dovere:devo devi deve devono doveva dovevano dovette dovrà dovuto|vedere:vidi vide videro vedrà visto|prendere:presi prese presero preso|scrivere:scrisse scrissero scritto|leggere:lesse lessero letto|mettere:mise misero messo|chiedere:chiese chiesero chiesto|rispondere:rispose risposero risposto|rimanere:rimase rimasero rimasto|sorridere:sorrise sorrisero|scoprire:scoperto scoperta|uscire:esco esci esce escono|distrarre:distraeva distraevano distrasse|bere:bevo bevi beve bevono beveva bevve bevuto|tenere:tengo tiene tengono tenne|vivere:visse vissuto|perdere:perso perse|conoscere:conobbe conosciuto|scegliere:scelgo sceglie scelse scelto|piacere:piace piacciono piaceva piacque piaciuto|chiudere:chiuse chiuso|correre:corse corso|decidere:decise deciso|ridere:rise riso|cadere:cadde caduto");
+irr(IRM.en,"go:went gone goes|have:had has|be:was were been is am are|do:did does done|make:made|say:said|see:saw seen|take:took taken|come:came|get:got|give:gave given|eat:ate eaten|run:ran|write:wrote written|think:thought|know:knew known|feel:felt|find:found|tell:told|begin:began begun|drink:drank drunk|sit:sat|stand:stood|leave:left|buy:bought|bring:brought|sleep:slept|speak:spoke spoken|swim:swam|sing:sang sung|draw:drew drawn|child:children|man:men|woman:women|foot:feet|tooth:teeth|mouse:mice");
+irr(IRM.it,"essere:è sono era eravamo eravate saremo sareste sarebbero state stati sia siano fosse fossero|avere:avevamo avevate avremo avrebbero abbiano abbia");
+const VE=[];"erebbero erebbe eremmo ereste eresti eranno erete eremo erai erei erà erò>are ere|irebbero irebbe iremmo ireste iresti iranno irete iremo irai irei irà irò>ire|avamo avate avano avo avi ava>are|evamo evate evano evo evi eva>ere|ivamo ivate ivano ivo ivi iva>ire|arono asti ammo aste ai ò ando ato ata ati ate>are|erono ettero ette etti esti emmo este ei é uto uta uti ute>ere|irono isti immo iste ii ì ito ita iti ite isco isci isce iscono>ire|endo>ere ire|iamo ono ano ete ite o i a e>are ere ire".split("|").forEach(g=>{const[a,b]=g.split(">");a.split(" ").forEach(e=>b.split(" ").forEach(t=>VE.push([e,t])))});VE.sort((x,y)=>y[0].length-x[0].length);
+function cands(w){
+  if(LANG==="en"){
+    if(IRM.en[w])return[IRM.en[w]];const o=[],d=s=>/(.)\1$/.test(s)?s.slice(0,-1):null;
+    if(/ies$/.test(w))o.push(w.slice(0,-3)+"y");if(/es$/.test(w))o.push(w.slice(0,-2));if(/s$/.test(w))o.push(w.slice(0,-1));
+    if(/ing$/.test(w)){const s=w.slice(0,-3);o.push(s,s+"e");if(d(s))o.push(d(s))}
+    if(/ied$/.test(w))o.push(w.slice(0,-3)+"y");
+    if(/ed$/.test(w)){const s=w.slice(0,-2);o.push(s,s+"e");if(d(s))o.push(d(s))}
+    return o.filter(x=>x.length>1)}
+  if(LANG!=="it")return[];
+  if(IRM.it[w])return[IRM.it[w]];
+  const o=[];for(const[e,t]of VE)if(w.length-e.length>=2&&w.endsWith(e)){const c=w.slice(0,-e.length)+t;if(!o.includes(c))o.push(c)}
+  return o.slice(0,8)}
+function netState(ok){$("net").hidden=ok}
+async function look(w){
+  const k=ak(w);if(pend.has(k))return;pend.add(k);
+  let id=0,net=0,lem="";const cs=cands(w),ir=IRM[LANG]&&IRM[LANG][w],pre=[];
+  if(LANG==="it"&&!ir)for(const c of[2,3,4])if(w.length-c>=4)pre.push(w.slice(0,-c));
+  for(const t of(ir?[...cs,w]:[w,...cs,...pre]).slice(0,10)){try{const j=await api("bestsearch/"+encodeURIComponent(t));if(j.length){id=j[0]._id||j[0].id;lem=t;break}}catch(e){net=1;break}}
+  if(net){netState(false);setTimeout(()=>pend.delete(k),20000);return}
+  netState(true);
+  A[k]=id;if(lem)LM[k]=lem;sv("caa_a",A);sv("caa_l",LM);clearTimeout(rt);rt=setTimeout(()=>{render();if(sOpen())drawBoard()},200);
+}
+
+/* ---------- simboli disegnati: solo parole grammaticali (e, ma, che, non...) e numeri ---------- */
+const S=x=>'<svg viewBox="0 0 64 64" fill="none" stroke="#2b6cb0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">'+x+'</svg>';
+const NT=n=>'<text x="32" y="46" font-size="'+(n.length>2?26:n.length>1?34:46)+'" text-anchor="middle" stroke="none" fill="#2b6cb0" font-weight="700">'+n+'</text>';
+const FC='<circle cx="32" cy="32" r="22"/>';
+const CUS={
+"e":'<path d="M32 12v40M12 32h40"/>',
+"ma":'<path d="M10 20h40m-10-9l10 9-10 9M54 44H14m10-9l-10 9 10 9"/>',
+"che":'<circle cx="23" cy="32" r="13"/><circle cx="41" cy="32" r="13"/>',
+"o":'<path d="M10 32h14l14-14h14M24 32l14 14h14"/>',
+"non":FC+'<path d="M16 16l32 32"/>',
+"perché":'<path d="M6 24h16v16H6zM22 32h14m-8-8l8 8-8 8"/><text x="50" y="46" font-size="30" text-anchor="middle" stroke="none" fill="#2b6cb0">?</text>',
+"quando":FC+'<path d="M32 18v14l10 6"/>',
+"dove":'<path d="M32 58S12 38 12 26a20 20 0 0 1 40 0c0 12-20 32-20 32z"/><circle cx="32" cy="26" r="6"/>',
+"chi":'<circle cx="32" cy="18" r="9"/><path d="M14 56c0-14 8-22 18-22s18 8 18 22z"/>',
+"poi":'<circle cx="12" cy="32" r="5"/><path d="M24 32h28m-10-10l10 10-10 10"/>',
+"prima":'<circle cx="52" cy="32" r="5"/><path d="M40 32H12m10-10L12 32l10 10"/>',
+"infine":'<path d="M8 32h34m-10-10l10 10-10 10M54 12v40"/>',
+"anche":'<circle cx="22" cy="32" r="13"/><circle cx="42" cy="32" r="13"/><path d="M32 26v12M26 32h12"/>',
+"tutto":'<circle cx="32" cy="32" r="22" fill="#2b6cb0"/>',
+"niente":'<circle cx="32" cy="32" r="22" stroke-dasharray="1 9"/>',
+"molto":'<path d="M10 54V44M24 54V34M38 54V24M52 54V10" stroke-width="8"/>',
+"poco":'<path d="M10 54V44M24 54V50" stroke-width="8"/>',
+"meno":'<path d="M12 32h40"/>',
+"se":'<path d="M32 56V36M32 36L14 14M32 36l18-22"/>',
+"è":'<path d="M12 24h40M12 40h40"/>',
+"sì":'<path d="M10 34l14 14 30-34"/>',
+"mentre":'<path d="M8 20h40m-10-9l10 9-10 9M8 44h40m-10-9l10 9-10 9"/>',
+"come":'<circle cx="18" cy="32" r="12"/><path d="M36 26h18M36 38h18"/>',
+"qui":'<path d="M32 8v32m-12-12l12 12 12-12M12 54h40"/>',
+"quello":'<path d="M8 32h34m-10-10l10 10-10 10"/><circle cx="54" cy="32" r="4"/>',
+"più":FC+'<path d="M32 20v24M20 32h24"/>',
+"subito":'<path d="M36 6L16 36h14l-4 22 22-32H32z"/>',
+"quasi":'<path d="M32 10a22 22 0 1 1-21 28"/>',
+"sempre":'<path d="M50 34a18 18 0 1 1-5-14"/><path d="M52 8v14H38"/>',
+"volte":'<circle cx="16" cy="32" r="9" fill="#2b6cb0"/><circle cx="48" cy="32" r="9"/>',
+"fare":'<path d="M27.3 14.6 L28.1 7.3 L35.9 7.3 L36.7 14.6 L41.0 16.4 L46.7 11.8 L52.2 17.3 L47.6 23.0 L49.4 27.3 L56.7 28.1 L56.7 35.9 L49.4 36.7 L47.6 41.0 L52.2 46.7 L46.7 52.2 L41.0 47.6 L36.7 49.4 L35.9 56.7 L28.1 56.7 L27.3 49.4 L23.0 47.6 L17.3 52.2 L11.8 46.7 L16.4 41.0 L14.6 36.7 L7.3 35.9 L7.3 28.1 L14.6 27.3 L16.4 23.0 L11.8 17.3 L17.3 11.8 L23.0 16.4z"/><circle cx="32" cy="32" r="8"/>',
+"avere":'<path d="M8 36c0 12 10 20 24 20s24-8 24-20"/><circle cx="32" cy="22" r="10"/>',
+"dare":'<circle cx="14" cy="16" r="6"/><path d="M5 40c0-8 4-12 9-12s9 4 9 12zM26 34h14m-6-6l6 6-6 6"/><rect x="44" y="28" width="12" height="12" rx="1"/>'};
+"uno due tre quattro cinque sei sette otto nove dieci".split(" ").forEach((w,i)=>CUS[w]=NT(""+(i+1)));
+const AL={ed:"e",oppure:"o","perchè":"perché","però":"ma",no:"non",vero:"sì",falso:"non",sono:"è",era:"è",mai:"niente",nessuno:"niente",nulla:"niente",troppo:"molto",tanti:"molto",tante:"molto",tanto:"molto",pochi:"poco",poche:"poco",tutti:"tutto",tutte:"tutto",tutta:"tutto",dopo:"poi",quindi:"poi",allora:"poi","poiché":"perché",solito:"sempre",abitualmente:"sempre",indicare:"quello",essere:"è"};
+const CX={en:{and:"e",but:"ma",that:"che",or:"o",not:"non",no:"non",why:"perché",when:"quando",where:"dove",who:"chi",then:"poi",after:"poi",before:"prima",finally:"infine",also:"anche",too:"anche",all:"tutto",everything:"tutto",nothing:"niente",never:"niente",very:"molto",much:"molto",many:"molto",little:"poco",few:"poco",less:"meno",if:"se",is:"è",are:"è",am:"è",was:"è",were:"è","don't":"non","doesn't":"non","didn't":"non","can't":"non","won't":"non","isn't":"non","aren't":"non",be:"è",make:"fare",do:"fare",have:"avere",give:"dare",yes:"sì",true:"sì",false:"non",while:"mentre",how:"come",here:"qui",this:"quello",now:"subito",always:"sempre",sometimes:"volte",almost:"quasi",one:"uno",two:"due",three:"tre",four:"quattro",five:"cinque",six:"sei",seven:"sette",eight:"otto",nine:"nove",ten:"dieci"},
+es:{hacer:"fare",hace:"fare",hago:"fare",hecho:"fare",y:"e",pero:"ma",que:"che",o:"o",no:"non",cuando:"quando",donde:"dove",quien:"chi",luego:"poi",antes:"prima",todo:"tutto",nada:"niente",muy:"molto",mucho:"molto",poco:"poco",menos:"meno",si:"se",es:"è",son:"è",sí:"sì",mientras:"mentre",como:"come"},
+fr:{faire:"fare",fait:"fare",fais:"fare",et:"e",mais:"ma",que:"che",ou:"o",non:"non",pourquoi:"perché",quand:"quando",où:"dove",qui:"chi",puis:"poi",avant:"prima",aussi:"anche",tout:"tutto",rien:"niente",très:"molto",beaucoup:"molto",peu:"poco",moins:"meno",si:"se",est:"è",sont:"è",oui:"sì",pendant:"mentre",comme:"come"},
+de:{machen:"fare",macht:"fare",und:"e",aber:"ma",dass:"che",oder:"o",nicht:"non",warum:"perché",wann:"quando",wo:"dove",wer:"chi",dann:"poi",vor:"prima",auch:"anche",alles:"tutto",nichts:"niente",sehr:"molto",viel:"molto",wenig:"poco",weniger:"meno",wenn:"se",ist:"è",sind:"è",ja:"sì","während":"mentre",wie:"come"},
+pt:{fazer:"fare",faz:"fare",e:"e",mas:"ma",que:"che",ou:"o","não":"non",porque:"perché",quando:"quando",onde:"dove",quem:"chi",depois:"poi",antes:"prima","também":"anche",tudo:"tutto",nada:"niente",muito:"molto",pouco:"poco",menos:"meno",se:"se","é":"è","são":"è",sim:"sì",enquanto:"mentre",como:"come"}};
+function cx(b){
+  if(LANG==="it"){for(const c of[b,...cands(b)])for(const g of[c,c.replace(/[aie]$/,"o"),c.replace(/[aie]$/,"a"),c.replace(/[aie]$/,"e")]){const z=AL[g]||g;if(CUS[z])return z}return""}
+  const m=CX[LANG]||{};for(const c of[b,...cands(b)]){const z=m[c];if(z&&CUS[z])return z}return""}
+/* emozioni: sempre la stessa serie di volti ARASAAC */
+const EMOID={felice:35533,contento:35547,triste:35545,arrabbiato:35539,spaventato:35535,paura:35571,stanco:35537,annoiato:35531,sorpreso:35529,stupito:35565,confuso:35541,preoccupato:36341,fame:35559,freddo:35557,caldo:35561};
+const EMOW={en:{happy:"felice",glad:"contento",pleased:"contento",sad:"triste",unhappy:"triste",angry:"arrabbiato",mad:"arrabbiato",scared:"spaventato",afraid:"spaventato",frightened:"spaventato",fear:"paura",tired:"stanco",bored:"annoiato",surprised:"sorpreso",amazed:"stupito",astonished:"stupito",confused:"confuso",worried:"preoccupato",hungry:"fame",hunger:"fame",cold:"freddo",hot:"caldo"},
+es:{feliz:"felice",felices:"felice",contento:"contento",contenta:"contento",contentos:"contento",contentas:"contento",triste:"triste",tristes:"triste",enfadado:"arrabbiato",enfadada:"arrabbiato",enojado:"arrabbiato",enojada:"arrabbiato",asustado:"spaventato",asustada:"spaventato",miedo:"paura",cansado:"stanco",cansada:"stanco",aburrido:"annoiato",aburrida:"annoiato",sorprendido:"sorpreso",sorprendida:"sorpreso",confundido:"confuso",confundida:"confuso",preocupado:"preoccupato",preocupada:"preoccupato",hambre:"fame","frío":"freddo",calor:"caldo"},
+fr:{heureux:"felice",heureuse:"felice",content:"contento",contente:"contento",triste:"triste","fâché":"arrabbiato","fâchée":"arrabbiato","colère":"arrabbiato","effrayé":"spaventato","effrayée":"spaventato",peur:"paura","fatigué":"stanco","fatiguée":"stanco","ennuyé":"annoiato","ennuyée":"annoiato",surpris:"sorpreso",surprise:"sorpreso",confus:"confuso",confuse:"confuso",inquiet:"preoccupato","inquiète":"preoccupato",faim:"fame",froid:"freddo",chaud:"caldo"},
+de:{"glücklich":"felice",froh:"contento",traurig:"triste","wütend":"arrabbiato","böse":"arrabbiato","ängstlich":"spaventato",angst:"paura","müde":"stanco",gelangweilt:"annoiato","überrascht":"sorpreso",verwirrt:"confuso",besorgt:"preoccupato",hunger:"fame",hungrig:"fame",kalt:"freddo","heiß":"caldo"},
+pt:{feliz:"felice",felizes:"felice",contente:"contento",triste:"triste",zangado:"arrabbiato",zangada:"arrabbiato",assustado:"spaventato",assustada:"spaventato",medo:"paura",cansado:"stanco",cansada:"stanco",entediado:"annoiato",entediada:"annoiato",surpreso:"sorpreso",surpresa:"sorpreso",confuso:"confuso",confusa:"confuso",preocupado:"preoccupato",preocupada:"preoccupato",fome:"fame",frio:"freddo",calor:"caldo"}};
+function emo(b){
+  if(LANG==="it"){if(EMOID[b])return b;for(const x of[b.replace(/[aie]$/,"o"),b.replace(/ch[ie]$/,"co"),b.replace(/i$/,"e")])if(x!=="freddo"&&x!=="caldo"&&EMOID[x])return x;return""}
+  const m=EMOW[LANG];return m&&m[b]||""}
+function val(k){
+  let u=uget(k);if(u!==undefined)return u;const b=base(k);
+  if(stop(b))return"";u=uget(b);if(u!==undefined)return u;
+  if(/^\d{1,3}$/.test(b))return"num:"+b;
+  for(const c of cands(b)){u=uget(c);if(u!==undefined)return u}
+  const em=emo(b);if(em)return String(EMOID[em]);
+  const x=cx(b);if(x)return"svg:"+x;
+  const q=ak(b);if(A[q])return String(A[q]);if(A[q]===undefined){look(b);return"…"}return"?";
+}
+function sym(v){
+  if(v===undefined||v===null)return"";v=String(v);
+  if(v.startsWith("svg:")){const c=CUS[v.slice(4)];return c?S(c):"?"}
+  if(v.startsWith("num:"))return S(NT(esc(v.slice(4))));
+  if(/^\d+$/.test(v))return'<img alt="" src="'+IMG(v)+'">';
+  if(/^data:image\/[a-z0-9+.-]+;base64,[a-z0-9+\/=]+$/i.test(v))return'<img alt="" src="'+v+'">';
+  return esc(v)}
+
+/* ---------- come si raggruppano le parole ---------- */
+const PI=new Set("fatto fatta fatti fatte detto detta dato visto vista visti viste preso presa scritto scritta letto messo chiesto risposto rimasto rimasta rimasti rimaste scoperto scoperta aperto chiuso stato stata stati state perso persa saputo potuto voluto dovuto venuto deciso nato nata nati nate morto morta morti morte sceso scesa scesi successo successa apparso apparsa vissuto caduto scelto piaciuto conosciuto avuto".split(" "));
+const PLM={nato:"nascere",nata:"nascere",nati:"nascere",nate:"nascere",morto:"morire",morta:"morire",morti:"morire",morte:"morire",sceso:"scendere",scesa:"scendere",scesi:"scendere",successo:"succedere",successa:"succedere",apparso:"apparire",apparsa:"apparire",cresciuto:"crescere",cresciuta:"crescere",svenuto:"svenire",svenuta:"svenire"};
+/* verbi che fanno il passato con "essere": con questi "è andato" resta un solo riquadro */
+const ESV=new Set("andare venire arrivare partire tornare ritornare uscire entrare rientrare cadere salire scendere nascere morire diventare restare rimanere stare essere sembrare piacere dispiacere succedere accadere capitare riuscire crescere scappare fuggire sparire apparire durare costare bastare mancare passare cambiare finire cominciare iniziare correre svenire guarire impazzire arrossire dimagrire ingrassare invecchiare sopravvivere atterrare decollare scivolare annegare sorgere tramontare avvenire esplodere".split(" "));
+const REFL=new Set("si mi ti ci vi se me te ce ve".split(" "));
+const part=w=>PI.has(w)||(w.length>=5&&/(ato|ata|ati|ate|uto|uta|uti|ute|ito|ita|iti|ite)$/.test(w));
+const plem=w=>IRM.it[w]||PLM[w]||w.replace(/at[oaie]$/,"are").replace(/ut[oaie]$/,"ere").replace(/it[oaie]$/,"ire");
+const isEss=w=>IRM.it[w]==="essere",isAv=w=>IRM.it[w]==="avere";
+const isFare=w=>w==="fare"||IRM.it[w]==="fare",INF=/(are|ere|ire|rre)$/;
+function lightOk(tk,k){let m=k;while(m<tk.length-1&&stop(core(tk[m]))&&core(tk[m+1]))m++;const t=core(tk[m]);return !!t&&(isFare(t)||!INF.test(t))}
+function span(tk,i){
+  let j=i;
+  while(j<tk.length-1&&core(tk[j+1])){
+    const w=core(tk[j]),nx=core(tk[j+1]);let go=stop(w);
+    if(!go&&LANG==="it"){
+      if(part(nx)){
+        if(isAv(w))go=true;
+        /* essere + aggettivo ("è arrabbiato") resta separato: si vede il simbolo = */
+        else if(isEss(w)){go=ESV.has(plem(nx))||/^stat[oaie]$/.test(w);for(let q=i;q<j&&!go;q++)if(REFL.has(core(tk[q])))go=true}
+      }
+      if(!go&&isFare(w)&&lightOk(tk,j+1))go=true;
+    }
+    if(!go&&LANG==="en"&&/^(do|does|did)$/.test(w))go=true;
+    if(go&&/[.,!?;:]$/.test(tk[j]))go=false;/* non si unisce oltre un segno di punteggiatura */
+    if(go)j++;else break;
+  }
+  return j}
+/* "sei": verbo (tu sei) o numero (sei mele)? */
+function seiVerb(tk,i){
+  const pr=i>0?tk[i-1]:"",p=core(pr),n=i<tk.length-1?core(tk[i+1]):"";
+  if(/^(\d+|uno|due|tre|quattro|cinque|sette|otto|nove|dieci)$/.test(p))return 0;
+  if(/^(le|alle|dalle|delle|nelle|sulle|ore|sono|hai|ho|ha|abbiamo|avete|hanno|di|per|tra|fra|circa)$/.test(p))return 0;
+  if(/^(tu|non|ci|ne|ma|e|se|quando|perché|perchè|dove|come|chi|che|già|ancora|mai|sempre|anche|proprio)$/.test(p))return 1;
+  if(!pr||/[.!?:;,]$/.test(pr))return /^(anni|mesi|giorni|ore|volte|euro|metri|chili|minuti|persone)$/.test(n)?0:1;
+  if(n&&(stop(n)||part(n)))return 1;
+  return 0}
+const MW=8;let ITEMS=[];
+function plan(par,off){
+  const tm=[...par.matchAll(/\S+/g)],tk=tm.map(x=>x[0]),out=[];let i=0,pre="";
+  const pos=a=>off>=0?off+tm[a].index:-1,end=b=>off>=0?off+tm[b].index+tm[b][0].length:-1;
+  while(i<tk.length){
+    const t=tk[i];
+    if(/^_{2,}\W*$/.test(t)){out.push({b:1,label:pre+t,s:pos(i),e:end(i)});pre="";i++;continue}
+    if(!core(t)){pre+=t+" ";i++;continue}
+    /* "a __": l'articolo o la preposizione va nello spazio da completare */
+    if(stop(core(t))&&i+1<tk.length&&/^_{2,}\W*$/.test(tk[i+1])){out.push({b:1,label:pre+t+" "+tk[i+1],s:pos(i),e:end(i+1)});pre="";i+=2;continue}
+    let n=0,key="",k0=i,f=i;
+    while(f<tk.length-1&&stop(core(tk[f]))&&core(tk[f+1]))f++;
+    for(const st of(f>i?[i,f]:[i])){
+      for(let m=Math.min(MW,tk.length-st);m>1;m--){const ws=tk.slice(st,st+m);if(ws.some(x=>!core(x)))continue;const k=ws.map(core).join(" ");if(uget(k)!==undefined){n=st+m-i;key=k;k0=st;break}}
+      if(n)break}
+    let j;
+    if(n)j=i+n-1;else{j=span(tk,i);n=j-i+1;key=core(tk[j]);k0=j}
+    const it={label:pre+tk.slice(i,i+n).join(" "),key,ctx:(i>0?core(tk[i-1]):"^")+"|"+key+"|"+(i+n<tk.length?core(tk[i+n]):"$"),s:pos(i),e:end(j),ks:pos(k0),ke:end(j),multi:key.includes(" ")};
+    if(LANG==="it"&&key==="sei"&&n===1)it.vh=seiVerb(tk,i);
+    out.push(it);pre="";i+=n;
+  }
+  out.forEach((x,q)=>{x.prev=out[q-1];x.next=out[q+1]});
+  return out}
+function build(par,off=-1){
+  const row=el("div","p");
+  plan(par,off).forEach(it=>{
+    const c=el("div","c"),e=el("div","e"),t=el("div","t");t.textContent=it.label;
+    if(it.b)c.className="c bl";
+    else{
+      const pm=markAt(it),lc=!pm&&UL[it.ctx]!==undefined;let v;
+      if(pm)v=pm.v;else if(lc)v=UL[it.ctx];else if(it.vh===1&&uget(it.key)===undefined)v=uget("essere")??"svg:è";else v=val(it.key);
+      if(v===""&&!it.multi&&stop(it.key)){const x=cx(it.key);if(x)v="svg:"+x}/* "uno" da solo = numero 1 */
+      it.v=v;e.innerHTML=sym(v);
+      if(v===""||v==="?")c.classList.add("miss");if(pm||lc)c.classList.add("loc");
+      c.onclick=ev=>boxClick(ev,it);c.oncontextmenu=ev=>{ev.preventDefault();ed(it)};
+    }
+    if(it.s>=0){c.dataset.s=it.s;c.dataset.e=it.e;ITEMS.push(it)}
+    it.el=c;c.append(e,t);row.append(c);
+  });
+  return row}
+
+/* ---------- "solo qui": scelta legata al singolo riquadro, segue le modifiche del testo ---------- */
+const overl=(m,it)=>m.s<it.e&&m.e>it.s;
+function markAt(it){if(!(it.s>=0))return null;for(const m of PM)if(overl(m,it))return m;return null}
+function setMark(it,v){if(!(it.s>=0))return;PM=PM.filter(m=>!overl(m,it));PM.push({s:it.ks>=0?it.ks:it.s,e:it.ke>=0?it.ke:it.e,v})}
+function clearMark(it){const n=PM.length;PM=PM.filter(m=>!overl(m,it));return PM.length<n}
+function shiftMarks(a,b,L,nt){
+  const d=L-(b-a);
+  PM=PM.filter(m=>{if(m.e<=a)return true;if(m.s>=b){m.s+=d;m.e+=d;return true}if(a>=m.s&&b<=m.e){m.e+=d;return m.e>m.s}return false});
+  if(nt!==undefined)PM=PM.filter(m=>m.s>=0&&m.e<=nt.length&&m.e>m.s&&!/\s/.test(nt.slice(m.s,m.e)))}
+function trackDiff(ot,nt,c){
+  if(!PM.length)return;
+  let a,b;const q=nt.length-c;
+  if(c>=0&&q>=0&&q<=ot.length&&nt.slice(c)===ot.slice(ot.length-q)){b=ot.length-q;let p=0;const lim=Math.min(c,b);while(p<lim&&ot.charCodeAt(p)===nt.charCodeAt(p))p++;a=p}
+  else{let p=0;const lim=Math.min(ot.length,nt.length);while(p<lim&&ot.charCodeAt(p)===nt.charCodeAt(p))p++;let s=0;while(s<lim-p&&ot.charCodeAt(ot.length-1-s)===nt.charCodeAt(nt.length-1-s))s++;a=p;b=ot.length-s}
+  shiftMarks(a,b,(b-a)+(nt.length-ot.length),nt)}
+let prevT="";
+/* modifica il testo come se l'avesse scritto il docente (si può annullare con Ctrl+Z) */
+function editText(s,e,txt,noFocus){
+  const ta=$("ta"),before=ta.value,want=before.slice(0,s)+txt+before.slice(e),pm0=JSON.parse(JSON.stringify(PM));let ok=false;
+  if(!noFocus){try{ta.focus({preventScroll:true});ta.setSelectionRange(s,e);ok=document.execCommand("insertText",false,txt)}catch(x){ok=false}}
+  if(!ok||ta.value!==want){PM=pm0;ta.value=want;try{ta.setSelectionRange(s+txt.length,s+txt.length)}catch(x){}shiftMarks(s,e,txt.length,want);prevT=want;PIN=null;drawMark();render()}
+}
+
+/* ---------- esercizi ---------- */
+const COL=["#d64545","#2f855a","#c98a00"];
+function match(P,parent){
+  const n=P.length,L=[],R=[],g=el("div","mt");
+  P.forEach((p,i)=>{const a=el("div"),r=el("div");a.dataset.col=COL[i%3];a.append(build(p[0],p[2]));r.append(build(P[(i+1)%n][1],P[(i+1)%n][3]));L.push(a);R.push(r);g.append(a,r)});
+  const clr=(arr,c)=>arr.forEach(x=>{if(x.dataset.c===c){x.dataset.c="";x.style.borderColor=""}});
+  let sel=null;
+  L.forEach(l=>l.onclick=()=>{sel=l;L.forEach(x=>x.classList.toggle("sel",x===l))});
+  R.forEach(r=>r.onclick=()=>{if(!sel)return;const c=sel.dataset.col;clr(R,c);if(r.dataset.c)clr(L,r.dataset.c);r.dataset.c=c;r.style.borderColor=c;sel.dataset.c=c;sel.style.borderColor=c;sel.classList.remove("sel");sel=null});
+  parent.append(g)}
+function opt(b,lab,node){
+  const o=el("div","o"),l=el("span","b"),k=el("span","k");l.textContent=lab;o.append(l,node,k);
+  o.onclick=()=>{const was=o.classList.contains("on");b.querySelectorAll(".o").forEach(x=>x.classList.remove("on"));if(!was)o.classList.add("on")};
+  b.append(o)}
+
+/* ---------- matematica visiva ---------- */
+const SH={cerch:'<circle cx="10" cy="10" r="8"/>',quadr:'<rect x="2" y="2" width="16" height="16" rx="2"/>',stell:'<path d="M10 1l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 14.5 4.6 17.5l1.2-6L1.3 7.3l6.1-.7z"/>',triang:'<path d="M10 2l8 15H2z"/>',cuor:'<path d="M10 17S2 11 2 6.5A4 4 0 0 1 10 5a4 4 0 0 1 8 1.5C18 11 10 17 10 17z"/>'};
+function mo(kind,col){const o=el("span","mo"),k=Object.keys(SH).find(x=>kind.toLowerCase().startsWith(x));if(k)o.innerHTML='<svg viewBox="0 0 20 20" fill="'+col+'">'+SH[k]+'</svg>';else{const i=el("span","ei");i.textContent=kind;o.append(i)}return o}
+function grp(n,kind,col,cross=0){const g=el("div","mg");g.style.gridTemplateColumns="repeat("+Math.max(1,Math.min(n,10))+",auto)";for(let i=0;i<n;i++){const o=mo(kind,col);if(i>=n-cross)o.classList.add("x");g.append(o)}return g}
+function math(str){
+  const w=el("div","mw"),mt=str.match(/^\s*(\d+)\s*([+\-−x×*:÷\/])\s*(\d+)\s*(?:=\s*(\?|\d+))?\s*(?:\|\s*(.+?))?\s*$/i);
+  if(!mt){w.className="mw err";w.textContent="Calcolo non valido: "+str;return w}
+  const a=+mt[1],b=+mt[3],op={"+":"+","-":"−","−":"−","x":"×","×":"×","*":"×",":":"÷","÷":"÷","/":"÷"}[mt[2].toLowerCase()],kind=(mt[5]||"cerchi").trim();
+  let r=0,rest=0,err="";
+  if(a>100||b>100)err="Usa numeri fino a 100";
+  else if(op==="+"){r=a+b;if(r>100)err="Il risultato supera 100"}
+  else if(op==="−"){r=a-b;if(r<0)err="Il primo numero deve essere più grande"}
+  else if(op==="×"){r=a*b;if(r>100)err="Il risultato supera 100"}
+  else if(!b)err="Non si divide per 0";else{r=Math.floor(a/b);rest=a%b}
+  if(err){w.className="mw err";w.textContent=err+": "+str;return w}
+  const T1=(c,t)=>{const s=el("span",c);s.textContent=t;return s};
+  const ex=mt[4]&&mt[4]!=="?",ans=el("span","ans"),rs=el("span","rs"+(ex?" sh":""));
+  rs.textContent=(ex?mt[4]:r)+(rest&&!ex?" resto "+rest:"");ans.append(rs);
+  const row=el("div","me");row.append(T1("mn",a),T1("op",op),T1("mn",b),T1("op","="),ans);
+  const vis=el("div","mv"),B="#2b6cb0",O="#d97706";
+  if(op==="+")vis.append(grp(a,kind,B),T1("op","+"),grp(b,kind,O));
+  else if(op==="−")vis.append(grp(a,kind,B,b));
+  else if(op==="×")for(let i=0;i<a;i++){const bx=el("div","bx");bx.append(grp(b,kind,B));vis.append(bx)}
+  else{for(let i=0;i<b;i++){const bx=el("div","bx");bx.append(grp(r,kind,B));vis.append(bx)}if(rest){const bx=el("div","bx rest");bx.append(grp(rest,kind,O));vis.append(bx)}}
+  w.append(row,vis);return w}
+
+/* ---------- musica: pentagramma, note, ascolto ---------- */
+const NN=["do","re","mi","fa","sol","la","si"],NSEMI=[0,2,4,5,7,9,11];
+const NCOL=["#e53935","#fb8c00","#fdd835","#43a047","#29b6f6","#3949ab","#8e24aa"],NDK=["#b71c1c","#d35400","#8a6d00","#1b5e20","#0277bd","#1a237e","#4a148c"];
+const NNAME={it:NN,es:NN,pt:["dó","ré","mi","fá","sol","lá","si"],fr:["do","ré","mi","fa","sol","la","si"],en:["C","D","E","F","G","A","B"],de:["C","D","E","F","G","A","H"]};
+const DUR=[4,3,2,1.5,1,0.75,0.5,0.25],DNAME={4:"Semibreve",2:"Minima",1:"Semiminima",0.5:"Croma",0.25:"Semicroma"};
+const NRX=/^(do|dó|ut|re|ré|mi|fa|fá|sol|la|lá|si|[a-h])(#|♯|b|♭)?(\d|'{1,2})?(?::([0-9.,\/½¼]+))?$/;
+function pdur(s){if(!s)return 1;s=s.replace(",",".").replace("½","1/2").replace("¼","1/4");const f=s.match(/^(\d+)\/(\d+)$/),v=f?+f[1]/+f[2]:+s;return DUR.includes(v)?v:NaN}
+function nIdx(x){x=x.normalize("NFD").replace(/[\u0300-\u036f]/g,"");const i=NN.indexOf(x);return i>=0?i:x==="ut"?0:"cdefgab".indexOf(x==="h"?"b":x)}
+function parseMusic(src){
+  const s=src.replace(/\|\|/g," ‖ ").replace(/\|/g," | ").replace(/‖/g,"||").replace(/,(?=\s|$)/g," ");
+  const d={items:[],time:null,tempo:90,errs:[]};
+  for(const raw of s.split(/\s+/)){if(!raw)continue;const t=raw.toLowerCase();let m;
+    if(t==="|"||t==="||"){d.items.push({t:"bar",dbl:t==="||"});continue}
+    if(m=t.match(/^(\d{1,2})\/(1|2|4|8|16)$/)){const ts={t:"time",n:+m[1],d:+m[2]};if(!d.time&&!d.items.length)d.time=ts;else d.items.push(ts);continue}
+    if(m=t.match(/^(?:t|♩|bpm)=(\d{2,3})$/)){d.tempo=Math.min(220,Math.max(40,+m[1]));continue}
+    if(m=t.match(/^(?:p|pausa)(?::([0-9.,\/½¼]+))?$/)){const v=pdur(m[1]);if(isNaN(v))d.errs.push(raw);else d.items.push({t:"rest",dur:v});continue}
+    if(m=t.match(NRX)){const n=nIdx(m[1]),acc=!m[2]?0:/#|♯/.test(m[2])?1:-1,oc=!m[3]?4:/\d/.test(m[3])?+m[3]:4+m[3].length,v=pdur(m[4]);
+      if(n<0||isNaN(v)||oc<3||oc>6){d.errs.push(raw);continue}
+      d.items.push({t:"note",n,acc,oc,dur:v});continue}
+    d.errs.push(raw)}
+  d.items.forEach((x,i)=>x.i=i);return d}
+function toText(d){
+  const L=/^(en|de)$/.test(LANG),p=[];if(d.time)p.push(d.time.n+"/"+d.time.d);
+  for(const it of d.items){
+    if(it.t==="bar")p.push(it.dbl?"||":"|");else if(it.t==="time")p.push(it.n+"/"+it.d);
+    else{const ds=it.dur===1?"":":"+({0.5:"1/2",0.25:"1/4"}[it.dur]||String(it.dur));
+      p.push(it.t==="rest"?"p"+ds:(L?"CDEFGAB"[it.n]:NN[it.n])+(it.acc>0?"#":it.acc<0?"b":"")+(it.oc!==4?it.oc:"")+ds)}}
+  if(d.tempo&&d.tempo!==90)p.push("t="+d.tempo);
+  return p.join(" ")}
+const mStep=x=>(x.oc-4)*7+x.n-2,mY=x=>40-mStep(x)*5,mMidi=x=>12*(x.oc+1)+NSEMI[x.n]+x.acc;
+const dotted=v=>v===3||v===1.5||v===0.75;
+function slotW(x){if(x.t==="bar")return x.dbl?18:14;if(x.t==="time")return 28;return({4:46,3:44,2:38,1.5:38,1:34,0.75:34,0.5:32,0.25:32}[x.dur]||34)+(x.acc?10:0)}
+const ln=(x1,y1,x2,y2,w,c)=>'<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+(c||"#333")+'" stroke-width="'+(w||1.2)+'"/>';
+const CLEF='<path d="M17.5 30.5C14.2 30.8 13 27.6 15.2 25.6C18.6 22.8 24.4 25.4 24 31C23.6 37.4 15.6 40.6 10.4 36.6C5.6 32.8 6.4 25.4 12 20.6C17.6 15.8 23.4 11 23.2 2.4C23 -5.2 18.6 -9.6 16.2 -5.4C13.8 -1.2 14.6 8 16.4 18.6L19.6 45.4C20.3 51.6 14.6 54.6 11.6 51" fill="none" stroke="#222" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12.4" cy="49.4" r="3.4" fill="#222"/>';
+function tsS(x,t){const f=' font-size="21" font-weight="700" text-anchor="middle" font-family="Georgia,Times New Roman,serif" fill="#222"';return'<text x="'+x+'" y="18"'+f+'>'+t.n+'</text><text x="'+x+'" y="38"'+f+'>'+t.d+'</text>'}
+function accS(a,x,y){return a>0?ln(x-2.4,y-9,x-2.4,y+9,1.2,"#222")+ln(x+2.4,y-10,x+2.4,y+8,1.2,"#222")+ln(x-5,y-2,x+5,y-5,2.6,"#222")+ln(x-5,y+5,x+5,y+2,2.6,"#222"):'<path d="M'+(x-3)+' '+(y-13)+'V'+(y+5)+'C'+(x+5)+' '+(y+1)+' '+(x+5)+' '+(y-6)+' '+(x-3)+' '+(y-2)+'" fill="none" stroke="#222" stroke-width="1.8" stroke-linejoin="round"/>'}
+function restS(x,v){
+  let s="";
+  if(v===4)s='<rect x="'+(x-6)+'" y="10" width="12" height="5" fill="#222"/>';
+  else if(v>=2)s='<rect x="'+(x-6)+'" y="15" width="12" height="5" fill="#222"/>';
+  else if(v>=1)s='<path d="M'+(x-2)+' 7L'+(x+4)+' 14L'+(x-1)+' 20L'+(x+4)+' 27C'+(x-3)+' 24 '+(x-5)+' 30 '+(x+1)+' 35" fill="none" stroke="#222" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>';
+  else{const k=v>=0.5?1:2;for(let j=0;j<k;j++){const yy=15+j*8;s+='<circle cx="'+(x-3)+'" cy="'+yy+'" r="2.6" fill="#222"/><path d="M'+(x-3)+' '+(yy+1)+'Q'+(x+1)+' '+(yy+3)+' '+(x+5)+' '+(yy-3)+'" fill="none" stroke="#222" stroke-width="1.6"/>'}s+=ln(x+5,12,x,k>1?38:30,1.6,"#222")}
+  if(dotted(v))s+='<circle cx="'+(x+10)+'" cy="15" r="1.9" fill="#222"/>';
+  return s}
+function noteS(x,o,c){
+  const y=mY(o),up=y>20,hol=o.dur>=2,col=c.col?NCOL[o.n]:"#1a1a1a";let s="";
+  for(let l=50;l<=y;l+=10)s+=ln(x-10,l,x+10,l,1.3,"#333");
+  for(let l=-10;l>=y;l-=10)s+=ln(x-10,l,x+10,l,1.3,"#333");
+  if(o.acc)s+=accS(o.acc,x-15,y);
+  if(o.dur<4){const sx=up?x+5.4:x-5.4,y2=up?y-34:y+34;s+=ln(sx,y,sx,y2,1.5,"#222");
+    const nf=o.dur<=0.25?2:o.dur<=0.75?1:0,g=up?1:-1;
+    for(let f=0;f<nf;f++){const fy=up?y2+f*7:y2-f*7;s+='<path d="M'+sx+' '+fy+'C'+(sx+2)+' '+(fy+8*g)+' '+(sx+11)+' '+(fy+9*g)+' '+(sx+9)+' '+(fy+21*g)+'C'+(sx+9)+' '+(fy+14*g)+' '+(sx+4)+' '+(fy+12*g)+' '+sx+' '+(fy+9*g)+'Z" fill="#222"/>'}}
+  const w=o.dur===4,rx=w?7.4:6.3,ry=w?5:4.5,tr=' transform="rotate('+(w?-12:-22)+' '+x+' '+y+')"',E='<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'"'+tr;
+  if(hol)s+=E+' fill="#fff" stroke="#1a1a1a" stroke-width="'+(c.col?4.6:2.2)+'"/>'+(c.col?E+' fill="none" stroke="'+col+'" stroke-width="2.4"/>':"");
+  else s+=E+' fill="'+col+'" stroke="#1a1a1a" stroke-width="'+(c.col?1.2:0.8)+'"/>';
+  if(dotted(o.dur))s+='<circle cx="'+(x+11)+'" cy="'+(y%10===0?y-5:y)+'" r="1.9" fill="#222"/>';
+  return s}
+function noteName(o){const L=NNAME[LANG]||NN,s=L[o.n]+(o.acc>0?"♯":o.acc<0?"♭":"");return document.body.classList.contains("nu")||/^(en|de)$/.test(LANG)?s:s.toUpperCase()}
+function nameS(x,o,y0,c,sw){
+  const nm=noteName(o),w=c.hide?30:Math.min((sw||40)-3,Math.max(28,nm.length*8.5+10)),f=' x="'+x+'" y="'+(y0+14.6)+'" font-size="12" font-weight="700" text-anchor="middle" font-family="Verdana,Segoe UI Symbol,DejaVu Sans,sans-serif"';
+  if(c.hide)return'<rect x="'+(x-w/2)+'" y="'+y0+'" width="'+w+'" height="21" rx="5" fill="#fff" stroke="#777" stroke-dasharray="3 3"/><text class="mans"'+f+' fill="'+(c.col?NDK[o.n]:"#222")+'">'+esc(nm)+'</text>';
+  return'<rect x="'+(x-w/2)+'" y="'+y0+'" width="'+w+'" height="21" rx="5" fill="'+(c.col?NCOL[o.n]+"33":"#fff")+'" stroke="'+(c.col?NDK[o.n]:"#777")+'"/><text'+f+' fill="'+(c.col?NDK[o.n]:"#222")+'">'+esc(nm)+'</text>'}
+/* disegna un rigo: restituisce il contenuto SVG e le posizioni delle note */
+function sysCore(items,o){
+  let x=38,hd="";if(o.time){hd=tsS(x+12,o.time);x+=30}x+=10;
+  const xs=[];for(const it of items){const w=slotW(it);xs.push(x+(it.t==="bar"?w/2:w/2+(it.acc?5:0)));x+=w}
+  const W=Math.max(x+8,o.minW||0);let y0=-16,y1=56;
+  items.forEach(it=>{if(it.t!=="note")return;const y=mY(it),up=y>20,st=it.dur<4?36:0;y0=Math.min(y0,y-(up?st:0)-10);y1=Math.max(y1,y+(up?0:st)+10)});
+  if(o.ed){y0=Math.min(y0,-36);y1=Math.max(y1,76)}
+  const ny=y1+2;if(o.ed||items.some(i=>i.t==="note"))y1=ny+25;
+  let s=o.under||"";for(let l=0;l<=40;l+=10)s+=ln(0,l,W,l,1.1,"#555");s+=CLEF+hd;
+  items.forEach((it,j)=>{const X=xs[j];
+    if(it.t==="bar")s+=it.dbl?ln(X-3,0,X-3,40,1.3,"#222")+ln(X+2,0,X+2,40,3.6,"#222"):ln(X,0,X,40,1.4,"#222");
+    else if(it.t==="time")s+=tsS(X,it);
+    else s+='<g class="nt" data-i="'+it.i+'"><rect class="hb" x="'+(X-15)+'" y="-12" width="30" height="64" rx="9" fill="#fde047" opacity="0"/>'+(it.t==="note"?noteS(X,it,o):restS(X,it.dur))+(it.t==="note"?nameS(X,it,ny,o,slotW(it)):"")+'</g>'});
+  if(!items.length||items[items.length-1].t!=="bar")s+=ln(W-.6,0,W-.6,40,1.2,"#222");
+  s+=o.over||"";
+  return{s,xs,W,y0,y1}}
+const svgWrap=(r,k,extra)=>'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 '+r.y0+' '+r.W+' '+(r.y1-r.y0)+'" width="'+Math.round(r.W*k)+'" height="'+Math.round((r.y1-r.y0)*k)+'"'+(extra||"")+'>'+r.s+'</svg>';
+/* va a capo alle battute quando il rigo è troppo lungo */
+function packSys(d,av){
+  const its=d.items,hasBar=its.some(x=>x.t==="bar");let ch=[];
+  if(hasBar){let c=[];its.forEach(x=>{c.push(x);if(x.t==="bar"){ch.push(c);c=[]}});if(c.length)ch.push(c)}else ch=its.map(x=>[x]);
+  const h0=48+(d.time?30:0),h=48,sys=[];let cur=[],w=h0;
+  for(const c of ch){const cw=c.reduce((a,x)=>a+slotW(x),0);
+    if(cur.length&&w+cw>av){sys.push(cur);cur=[];w=h}
+    if(!cur.length&&w+cw>av&&c.length>1){for(const x of c){const xw=slotW(x);if(cur.length&&w+xw>av){sys.push(cur);cur=[];w=h}cur.push(x);w+=xw}continue}
+    cur.push(...c);w+=cw}
+  if(cur.length||!sys.length)sys.push(cur);
+  return sys}
+let SHW=700,PRINTW=0,ZS=1,ZSC=.8,ZB=1;const MK=1.35;
+function music(src,hide,s,e){
+  const d=parseMusic(src),w=el("div","mus"),o={col:$("mcol").checked,hide},k=MK*curZ(),av=Math.max(220,(PRINTW||SHW)/k-4);
+  w.dataset.s=s;w.dataset.e=e;
+  if(d.items.some(x=>x.t==="note")){const h=el("div","mhd"),b=el("button","mplay");b.type="button";b.textContent="▶ Ascolta";b.title="Ascolta la melodia";b.onclick=ev=>{ev.stopPropagation();if(PLAY&&PLAY.s===s)stopPlay();else playMus(w,d,b,s)};h.append(b);w.append(h)}
+  packSys(d,av).forEach((its,q)=>{const r=sysCore(its,{...o,time:q===0?d.time:null,minW:d.items.length?0:av});w.insertAdjacentHTML("beforeend",svgWrap(r,k,' role="img" aria-label="Pentagramma"'))});
+  if(d.errs.length){const x=el("div","merr"),dg=d.errs.find(t=>/^(do|re|mi|fa|sol|la|si)[0-27-9]$/i.test(t));
+    x.textContent="Non capisco: "+d.errs.join(" ")+". "+(dg?"Per la durata metti i due punti: "+dg.slice(0,-1)+":"+dg.slice(-1)+" (il numero subito attaccato è l'ottava, da 3 a 6).":"Scrivi do re mi fa sol la si, p per la pausa, | per la battuta.");w.append(x)}
+  w.onclick=ev=>musClick(ev,s,e);w.oncontextmenu=ev=>{ev.preventDefault();openME({s,e})};
+  return w}
+let AC=null,PLAY=null;
+function actx(){try{if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}if(AC.state==="suspended")AC.resume();return AC}catch(e){return null}}
+function tone(ac,out,f,t0,len,vol){
+  const o=ac.createOscillator(),g=ac.createGain(),a=t0+.015,b=t0+Math.min(.2,len*.4),c=Math.max(b+.005,t0+len-.06),z=Math.max(c+.02,t0+len);
+  o.type="triangle";o.frequency.setValueAtTime(f,t0);
+  g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol,a);g.gain.exponentialRampToValueAtTime(vol*.55,b);g.gain.setValueAtTime(vol*.55,c);g.gain.exponentialRampToValueAtTime(.0001,z);
+  o.connect(g);g.connect(out);o.start(t0);o.stop(z+.02)}
+function beep(it){const ac=actx();if(!ac||it.t!=="note")return;const out=ac.createGain();out.connect(ac.destination);tone(ac,out,440*Math.pow(2,(mMidi(it)-69)/12),ac.currentTime+.01,.32,.26)}
+function playMus(box,d,btn,key){
+  stopPlay();const ac=actx();if(!ac){note("Questo browser non può riprodurre i suoni.");return}
+  const out=ac.createGain();out.connect(ac.destination);
+  const spb=60/d.tempo,tm=[];let t=ac.currentTime+.08;
+  PLAY={tm,out,btn,box,s:key};if(btn){btn.textContent="■ Ferma";btn.classList.add("on")}
+  const mark=(i,on)=>{if(PLAY&&PLAY.box)PLAY.box.querySelectorAll('g.nt[data-i="'+i+'"]').forEach(x=>x.classList.toggle("on",on))};
+  for(const it of d.items){if(it.t!=="note"&&it.t!=="rest")continue;const len=it.dur*spb,ms=(t-ac.currentTime)*1000;
+    if(it.t==="note")tone(ac,out,440*Math.pow(2,(mMidi(it)-69)/12),t,len*.95,.28);
+    tm.push(setTimeout(()=>mark(it.i,true),ms),setTimeout(()=>mark(it.i,false),ms+len*940));t+=len}
+  tm.push(setTimeout(stopPlay,(t-ac.currentTime)*1000+150))}
+function stopPlay(){
+  if(!PLAY)return;const p=PLAY;PLAY=null;p.tm.forEach(clearTimeout);
+  try{p.out.gain.setValueAtTime(0,AC.currentTime);setTimeout(()=>{try{p.out.disconnect()}catch(e){}},60)}catch(e){}
+  if(p.btn){p.btn.textContent="▶ Ascolta";p.btn.classList.remove("on")}
+  if(p.box)p.box.querySelectorAll("g.nt.on").forEach(x=>x.classList.remove("on"))}
+function relinkPlay(){if(!PLAY||PLAY.s===undefined||PLAY.s===-1)return;const b=$("m").querySelector('.mus[data-s="'+PLAY.s+'"]');if(!b)return;PLAY.box=b;const bt=b.querySelector(".mplay");if(bt){bt.textContent="■ Ferma";bt.classList.add("on");PLAY.btn=bt}}
+
+/* ---------- foglio ---------- */
+function render(){
+  const m=$("m"),ta=$("ta"),all=ta.value,cw=m.clientWidth;if(cw>50)SHW=cw;
+  m.innerHTML="";ITEMS=[];sv("caa_t",all);sv("caa_pm",PM);
+  let cur=null,k=0,M=[],ls=0;
+  const flush=()=>{if(M.length){match(M,cur||m);M=[]}};
+  const head=(txt,off)=>{const b=el("section","q"),hd=el("div","qh"),n=el("span","n");n.textContent=++k;hd.append(n,build(txt,off));b.append(hd);m.append(b);cur=b;return b};
+  for(const raw of all.split("\n")){
+    const L0=ls;ls+=raw.length+1;
+    const line=raw.trim();if(!line)continue;let mm;
+    const at=(s,from=0)=>{const i=raw.indexOf(s,from);return i<0?-1:L0+i};
+    if(!/^~/.test(line))flush();
+    if(line==="---"){m.append(el("div","pb"));cur=null}
+    else if(mm=line.match(/^M:\s*(.+)/i)){(cur||m).append(math(mm[1]))}
+    else if(mm=line.match(/^N(\?)?:\s*(.*)$/i)||line.match(/^♪(\?)?:?\s*(.*)$/)){(cur||m).append(music(mm[2],!!mm[1],L0,L0+raw.length))}
+    else if(mm=line.match(/^#\s*(.+)/)){const h=el("h3");h.textContent=mm[1];m.append(h);cur=null}
+    else if(mm=line.match(/^V\/F:\s*(.+)/i)){const b=head(mm[1],at(mm[1]));
+      [["✅","VERO"],["❌","FALSO"]].forEach(x=>{const w=el("div","p"),c=el("div","c"),e=el("div","e"),t=el("div","t");e.textContent=x[0];t.textContent=x[1];c.append(e,t);w.append(c);opt(b,"",w)})}
+    else if(mm=line.match(/^\?\?\s*(.+)/)){const b=head(mm[1],at(mm[1]));for(let i=0;i<3;i++)b.append(el("div","ln"))}
+    else if(mm=line.match(/^\d+[.)]\s*(.+)/)){head(mm[1],at(mm[1]))}
+    else if(mm=line.match(/^([A-D])\.\s+(.+)/)){opt(cur||m,mm[1],build(mm[2],at(mm[2])))}
+    else if(mm=line.match(/^~\s*(.+?)\s*=\s*(.+)/)){M.push([mm[1],mm[2],at(mm[1]),at(mm[2],raw.indexOf("=")+1)])}
+    else if(mm=line.match(/^Parole:\s*(.+)/i)){const bk=el("div","bank");bk.append(build(mm[1].replace(/,/g," "),at(mm[1])));m.append(bk);cur=null}
+    else if(mm=line.match(/^>\s*(.+)/)){const w=el("div","sq"),k2=el("span","k");k2.style.marginLeft="0";w.append(k2,build(mm[1],at(mm[1])));m.append(w)}
+    else{cur=null;m.append(build(line,at(line)))}
+  }
+  flush();hl();fitLabels(m);relinkPlay();
+}
+/* le parole troppo lunghe si rimpiccioliscono per restare nel riquadro */
+function fitLabels(root){
+  const ts=[...root.querySelectorAll(".c .t")];if(!ts.length)return;ts.forEach(t=>t.style.fontSize="");
+  const cs=getComputedStyle(ts[0].parentElement),pad=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight)+2;
+  const ms=ts.map(t=>[t,t.scrollWidth,t.parentElement.clientWidth-pad]);
+  ms.forEach(([t,sw,cw])=>{if(cw>10&&sw>cw+1){const f=parseFloat(getComputedStyle(t).fontSize);t.style.fontSize=Math.max(f*.6,f*cw/sw*.97).toFixed(1)+"px"}})}
+
+/* ---------- clic sui riquadri, evidenziazione nel testo ---------- */
+let PIN=null,LASTP="mouse",LASTC={id:"",t:0},ANCH=null;
+document.addEventListener("pointerdown",e=>{LASTP=e.pointerType||"mouse"},true);
+function drawMark(){
+  const ta=$("ta"),b=$("tab"),t=ta.value;
+  if(PIN&&PIN.s>=0&&PIN.e<=t.length&&PIN.e>PIN.s){b.innerHTML=esc(t.slice(0,PIN.s))+"<mark>"+esc(t.slice(PIN.s,PIN.e))+"</mark>"+esc(t.slice(PIN.e))+"\n";syncTa()}else b.textContent=""}
+function syncTa(){const ta=$("ta"),b=$("tab");if(!b.firstChild)return;const cs=getComputedStyle(ta),sb=ta.offsetWidth-ta.clientWidth-parseFloat(cs.borderLeftWidth)-parseFloat(cs.borderRightWidth);b.style.paddingRight=(parseFloat(cs.paddingRight)+Math.max(0,sb))+"px";b.scrollTop=ta.scrollTop}
+function scrollToMark(){const ta=$("ta"),mk=$("tab").querySelector("mark");if(!mk)return;const y=mk.offsetTop,h=ta.clientHeight;if(y<ta.scrollTop+6||y>ta.scrollTop+h-28)ta.scrollTop=Math.max(0,y-h/3);$("tab").scrollTop=ta.scrollTop}
+function selRange(s,e,focus){
+  if(!(s>=0))return;const ta=$("ta");PIN={s,e};drawMark();scrollToMark();
+  if(focus){ta.focus({preventScroll:true});ta.setSelectionRange(s,e)}
+  hl()}
+const jump=(it,focus)=>{if(it&&it.s>=0)selRange(it.s,it.e,focus)};
+function boxClick(ev,it){
+  ev.stopPropagation();const id=it.s+":"+it.e+":"+it.key,now=Date.now();
+  if(LASTC.id===id&&now-LASTC.t<450){LASTC={id:"",t:0};ed(it);return}
+  LASTC={id,t:now};
+  if(ev.shiftKey&&ANCH&&ANCH.s>=0&&it.s>=0){const a=Math.min(ANCH.s,it.s),b=Math.max(ANCH.e,it.e);if(!$("ta").value.slice(a,b).includes("\n")){selRange(a,b,LASTP!=="touch");return}}
+  ANCH=it;jump(it,LASTP!=="touch")}
+function musClick(ev,s,e){const id="mus:"+s,now=Date.now();if(LASTC.id===id&&now-LASTC.t<450){LASTC={id:"",t:0};openME({s,e});return}LASTC={id,t:now};selRange(s,e,LASTP!=="touch")}
+function hl(){
+  const ta=$("ta");let a,b;
+  document.querySelectorAll("#m .hl").forEach(x=>x.classList.remove("hl"));
+  if(document.activeElement===ta){a=ta.selectionStart;b=ta.selectionEnd}else if(PIN){a=PIN.s;b=PIN.e}else return;
+  let first=null;
+  document.querySelectorAll("#m [data-s]").forEach(x=>{const st=+x.dataset.s,en=+x.dataset.e;if(a===b?(st<=a&&a<=en):(st<b&&en>a)){x.classList.add("hl");first=first||x}});
+  if(first&&document.activeElement===ta&&!PIN)first.scrollIntoView({block:"nearest",behavior:"smooth"})}
+
+/* ---------- emoji ---------- */
+const nz=x=>x.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const EMO="😊 faccina con occhi sorridenti smiling face with smiling eyes sorriso felice contento|😃 faccina con un gran sorriso e occhi spalancati grinning face with big eyes allegro gioia|😂 faccina con lacrime di gioia face with tears of joy ridere risata|😢 faccina che piange crying face triste piangere|😭 faccina disperata loudly crying face pianto lacrime|😡 faccina accigliata enraged face arrabbiato rabbia|😟 faccina preoccupata worried face preoccupato ansia|😨 faccina impaurita fearful face paura spavento|😴 faccina che dorme sleeping face dormire sonno|🥱 faccina che sbadiglia yawning face annoiato noia sbadiglio|😮 faccina con bocca aperta face with open mouth sorpreso meraviglia|🤔 faccina concentrata thinking face pensare dubbio|😍 faccina con sorriso e occhi a cuore smiling face with heart-eyes amore innamorato|😷 faccina con mascherina face with medical mask malato mascherina|🤒 faccina con termometro face with thermometer febbre malato|😌 faccina sollevata relieved face tranquillo sereno calmo|😳 faccina imbarazzata flushed face vergogna imbarazzo|🤗 faccina che abbraccia smiling face with open hands abbraccio|😐 faccina neutra neutral face serio neutro|😉 faccina che fa l’occhiolino winking face occhiolino|🤫 faccina che zittisce shushing face silenzio zitto|🤯 testa che esplode exploding head confuso|👨‍👩‍👧 famiglia: uomo, donna e bambina family: man, woman, girl famiglia|👀 occhi eyes occhi guardare|👄 bocca mouth bocca|🗣️ persona che parla speaking head parlare dire|🧠 cervello brain cervello pensiero|❤️ cuore rosso red heart cuore amore|🏫 scuola school scuola|📚 libri books libri|📖 libro aperto open book libro leggere|📓 quaderno notebook quaderno compiti|📝 memo memo scrivere esercizio|✏️ matita pencil matita|🖍️ pastello a cera crayon pastello colorare|✂️ forbici scissors forbici tagliare|🎒 zaino backpack zaino|🪑 sedia chair sedia banco|📋 portablocco clipboard regole elenco|📄 pagina page facing up foglio|📅 calendario calendar calendario giorno|⏰ sveglia alarm clock sveglia ora|🕐 ore una one o’clock orologio|🔔 campana bell campanella|🧮 abaco abacus calcolo|🔬 microscopio microscope scienze|🌍 Europa e Africa globe showing Europe-Africa mondo geografia|🎨 tavolozza artist palette arte colori|🎵 nota musicale musical note musica|⚽ pallone da calcio soccer ball sport palla calcio|💻 computer portatile laptop computer|📏 righello straight ruler righello misura|✅ pulsante segno di spunta check mark button giusto sì vero|❌ croce cross mark sbagliato no falso|❓ punto interrogativo rosso red question mark domanda|❗ punto esclamativo rosso red exclamation mark attenzione|💡 lampadina light bulb idea capire|💭 nuvoletta thought balloon pensare|🔍 lente di ingrandimento rivolta a sinistra magnifying glass tilted left cercare ricerca|➡️ freccia rivolta verso destra right arrow avanti poi|⬅️ freccia rivolta a sinistra left arrow indietro prima|⬆️ freccia rivolta verso l’alto up arrow su alto|⬇️ freccia rivolta verso il basso down arrow giù basso|🔁 pulsante di ripetizione della riproduzione repeat button ripetere|⏳ clessidra che scorre hourglass not done tempo attendere|🔥 fuoco fire caldo fuoco|❄️ fiocco di neve snowflake freddo neve|🔄 frecce che ruotano in senso antiorario counterclockwise arrows button scambiare cambiare|📥 posta ricevuta inbox tray ricevere|📤 posta inviata outbox tray dare inviare|🔑 chiave key chiave|🚪 porta door porta|🔒 lucchetto chiuso locked chiuso|🔓 lucchetto aperto unlocked aperto|🍎 mela rossa red apple mela frutta|🍌 banana banana banana|🍞 pane in cassetta bread pane|🥛 bicchiere di latte glass of milk latte|💧 goccia droplet acqua|🍕 pizza pizza pizza|🍝 spaghetti spaghetti pasta|🍰 fetta di torta shortcake torta dolce|🥗 insalata verde green salad insalata|🍽️ piatto e posate fork and knife with plate mangiare pranzo|☕ bevanda calda hot beverage caffè|🍬 caramella candy caramella|🏠 casa house casa|🛏️ letto bed letto|🚿 doccia shower doccia|🚽 toilette toilet bagno toilette|🏥 ospedale hospital ospedale|🏪 minimarket convenience store negozio|🌳 albero deciduo deciduous tree albero natura|🏖️ spiaggia con ombrellone beach with umbrella spiaggia mare|⛰️ montagna mountain montagna|🚗 auto automobile auto macchina|🚌 bus bus autobus|🚲 bicicletta bicycle bicicletta|🚆 treno train treno|✈️ aeroplano airplane aereo|🐶 muso di cane dog face cane|🐱 muso di gatto cat face gatto|🐦 uccello bird uccello|🐟 pesce fish pesce|🐴 muso di cavallo horse face cavallo|🐄 mucca cow mucca|🐘 elefante elephant elefante|☀️ sole sun sole|🌧️ pioggia cloud with rain pioggia|☁️ nuvola cloud nuvola|🌙 spicchio di luna crescent moon luna notte|⭐ stella star stella|👕 t-shirt t-shirt maglietta|👖 jeans jeans pantaloni|👟 scarpa sportiva running shoe scarpe|🧥 cappotto coat giacca|🧢 cappello con visiera billed cap cappello|😀 faccina con un gran sorriso grinning face|😄 faccina con sorriso e occhi sorridenti grinning face with smiling eyes|😁 faccina raggiante con occhi felici beaming face with smiling eyes|😆 sorriso a bocca aperta con occhi chiusi grinning squinting face|😅 faccina con un gran sorriso e goccia di sudore grinning face with sweat|🤣 ridere a crepapelle rolling on the floor laughing|🙂 faccina con sorriso accennato slightly smiling face|🙃 faccina sottosopra upside-down face|🫠 faccina che si scioglie melting face|😇 faccina con sorriso e aureola smiling face with halo|🥰 faccina con cuoricini smiling face with hearts|🤩 colpo di fulmine star-struck|😘 faccina che manda un bacio face blowing a kiss|😗 faccina che bacia kissing face|☺️ faccina sorridente smiling face|😚 faccina che bacia con occhi chiusi kissing face with closed eyes|😙 faccina che bacia con occhi sorridenti kissing face with smiling eyes|🥲 faccina sorridente con lacrima smiling face with tear|😋 faccina che si lecca i baffi face savoring food|😛 faccina che mostra la lingua face with tongue|😜 faccina che fa l’occhiolino e mostra la lingua winking face with tongue|🤪 faccina impazzita zany face|😝 faccina che strizza gli occhi e mostra la lingua squinting face with tongue|🤑 faccina avida di denaro money-mouth face|🤭 faccina con mano sulla bocca face with hand over mouth|🫢 faccina con occhi aperti e mano sulla bocca face with open eyes and hand over mouth|🫣 faccina che sbircia tra le dita face with peeking eye|🫡 faccina che fa il saluto saluting face|🤐 faccina con bocca con cerniera zipper-mouth face|🤨 faccia con sopracciglia alzate face with raised eyebrow|😑 faccina inespressiva expressionless face|😶 faccina senza bocca face without mouth|🫥 faccina tratteggiata dotted line face|😶‍🌫️ testa tra le nuvole face in clouds|😏 faccina con sorrisetto smirking face|😒 faccina contrariata unamused face|🙄 faccina con occhi al cielo face with rolling eyes|😬 faccina con smorfia grimacing face|😮‍💨 faccina che espira face exhaling|🤥 faccina bugiarda lying face|🫨 faccina tremante shaking face|🙂‍↔️ scuotere la testa in senso orizzontale head shaking horizontally|🙂‍↕️ scuotere la testa in senso verticale head shaking vertically|😔 faccina pensierosa pensive face|😪 faccina assonnata sleepy face|🤤 faccina che sbava drooling face|🫩 faccina con borse sotto gli occhi face with bags under eyes|🤕 faccina con la testa bendata face with head-bandage|🤢 faccina nauseata nauseated face|🤮 faccina che vomita face vomiting|🤧 faccina che starnutisce sneezing face|🥵 faccina accaldata hot face|🥶 faccina congelata cold face|🥴 faccina stordita woozy face|😵 faccina frastornata face with crossed-out eyes|😵‍💫 faccina con occhi a spirale face with spiral eyes|🤠 faccina con cappello da cowboy cowboy hat face|🥳 faccina che festeggia partying face|🥸 faccina travestita disguised face|😎 faccina con sorriso e occhiali da sole smiling face with sunglasses|🤓 faccina nerd nerd face|🧐 faccina con monocolo face with monocle|😕 faccina confusa confused face|🫤 faccina perplessa face with diagonal mouth|🙁 faccina leggermente imbronciata slightly frowning face|☹️ faccina imbronciata frowning face|😯 faccina sorpresa hushed face|😲 faccina stupita astonished face|🥺 faccina supplichevole pleading face|🥹 faccina che trattiene le lacrime face holding back tears|😦 faccina imbronciata con bocca aperta frowning face with open mouth|😧 faccina angosciata anguished face|😰 faccina sudata in ansia anxious face with sweat|😥 faccina delusa ma sollevata sad but relieved face|😱 faccina terrorizzata face screaming in fear|😖 faccina frustrata confounded face|😣 faccina perseverante persevering face|😞 faccina delusa disappointed face|😓 faccina abbattuta sudata downcast face with sweat|😩 faccina esausta weary face|😫 faccina stanca tired face|😤 faccina che sbuffa face with steam from nose|😠 faccina arrabbiata angry face|🤬 faccina con simboli sulla bocca face with symbols on mouth|😈 faccina con sorriso e corna smiling face with horns|👿 faccina arrabbiata con corna angry face with horns|💀 teschio skull|☠️ teschio con ossa incrociate skull and crossbones|💩 cacca pile of poo|🤡 faccina pagliaccio clown face|👹 orco ogre|👺 goblin goblin|👻 fantasma ghost|👽 alieno alien|👾 mostro alieno alien monster|🤖 faccina di robot robot|😺 gatto che sorride grinning cat|😸 gatto che sogghigna grinning cat with smiling eyes|😹 gatto con lacrime di gioia cat with tears of joy|😻 gatto innamorato smiling cat with heart-eyes|😼 gatto con sorriso sarcastico cat with wry smile|😽 gatto che manda baci kissing cat|🙀 gatto esterrefatto weary cat|😿 gatto che piange crying cat|😾 gatto imbronciato pouting cat|🙈 non vedo see-no-evil monkey|🙉 non sento hear-no-evil monkey|🙊 non parlo speak-no-evil monkey|💌 lettera d’amore love letter|💘 cuore con freccia heart with arrow|💝 cuore con fiocco heart with ribbon|💖 cuore che luccica sparkling heart|💗 cuore che cresce growing heart|💓 cuore che batte beating heart|💞 cuori che girano revolving hearts|💕 due cuori two hearts|💟 decorazione con cuore heart decoration|❣️ punto esclamativo a cuore heart exclamation|💔 cuore infranto broken heart|❤️‍🔥 cuore in fiamme heart on fire|❤️‍🩹 cuore guarito mending heart|🩷 cuore rosa pink heart|🧡 cuore arancione orange heart|💛 cuore giallo yellow heart|💚 cuore verde green heart|💙 cuore blu blue heart|🩵 cuore azzurro light blue heart|💜 cuore viola purple heart|🤎 cuore marrone brown heart|🖤 cuore nero black heart|🩶 cuore grigio grey heart|🤍 cuore bianco white heart|💋 impronta della bocca kiss mark|💯 100 punti hundred points|💢 rabbia anger symbol|💥 collisione collision|💫 stella con scia dizzy|💦 gocce di sudore sweat droplets|💨 nuvola di polvere dashing away|🕳️ buco hole|💬 fumetto speech balloon|👁️‍🗨️ occhio nel fumetto eye in speech bubble|🗨️ fumetto a sinistra left speech bubble|🗯️ nuvoletta rabbia right anger bubble|💤 sonno ZZZ|🖐 mano aperta hand with fingers splayed|✌ vittoria victory hand|☝ indice verso l’alto index pointing up|✍ mano che scrive writing hand|🦾 protesi robotica per il braccio mechanical arm|🦿 protesi robotica per la gamba mechanical leg|🫀 organo del cuore anatomical heart|🫁 polmoni lungs|🦷 dente tooth|🦴 osso bone|👁️ occhio eye|👅 lingua tongue|🫦 bocca che morde il labbro biting lip|🕵 detective detective|🧞 genio genie|🧞‍♂️ genio uomo man genie|🧞‍♀️ genio donna woman genie|🧟 zombie zombie|🧟‍♂️ zombie uomo man zombie|🧟‍♀️ zombie donna woman zombie|🧌 troll troll|🕴 uomo con completo che levita person in suit levitating|👯 persone con orecchie da coniglio people with bunny ears|👯‍♂️ uomini con orecchie da coniglio men with bunny ears|👯‍♀️ donne con orecchie da coniglio women with bunny ears|🤺 schermidore person fencing|⛷️ sciatore skier|🏌 persona che gioca a golf person golfing|⛹ persona che fa rimbalzare una palla person bouncing ball|🏋 persona che solleva pesi person lifting weights|🤼 persone che fanno la lotta people wrestling|🤼‍♂️ lottatori men wrestling|🤼‍♀️ lottatrici women wrestling|👨‍👩‍👦 famiglia: uomo, donna e bambino family: man, woman, boy|👨‍👩‍👧‍👦 famiglia: uomo, donna, bambina e bambino family: man, woman, girl, boy|👨‍👩‍👦‍👦 famiglia: uomo, donna, bambino e bambino family: man, woman, boy, boy|👨‍👩‍👧‍👧 famiglia: uomo, donna, bambina e bambina family: man, woman, girl, girl|👨‍👨‍👦 famiglia: uomo, uomo e bambino family: man, man, boy|👨‍👨‍👧 famiglia: uomo, uomo e bambina family: man, man, girl|👨‍👨‍👧‍👦 famiglia: uomo, uomo, bambina e bambino family: man, man, girl, boy|👨‍👨‍👦‍👦 famiglia: uomo, uomo, bambino e bambino family: man, man, boy, boy|👨‍👨‍👧‍👧 famiglia: uomo, uomo, bambina e bambina family: man, man, girl, girl|👩‍👩‍👦 famiglia: donna, donna e bambino family: woman, woman, boy|👩‍👩‍👧 famiglia: donna, donna e bambina family: woman, woman, girl|👩‍👩‍👧‍👦 famiglia: donna, donna, bambina e bambino family: woman, woman, girl, boy|👩‍👩‍👦‍👦 famiglia: donna, donna, bambino e bambino family: woman, woman, boy, boy|👩‍👩‍👧‍👧 famiglia: donna, donna, bambina e bambina family: woman, woman, girl, girl|👨‍👦 famiglia: uomo e bambino family: man, boy|👨‍👦‍👦 famiglia: uomo, bambino e bambino family: man, boy, boy|👨‍👧 famiglia: uomo e bambina family: man, girl|👨‍👧‍👦 famiglia: uomo, bambina e bambino family: man, girl, boy|👨‍👧‍👧 famiglia: uomo, bambina e bambina family: man, girl, girl|👩‍👦 famiglia: donna e bambino family: woman, boy|👩‍👦‍👦 famiglia: donna, bambino e bambino family: woman, boy, boy|👩‍👧 famiglia: donna e bambina family: woman, girl|👩‍👧‍👦 famiglia: donna, bambina e bambino family: woman, girl, boy|👩‍👧‍👧 famiglia: donna, bambina e bambina family: woman, girl, girl|👤 profilo di persona bust in silhouette|👥 profilo di due persone busts in silhouette|🫂 persone che si abbracciano people hugging|👪 famiglia family|🧑‍🧑‍🧒 famiglia: persona adulta, persona adulta, minore family: adult, adult, child|🧑‍🧑‍🧒‍🧒 famiglia: persona adulta, persona adulta, minore, minore family: adult, adult, child, child|🧑‍🧒 famiglia: persona adulta, minore family: adult, child|🧑‍🧒‍🧒 famiglia: persona adulta, minore, minore family: adult, child, child|👣 impronta di piedi footprints|🫆 impronta digitale fingerprint|🦰 capelli rossi red hair|🦱 capelli ricci curly hair|🦳 capelli bianchi white hair|🦲 calvo bald|🐵 muso di scimmia monkey face|🐒 scimmia monkey|🦍 gorilla gorilla|🦧 orangotango orangutan|🐕 cane dog|🦮 cane guida guide dog|🐕‍🦺 cane da assistenza service dog|🐩 barboncino poodle|🐺 lupo wolf|🦊 volpe fox|🦝 procione raccoon|🐈 gatto cat|🐈‍⬛ gatto nero black cat|🦁 leone lion|🐯 muso di tigre tiger face|🐅 tigre tiger|🐆 leopardo leopard|🫎 alce moose|🫏 asino donkey|🐎 cavallo horse|🦄 unicorno unicorn|🦓 zebra zebra|🦌 cervo deer|🦬 bisonte bison|🐮 muso di mucca cow face|🐂 bue ox|🐃 bufalo d’acqua water buffalo|🐷 muso di maiale pig face|🐖 maiale pig|🐗 cinghiale boar|🐽 naso da maiale pig nose|🐏 montone ram|🐑 pecora ewe|🐐 capra goat|🐪 dromedario camel|🐫 cammello two-hump camel|🦙 lama llama|🦒 giraffa giraffe|🦣 mammut mammoth|🦏 rinoceronte rhinoceros|🦛 ippopotamo hippopotamus|🐭 muso di topo mouse face|🐁 topo mouse|🐀 ratto rat|🐹 criceto hamster|🐰 muso di coniglio rabbit face|🐇 coniglio rabbit|🐿️ scoiattolo chipmunk|🦫 castoro beaver|🦔 riccio hedgehog|🦇 pipistrello bat|🐻 orso bear|🐻‍❄️ orso polare polar bear|🐨 koala koala|🐼 panda panda|🦥 bradipo sloth|🦦 lontra otter|🦨 puzzola skunk|🦘 canguro kangaroo|🦡 tasso badger|🐾 impronte di zampe paw prints|🦃 tacchino turkey|🐔 gallina chicken|🐓 gallo rooster|🐣 pulcino che nasce hatching chick|🐤 pulcino baby chick|🐥 pulcino visto di fronte front-facing baby chick|🐧 pinguino penguin|🕊️ colomba dove|🦅 aquila eagle|🦆 anatra duck|🦢 cigno swan|🦉 gufo owl|🦤 dodo dodo|🪶 piuma feather|🦩 fenicottero flamingo|🦚 pavone peacock|🦜 pappagallo parrot|🪽 ala wing|🐦‍⬛ merlo black bird|🪿 oca goose|🐦‍🔥 fenice phoenix|🐸 rana frog|🐊 coccodrillo crocodile|🐢 tartaruga turtle|🦎 lucertola lizard|🐍 serpente snake|🐲 testa di drago dragon face|🐉 drago dragon|🦕 sauropode sauropod|🦖 T-Rex T-Rex|🐳 balena che spruzza acqua spouting whale|🐋 balena whale|🐬 delfino dolphin|🦭 foca seal|🐠 pesce tropicale tropical fish|🐡 pesce palla blowfish|🦈 squalo shark|🐙 polpo octopus|🐚 conchiglia spiral shell|🪸 corallo coral|🪼 medusa jellyfish|🦀 granchio crab|🦞 aragosta lobster|🦐 gamberetto shrimp|🦑 calamaro squid|🦪 ostrica oyster|🐌 lumaca snail|🦋 farfalla butterfly|🐛 insetto bug|🐜 formica ant|🐝 ape honeybee|🪲 coleottero beetle|🐞 coccinella lady beetle|🦗 grillo cricket|🪳 scarafaggio cockroach|🕷️ ragno spider|🕸️ ragnatela spider web|🦂 scorpione scorpion|🦟 zanzara mosquito|🪰 mosca fly|🪱 verme worm|🦠 microbo microbe|💐 mazzo di fiori bouquet|🌸 fiore di ciliegio cherry blossom|💮 fiore bianco white flower|🪷 loto lotus|🏵️ rosetta rosette|🌹 rosa rose|🥀 fiore appassito wilted flower|🌺 ibisco hibiscus|🌻 girasole sunflower|🌼 fiore blossom|🌷 tulipano tulip|🪻 giacinto hyacinth|🌱 germoglio seedling|🪴 pianta in vaso potted plant|🌲 albero sempreverde evergreen tree|🌴 palma palm tree|🌵 cactus cactus|🌾 pianta di riso sheaf of rice|🌿 pianta herb|☘️ trifoglio shamrock|🍀 quadrifoglio four leaf clover|🍁 foglia d’acero maple leaf|🍂 foglia caduta fallen leaf|🍃 foglia al vento leaf fluttering in wind|🪹 nido vuoto empty nest|🪺 nido con uova nest with eggs|🍄 fungo mushroom|🪾 albero spoglio leafless tree|🍇 uva grapes|🍈 melone melon|🍉 anguria watermelon|🍊 mandarino tangerine|🍋 limone lemon|🍋‍🟩 lime lime|🍍 ananas pineapple|🥭 mango mango|🍏 mela verde green apple|🍐 pera pear|🍑 pesca peach|🍒 ciliegie cherries|🍓 fragola strawberry|🫐 mirtilli blueberries|🥝 kiwi kiwi fruit|🍅 pomodoro tomato|🫒 oliva olive|🥥 cocco coconut|🥑 avocado avocado|🍆 melanzana eggplant|🥔 patata potato|🥕 carota carrot|🌽 pannocchia ear of corn|🌶️ peperoncino hot pepper|🫑 peperone bell pepper|🥒 cetriolo cucumber|🥬 verdure a foglia leafy green|🥦 broccoli broccoli|🧄 aglio garlic|🧅 cipolla onion|🥜 arachidi peanuts|🫘 fagioli beans|🌰 castagna chestnut|🫚 radice di zenzero ginger root|🫛 baccello di piselli pea pod|🍄‍🟫 fungo marrone brown mushroom|🫜 ortaggio da radice root vegetable|🥐 croissant croissant|🥖 baguette baguette bread|🫓 focaccia flatbread|🥨 pretzel pretzel|🥯 bagel bagel|🥞 pancake pancakes|🧇 waffle waffle|🧀 fetta di formaggio cheese wedge|🍖 carne meat on bone|🍗 coscia di pollo poultry leg|🥩 taglio di carne cut of meat|🥓 pancetta bacon|🍔 hamburger hamburger|🍟 patatine french fries|🌭 hot dog hot dog|🥪 sandwich sandwich|🌮 taco taco|🌯 burrito burrito|🫔 tamale tamale|🥙 pita farcita stuffed flatbread|🧆 falafel falafel|🥚 uovo egg|🍳 cucinare cooking|🥘 padella con cibo shallow pan of food|🍲 pentola di cibo pot of food|🫕 fonduta fondue|🥣 ciotola con cucchiaio bowl with spoon|🍿 popcorn popcorn|🧈 burro butter|🧂 sale salt|🥫 cibo in scatola canned food|🍱 bento box bento box|🍘 galletta di riso rice cracker|🍙 onigiri rice ball|🍚 riso bollito cooked rice|🍛 riso al curry curry rice|🍜 ciotola fumante steaming bowl|🍠 patata dolce arrosto roasted sweet potato|🍢 oden giapponese oden|🍣 sushi sushi|🍤 gambero fritto fried shrimp|🍥 tortino di pesce a spirale fish cake with swirl|🥮 torta della luna moon cake|🍡 dango dango|🥟 raviolo dumpling|🥠 biscotto della fortuna fortune cookie|🥡 confezione da asporto takeout box|🍦 cono gelato soft ice cream|🍧 granita shaved ice|🍨 coppa di gelato ice cream|🍩 ciambella doughnut|🍪 biscotto cookie|🎂 torta di compleanno birthday cake|🧁 cupcake cupcake|🥧 torta pie|🍫 cioccolato chocolate bar|🍭 lecca lecca lollipop|🍮 budino custard|🍯 barattolo di miele honey pot|🍼 biberon baby bottle|🫖 teiera teapot|🍵 tazza da tè senza manico teacup without handle|🍶 sakè sake|🍾 bottiglia stappata bottle with popping cork|🍷 bicchiere di vino wine glass|🍸 cocktail cocktail glass|🍹 cocktail tropicale tropical drink|🍺 boccale di birra beer mug|🍻 boccali di birra clinking beer mugs|🥂 brindisi clinking glasses|🥃 bicchiere tumbler tumbler glass|🫗 liquido versato pouring liquid|🥤 bicchiere con cannuccia cup with straw|🧋 bubble tea bubble tea|🧃 bevanda monodose beverage box|🧉 mate mate|🧊 cubetto di ghiaccio ice|🥢 bacchette chopsticks|🍴 forchetta e coltello fork and knife|🥄 cucchiaio spoon|🔪 coltello da cucina kitchen knife|🫙 barattolo jar|🏺 anfora amphora|🌎 America globe showing Americas|🌏 Asia e Australia globe showing Asia-Australia|🌐 globo con meridiani globe with meridians|🗺️ mappa mondiale world map|🗾 mappa del Giappone map of Japan|🧭 bussola compass|🏔️ montagna innevata snow-capped mountain|🌋 vulcano volcano|🗻 Monte Fuji mount fuji|🏕️ campeggio camping|🏜️ deserto desert|🏝️ isola deserta desert island|🏞️ parco nazionale national park|🏟️ stadio stadium|🏛️ edificio classico classical building|🏗️ edificio in costruzione building construction|🧱 mattoni brick|🪨 roccia rock|🪵 legna wood|🛖 capanna hut|🏘️ case houses|🏚️ casa in rovina derelict house|🏡 casa con giardino house with garden|🏢 edificio office building|🏣 ufficio postale giapponese Japanese post office|🏤 ufficio postale post office|🏦 banca bank|🏨 hotel hotel|🏩 love hotel love hotel|🏬 grande magazzino department store|🏭 fabbrica factory|🏯 castello giapponese Japanese castle|🏰 castello castle|💒 chiesa per matrimonio wedding|🗼 Torre di Tokyo Tokyo tower|🗽 Statua della Libertà Statue of Liberty|⛪ chiesa church|🕌 moschea mosque|🛕 tempio indù hindu temple|🕍 sinagoga synagogue|⛩️ santuario shintoista shinto shrine|🕋 Kaaba kaaba|⛲ fontana fountain|⛺ tenda tent|🌁 nebbioso foggy|🌃 notte stellata night with stars|🏙️ paesaggio urbano cityscape|🌄 alba sulle montagne sunrise over mountains|🌅 alba sunrise|🌆 città al tramonto cityscape at dusk|🌇 tramonto sunset|🌉 ponte di notte bridge at night|♨️ sorgenti termali hot springs|🎠 cavallo da giostra carousel horse|🛝 scivolo playground slide|🎡 ruota panoramica ferris wheel|🎢 montagne russe roller coaster|💈 barbiere barber pole|🎪 circo circus tent|🚂 locomotiva locomotive|🚃 vagone railway car|🚄 treno alta velocità high-speed train|🚅 treno alta velocità punta arrotondata bullet train|🚇 metropolitana metro|🚈 metrotranvia light rail|🚉 stazione station|🚊 tram tram|🚝 monorotaia monorail|🚞 ferrovia di montagna mountain railway|🚋 vagone del tram tram car|🚍 bus in arrivo oncoming bus|🚎 filobus trolleybus|🚐 pulmino minibus|🚑 ambulanza ambulance|🚒 camion dei pompieri fire engine|🚓 macchina della polizia police car|🚔 macchina della polizia in arrivo oncoming police car|🚕 taxi taxi|🚖 taxi in arrivo oncoming taxi|🚘 auto in arrivo oncoming automobile|🚙 SUV sport utility vehicle|🛻 pickup pickup truck|🚚 camion delivery truck|🚛 autoarticolato articulated lorry|🚜 trattore tractor|🏎️ auto da corsa racing car|🏍️ motocicletta motorcycle|🛵 scooter motor scooter|🦽 sedia a rotelle manuale manual wheelchair|🦼 sedia a rotelle motorizzata motorized wheelchair|🛺 risciò a motore auto rickshaw|🛴 monopattino kick scooter|🛹 skateboard skateboard|🛼 pattini a rotelle roller skate|🚏 fermata dell’autobus bus stop|🛣️ autostrada motorway|🛤️ binari railway track|🛢️ barile di petrolio oil drum|⛽ stazione di servizio fuel pump|🛞 ruota wheel|🚨 lampeggiante police car light|🚥 semaforo orizzontale horizontal traffic light|🚦 semaforo verticale vertical traffic light|🛑 segnale di stop stop sign|🚧 area cantiere construction|⚓ ancora anchor|🛟 salvagente ring buoy|⛵ barca a vela sailboat|🛶 canoa canoe|🚤 motoscafo speedboat|🛳️ nave da crociera passenger ship|⛴️ traghetto ferry|🛥️ barca a motore motor boat|🚢 nave ship|🛩️ aereo turistico small airplane|🛫 decollo airplane departure|🛬 atterraggio airplane arrival|🪂 paracadute parachute|💺 sedile seat|🚁 elicottero helicopter|🚟 ferrovia sospesa suspension railway|🚠 funivia mountain cableway|🚡 funivia aerea aerial tramway|🛰️ satellite satellite|🚀 razzo rocket|🛸 disco volante flying saucer|🛎️ campanello da hotel bellhop bell|🧳 valigia luggage|⌛ clessidra hourglass done|⌚ orologio watch|⏱️ cronometro stopwatch|⏲️ timer timer clock|🕰️ orologio da mensola mantelpiece clock|🕛 ore dodici twelve o’clock|🕧 ore dodici e mezza twelve-thirty|🕜 ore una e mezza one-thirty|🕑 ore due two o’clock|🕝 ore due e mezza two-thirty|🕒 ore tre three o’clock|🕞 ore tre e mezza three-thirty|🕓 ore quattro four o’clock|🕟 ore quattro e mezza four-thirty|🕔 ore cinque five o’clock|🕠 ore cinque e mezza five-thirty|🕕 ore sei six o’clock|🕡 ore sei e mezza six-thirty|🕖 ore sette seven o’clock|🕢 ore sette e mezza seven-thirty|🕗 ore otto eight o’clock|🕣 ore otto e mezza eight-thirty|🕘 ore nove nine o’clock|🕤 ore nove e mezza nine-thirty|🕙 ore dieci ten o’clock|🕥 ore dieci e mezza ten-thirty|🕚 ore undici eleven o’clock|🕦 ore undici e mezza eleven-thirty|🌑 luna nuova new moon|🌒 luna crescente waxing crescent moon|🌓 primo quarto di luna first quarter moon|🌔 luna gibbosa crescente waxing gibbous moon|🌕 luna piena full moon|🌖 luna gibbosa calante waning gibbous moon|🌗 ultimo quarto di luna last quarter moon|🌘 luna calante waning crescent moon|🌚 faccina luna nuova new moon face|🌛 faccina primo quarto di luna first quarter moon face|🌜 faccina ultimo quarto di luna last quarter moon face|🌡️ termometro thermometer|🌝 faccina luna piena full moon face|🌞 faccina sole sun with face|🪐 pianeta con satellite ringed planet|🌟 stella che brilla glowing star|🌠 stella cadente shooting star|🌌 Via Lattea milky way|⛅ sole coperto sun behind cloud|⛈️ temporale cloud with lightning and rain|🌤️ parzialmente nuvoloso sun behind small cloud|🌥️ molto nuvoloso sun behind large cloud|🌦️ sole coperto e pioggia sun behind rain cloud|🌨️ neve cloud with snow|🌩️ fulmini cloud with lightning|🌪️ tornado tornado|🌫️ nebbia fog|🌬️ vento wind face|🌀 ciclone cyclone|🌈 arcobaleno rainbow|🌂 ombrello chiuso closed umbrella|☂️ ombrello umbrella|☔ ombrello con gocce di pioggia umbrella with rain drops|⛱️ ombrellone umbrella on ground|⚡ alta tensione high voltage|☃️ pupazzo di neve snowman|⛄ pupazzo di neve senza neve snowman without snow|☄️ cometa comet|🌊 onda water wave|🎃 zucca di Halloween jack-o-lantern|🎄 albero di Natale Christmas tree|🎆 fuochi d’artificio fireworks|🎇 stellina scintillante sparkler|🧨 petardo firecracker|✨ stelline sparkles|🎈 palloncino balloon|🎉 spara coriandoli party popper|🎊 coriandoli confetti ball|🎋 albero di Tanabata tanabata tree|🎍 bambù decorato pine decoration|🎎 bambole giapponesi Japanese dolls|🎏 aquilone a forma di carpa carp streamer|🎐 campana al vento wind chime|🎑 contemplazione della luna moon viewing ceremony|🧧 busta hongbao red envelope|🎀 fiocco ribbon|🎁 regalo wrapped gift|🎗️ nastro reminder ribbon|🎟️ biglietto d’ingresso admission tickets|🎫 biglietto ticket|🎖️ medaglia militare military medal|🏆 coppa trophy|🏅 medaglia sportiva sports medal|🥇 medaglia d’oro 1st place medal|🥈 medaglia d’argento 2nd place medal|🥉 medaglia di bronzo 3rd place medal|⚾ palla da baseball baseball|🥎 palla da softball softball|🏀 palla da pallacanestro basketball|🏐 palla da pallavolo volleyball|🏈 football americano american football|🏉 pallone da rugby rugby football|🎾 tennis tennis|🥏 frisbee flying disc|🎳 bowling bowling|🏏 cricket cricket game|🏑 hockey su prato field hockey|🏒 hockey su ghiaccio ice hockey|🥍 lacrosse lacrosse|🏓 ping pong ping pong|🏸 badminton badminton|🥊 guantone da pugilato boxing glove|🥋 kimono per arti marziali martial arts uniform|🥅 porta da calcio goal net|⛳ bandiera in buca flag in hole|⛸️ pattinaggio su ghiaccio ice skate|🎣 canna da pesca fishing pole|🤿 maschera da sub diving mask|🎽 maglia da corsa running shirt|🎿 sci skis|🛷 slitta sled|🥌 stone da curling curling stone|🎯 bersaglio bullseye|🪀 yo-yo yo-yo|🪁 aquilone kite|🔫 pistola ad acqua water pistol|🎱 palla da biliardo pool 8 ball|🔮 sfera di cristallo crystal ball|🪄 bacchetta magica magic wand|🎮 gamepad video game|🕹️ joystick joystick|🎰 slot machine slot machine|🎲 dado game die|🧩 pezzo di puzzle puzzle piece|🧸 orsetto teddy bear|🪅 pentolaccia piñata|🪩 palla da discoteca mirror ball|🪆 matrioska nesting dolls|♠️ picche spade suit|♥️ cuori heart suit|♦️ quadri diamond suit|♣️ fiori club suit|♟️ pedina degli scacchi chess pawn|🃏 jolly joker|🀄 tessera Mahjong mahjong red dragon|🎴 carta da gioco Hanafuda flower playing cards|🎭 maschere performing arts|🖼️ quadro incorniciato framed picture|🧵 filo thread|🪡 ago da cucito sewing needle|🧶 gomitolo yarn|🪢 nodo knot|👓 occhiali da vista glasses|🕶️ occhiali da sole sunglasses|🥽 maschera goggles|🥼 camice lab coat|🦺 gilet di sicurezza safety vest|👔 cravatta necktie|🧣 sciarpa scarf|🧤 guanti gloves|🧦 calzini socks|👗 vestito dress|👘 kimono kimono|🥻 sari sari|🩱 costume da bagno intero one-piece swimsuit|🩲 slip briefs|🩳 pantaloncini shorts|👙 bikini bikini|👚 maglietta da donna woman’s clothes|🪭 ventaglio folding hand fan|👛 borsellino purse|👜 borsa handbag|👝 pochette clutch bag|🛍️ borse della spesa shopping bags|🩴 infradito thong sandal|👞 scarpa da uomo man’s shoe|🥾 stivale da trekking hiking boot|🥿 ballerina flat shoe|👠 scarpa con il tacco high-heeled shoe|👡 sandalo da donna woman’s sandal|🩰 scarpette da ballerina ballet shoes|👢 stivale da donna woman’s boot|🪮 pettine afro hair pick|👑 corona crown|👒 cappello da donna woman’s hat|🎩 cilindro top hat|🎓 cappello da laureato graduation cap|🪖 elmetto militare military helmet|⛑️ elmetto con croce bianca rescue worker’s helmet|📿 collana da preghiera prayer beads|💄 rossetto lipstick|💍 anello ring|💎 gemma gem stone|🔇 altoparlante disattivato muted speaker|🔈 altoparlante a volume basso speaker low volume|🔉 altoparlante a volume intermedio speaker medium volume|🔊 altoparlante a volume alto speaker high volume|📢 altoparlante loudspeaker|📣 megafono megaphone|📯 corno postale postal horn|🔕 campana sbarrata bell with slash|🎼 pentagramma musical score|🎶 note musicali musical notes|🎙️ microfono radiofonico studio microphone|🎚️ cursore del volume level slider|🎛️ manopole di controllo control knobs|🎤 microfono microphone|🎧 cuffie headphone|📻 radio radio|🎷 sassofono saxophone|🪗 fisarmonica accordion|🎸 chitarra guitar|🎹 piano musical keyboard|🎺 tromba trumpet|🎻 violino violin|🪕 banjo banjo|🥁 tamburo drum|🪘 tamburo lungo long drum|🪇 maracas maracas|🪈 flauto flute|🪉 arpa harp|📱 telefono cellulare mobile phone|📲 telefono cellulare con freccia mobile phone with arrow|☎️ telefono fisso telephone|📞 cornetta telephone receiver|📟 cercapersone pager|📠 fax fax machine|🔋 batteria battery|🪫 batteria scarica low battery|🔌 spina elettrica electric plug|🖥️ computer fisso desktop computer|🖨️ stampante printer|⌨️ tastiera keyboard|🖱️ mouse computer mouse|🖲️ trackball trackball|💽 minidisc computer disk|💾 floppy disc floppy disk|💿 disco ottico optical disk|📀 DVD dvd|🎥 cinepresa movie camera|🎞️ pellicola cinematografica film frames|📽️ proiettore cinematografico film projector|🎬 ciak clapper board|📺 televisore television|📷 fotocamera camera|📸 fotocamera con flash camera with flash|📹 videocamera video camera|📼 videocassetta videocassette|🔎 lente di ingrandimento rivolta a destra magnifying glass tilted right|🕯️ candela candle|🔦 torcia flashlight|🏮 lanterna rossa red paper lantern|🪔 diya diya lamp|📔 quaderno con copertina decorata notebook with decorative cover|📕 libro chiuso closed book|📗 libro verde green book|📘 libro blu blue book|📙 libro arancione orange book|📒 quaderno ad anelli ledger|📃 pagina con piega page with curl|📜 pergamena scroll|📰 quotidiano newspaper|🗞️ quotidiano arrotolato rolled-up newspaper|📑 etichette segnalibro bookmark tabs|🔖 segnalibro bookmark|🏷️ etichetta label|💰 sacco di soldi money bag|🪙 moneta coin|💴 banconota Yen yen banknote|💵 banconota Dollaro dollar banknote|💶 banconota Euro euro banknote|💷 banconota Sterlina pound banknote|💸 soldi con le ali money with wings|💳 carta di credito credit card|🧾 scontrino receipt|💹 grafico ascendente chart increasing with yen|✉️ busta envelope|📧 e-mail e-mail|📨 posta in arrivo incoming envelope|📩 posta in uscita envelope with arrow|📦 pacco package|📫 cassetta postale chiusa bandierina alzata closed mailbox with raised flag|📪 cassetta postale chiusa bandierina abbassata closed mailbox with lowered flag|📬 cassetta postale aperta bandierina alzata open mailbox with raised flag|📭 cassetta postale aperta bandierina abbassata open mailbox with lowered flag|📮 cassetta delle lettere postbox|🗳️ urna elettorale con scheda ballot box with ballot|✒️ pennino black nib|🖋️ penna stilografica fountain pen|🖊️ penna a sfera pen|🖌️ pennello paintbrush|💼 valigetta 24 ore briefcase|📁 cartella file file folder|📂 cartella aperta open file folder|🗂️ divisori per schedario card index dividers|📆 calendario a strappo tear-off calendar|🗒️ blocco per appunti con spirale spiral notepad|🗓️ calendario a spirale spiral calendar|📇 schedario card index|📈 grafico con andamento positivo chart increasing|📉 grafico con andamento negativo chart decreasing|📊 grafico a barre bar chart|📌 puntina pushpin|📍 puntina arrotondata round pushpin|📎 graffetta paperclip|🖇️ graffette attaccate linked paperclips|📐 squadra triangular ruler|🗃️ schedario da tavolo card file box|🗄️ schedario da ufficio file cabinet|🗑️ cestino wastebasket|🔏 lucchetto con penna stilo locked with pen|🔐 lucchetto chiuso con chiave locked with key|🗝️ chiave antica old key|🔨 martello hammer|🪓 ascia axe|⛏️ piccone pick|⚒️ piccone e martello hammer and pick|🛠️ martello e chiave inglese hammer and wrench|🗡️ pugnale dagger|⚔️ spade incrociate crossed swords|💣 bomba bomb|🪃 boomerang boomerang|🏹 arco e freccia bow and arrow|🛡️ scudo shield|🪚 sega da falegname carpentry saw|🔧 chiave inglese wrench|🪛 cacciavite screwdriver|🔩 vite e bullone nut and bolt|⚙️ ingranaggio gear|🗜️ morsetto clamp|⚖️ bilancia a doppio piatto balance scale|🦯 bastone per non vedenti white cane|🔗 collegamento link|⛓️‍💥 catena spezzata broken chain|⛓️ catene chains|🪝 gancio hook|🧰 cassetta degli attrezzi toolbox|🧲 calamita magnet|🪜 scala ladder|🪏 vanga shovel|⚗️ alambicco alembic|🧪 provetta test tube|🧫 piastra di Petri petri dish|🧬 dna dna|🔭 telescopio telescope|📡 antenna satellitare satellite antenna|💉 siringa syringe|🩸 goccia di sangue drop of blood|💊 pillola pill|🩹 cerotto adhesive bandage|🩼 stampella crutch|🩺 stetoscopio stethoscope|🩻 radiografia x-ray|🛗 ascensore elevator|🪞 specchio mirror|🪟 finestra window|🛋️ divano e lampada couch and lamp|🪠 sturalavandini plunger|🛁 vasca bathtub|🪤 trappola per topi mouse trap|🪒 rasoio razor|🧴 flacone lotion bottle|🧷 spilla da balia safety pin|🧹 scopa broom|🧺 cesto basket|🧻 rotolo di carta igienica roll of paper|🪣 secchio bucket|🧼 sapone soap|🫧 bolle bubbles|🪥 spazzolino da denti toothbrush|🧽 spugna sponge|🧯 estintore fire extinguisher|🛒 carrello shopping cart|🚬 sigaretta cigarette|⚰️ bara coffin|🪦 lapide headstone|⚱️ urna funeraria funeral urn|🧿 occhio di Allah nazar amulet|🪬 mano di Fatima hamsa|🗿 Moai moai|🪧 cartello placard|🪪 carta d’identità identification card|🏧 simbolo dello sportello bancomat ATM sign|🚮 simbolo per la raccolta dei rifiuti litter in bin sign|🚰 acqua potabile potable water|♿ simbolo della disabilità wheelchair symbol|🚹 simbolo del bagno degli uomini men’s room|🚺 simbolo del bagno delle donne women’s room|🚻 simbolo dei servizi igienici restroom|🚼 simbolo con immagine di bambino baby symbol|🚾 simbolo del WC water closet|🛂 simbolo del controllo passaporti passport control|🛃 simbolo della dogana customs|🛄 simbolo del ritiro bagagli baggage claim|🛅 simbolo del deposito bagagli left luggage|⚠️ simbolo di avviso warning|🚸 attraversamento bambini children crossing|⛔ segnale di divieto di accesso no entry|🚫 segnale di divieto prohibited|🚳 segnale di divieto di transito delle biciclette no bicycles|🚭 segnale di vietato fumare no smoking|🚯 simbolo del divieto di gettare rifiuti no littering|🚱 simbolo di acqua non potabile non-potable water|🚷 simbolo del divieto di transito pedoni no pedestrians|📵 simbolo che vieta l’uso dei cellulari no mobile phones|🔞 simbolo di divieto ai minorenni no one under eighteen|☢️ simbolo della radioattività radioactive|☣️ simbolo del rischio biologico biohazard|↗️ freccia rivolta verso destra che punta in alto up-right arrow|↘️ freccia in basso a destra down-right arrow|↙️ freccia in basso a sinistra down-left arrow|↖️ freccia in alto a sinistra up-left arrow|↕️ freccia su-giù up-down arrow|↔️ freccia sinistra-destra left-right arrow|↩️ freccia curva a sinistra right arrow curving left|↪️ freccia curva a destra left arrow curving right|⤴️ freccia curva in alto right arrow curving up|⤵️ freccia curva in basso right arrow curving down|🔃 frecce verticali che ruotano in senso orario clockwise vertical arrows|🔙 freccia BACK BACK arrow|🔚 freccia END END arrow|🔛 freccia ON ON! arrow|🔜 freccia SOON SOON arrow|🔝 freccia TOP TOP arrow|🛐 luogo di culto place of worship|⚛️ simbolo dell’atomo atom symbol|🕉️ Om om|✡️ stella di David star of David|☸️ ruota del Dharma wheel of dharma|☯️ Yin e Yang yin yang|✝️ croce latina latin cross|☦️ croce ortodossa orthodox cross|☪️ mezzaluna e stella star and crescent|☮️ simbolo della pace peace symbol|🕎 Menorah menorah|🔯 stella a sei punte dotted six-pointed star|🪯 khanda khanda|♈ Segno zodiacale dell’Ariete Aries|♉ Segno zodiacale del Toro Taurus|♊ Segno zodiacale dei Gemelli Gemini|♋ Segno zodiacale del Cancro Cancer|♌ Segno zodiacale del Leone Leo|♍ Segno zodiacale della Vergine Virgo|♎ Segno zodiacale della Bilancia Libra|♏ Segno zodiacale dello Scorpione Scorpio|♐ Segno zodiacale del Saggitario Sagittarius|♑ Segno zodiacale del Capricorno Capricorn|♒ Segno zodiacale dell’Acquario Aquarius|♓ Segno zodiacale dei Pesci Pisces|⛎ Segno zodiacale dell’Ofiuco Ophiuchus|🔀 pulsante di riproduzione casuale shuffle tracks button|🔂 pulsante di ripetizione della riproduzione di una traccia repeat single button|▶️ pulsante di riproduzione play button|⏩ pulsante di avanzamento rapido fast-forward button|⏭️ traccia successiva next track button|⏯️ pulsante riproduci/pausa play or pause button|◀️ pulsante di riavvolgimento reverse button|⏪ pulsante di riavvolgimento rapido fast reverse button|⏮️ pulsante traccia precedente last track button|🔼 pulsante a triangolo rivolto verso l’alto upwards button|⏫ pulsante doppia freccia in alto fast up button|🔽 pulsante a triangolo rivolto verso il basso downwards button|⏬ doppia freccia in basso fast down button|⏸️ pulsante pausa pause button|⏹️ pulsante stop stop button|⏺️ pulsante di registrazione record button|⏏️ pulsante di espulsione eject button|🎦 simbolo del cinema cinema|🔅 luminosità bassa dim button|🔆 luminosità elevata bright button|📶 segnale cellulare antenna bars|🛜 wireless wireless|📳 modalità vibrazione vibration mode|📴 cellulare spento mobile phone off|♀️ simbolo genere femminile female sign|♂️ simbolo genere maschile male sign|⚧️ simbolo transgender transgender symbol|✖️ moltiplicazione multiply|➕ addizione plus|➖ sottrazione minus|➗ divisione divide|🟰 segno di uguaglianza heavy equals sign|♾️ simbolo dell’infinito infinity|‼️ doppio punto esclamativo double exclamation mark|⁉️ punto esclamativo e interrogativo exclamation question mark|❔ punto interrogativo bianco white question mark|❕ punto esclamativo bianco white exclamation mark|〰️ trattino ondulato wavy dash|💱 cambio valuta currency exchange|💲 Dollaro heavy dollar sign|⚕️ simbolo della medicina medical symbol|♻️ simbolo del riciclaggio recycling symbol|⚜️ giglio araldico fleur-de-lis|🔱 tridente trident emblem|📛 tesserino per nome name badge|🔰 ideogramma giapponese di “Principiante” Japanese symbol for beginner|⭕ cerchio rosso vuoto hollow red circle|☑️ riquadro con spunta check box with check|✔️ segno di spunta check mark|❎ croce con quadrato cross mark button|➰ occhiello curly loop|➿ doppio occhiello double curly loop|〽️ simbolo di alternanza delle parti part alternation mark|✳️ asterisco eight-spoked asterisk|✴️ stella stilizzata eight-pointed star|❇️ scintilla stilizzata sparkle|©️ copyright copyright|®️ marchio registrato registered|™️ marchio trade mark|🫟 spruzzo splatter|#️⃣ tasto: # keycap: #|*️⃣ tasto: * keycap: *|0️⃣ tasto: 0 keycap: 0|1️⃣ tasto: 1 keycap: 1|2️⃣ tasto: 2 keycap: 2|3️⃣ tasto: 3 keycap: 3|4️⃣ tasto: 4 keycap: 4|5️⃣ tasto: 5 keycap: 5|6️⃣ tasto: 6 keycap: 6|7️⃣ tasto: 7 keycap: 7|8️⃣ tasto: 8 keycap: 8|9️⃣ tasto: 9 keycap: 9|🔟 tasto: 10 keycap: 10|🔠 pulsante con lettere latine maiuscole input latin uppercase|🔡 pulsante con lettere latine minuscole input latin lowercase|🔢 pulsante con numeri input numbers|🔣 pulsante con simboli input symbols|🔤 pulsante con lettere latine input latin letters|🅰️ gruppo sanguigno A A button (blood type)|🆎 gruppo sanguigno AB AB button (blood type)|🅱️ gruppo sanguigno B B button (blood type)|🆑 pulsante CL CL button|🆒 pulsante COOL COOL button|🆓 pulsante FREE FREE button|ℹ️ punto informazioni information|🆔 pulsante ID ID button|Ⓜ️ pulsante M cerchiata circled M|🆕 pulsante NEW NEW button|🆖 pulsante NG NG button|🅾️ gruppo sanguigno 0 O button (blood type)|🆗 pulsante OK OK button|🅿️ pulsante P P button|🆘 pulsante SOS SOS button|🆙 pulsante UP! UP! button|🆚 pulsante VS VS button|🈁 ideogramma giapponese per “Qui” Japanese “here” button|🈂️ ideogramma giapponese di “Costo del servizio” Japanese “service charge” button|🈷️ ideogramma giapponese di “Importo mensile” Japanese “monthly amount” button|🈶 ideogramma giapponese di “A pagamento” Japanese “not free of charge” button|🈯 ideogramma giapponese di “Riservato” Japanese “reserved” button|🉐 ideogramma giapponese di “Occasione” Japanese “bargain” button|🈹 ideogramma giapponese di “Sconto” Japanese “discount” button|🈚 ideogramma giapponese di “Gratis” Japanese “free of charge” button|🈲 ideogramma giapponese di “Proibito” Japanese “prohibited” button|🉑 ideogramma giapponese di “Accettabile” Japanese “acceptable” button|🈸 ideogramma giapponese di “Candidatura” Japanese “application” button|🈴 ideogramma giapponese di “Voto di sufficienza” Japanese “passing grade” button|🈳 ideogramma giapponese di “Posto libero” Japanese “vacancy” button|㊗️ ideogramma giapponese di “Congratulazioni” Japanese “congratulations” button|㊙️ ideogramma giapponese di “Segreto” Japanese “secret” button|🈺 ideogramma giapponese di “Aperto al pubblico” Japanese “open for business” button|🈵 ideogramma giapponese di “Nessun posto libero” Japanese “no vacancy” button|🔴 cerchio rosso red circle|🟠 cerchio arancione orange circle|🟡 cerchio giallo yellow circle|🟢 cerchio verde green circle|🔵 cerchio blu blue circle|🟣 cerchio viola purple circle|🟤 cerchio marrone brown circle|⚫ cerchio nero black circle|⚪ cerchio bianco white circle|🟥 quadrato rosso red square|🟧 quadrato arancione orange square|🟨 quadrato giallo yellow square|🟩 quadrato verde green square|🟦 quadrato blu blue square|🟪 quadrato viola purple square|🟫 quadrato marrone brown square|⬛ quadrato nero grande black large square|⬜ quadrato bianco grande white large square|◼️ quadrato nero medio black medium square|◻️ quadrato bianco medio white medium square|◾ quadrato nero medio-piccolo black medium-small square|◽ quadrato bianco medio-piccolo white medium-small square|▪️ quadrato nero piccolo black small square|▫️ quadrato bianco piccolo white small square|🔶 rombo arancione grande large orange diamond|🔷 rombo blu grande large blue diamond|🔸 rombo arancione piccolo small orange diamond|🔹 rombo blu piccolo small blue diamond|🔺 triangolo rosso con punta verso l’alto red triangle pointed up|🔻 triangolo rosso con punta verso il basso red triangle pointed down|💠 petalo di fiore diamond with a dot|🔘 pulsante rotondo radio button|🔳 tasto quadrato nero con bordo bianco white square button|🔲 tasto quadrato bianco con bordo nero black square button|🏁 bandiera a scacchi chequered flag|🚩 bandierina rossa triangular flag|🎌 bandiere del Giappone incrociate crossed flags|🏴 bandiera nera black flag|🏳️ bandiera bianca white flag|🏳️‍🌈 bandiera arcobaleno rainbow flag|🏳️‍⚧️ bandiera transgender transgender flag|🏴‍☠️ bandiera dei pirati pirate flag|🇦🇨 bandiera: Isola Ascensione flag: Ascension Island|🇦🇩 bandiera: Andorra flag: Andorra|🇦🇪 bandiera: Emirati Arabi Uniti flag: United Arab Emirates|🇦🇫 bandiera: Afghanistan flag: Afghanistan|🇦🇬 bandiera: Antigua e Barbuda flag: Antigua & Barbuda|🇦🇮 bandiera: Anguilla flag: Anguilla|🇦🇱 bandiera: Albania flag: Albania|🇦🇲 bandiera: Armenia flag: Armenia|🇦🇴 bandiera: Angola flag: Angola|🇦🇶 bandiera: Antartide flag: Antarctica|🇦🇷 bandiera: Argentina flag: Argentina|🇦🇸 bandiera: Samoa Americane flag: American Samoa|🇦🇹 bandiera: Austria flag: Austria|🇦🇺 bandiera: Australia flag: Australia|🇦🇼 bandiera: Aruba flag: Aruba|🇦🇽 bandiera: Isole Åland flag: Åland Islands|🇦🇿 bandiera: Azerbaigian flag: Azerbaijan|🇧🇦 bandiera: Bosnia ed Erzegovina flag: Bosnia & Herzegovina|🇧🇧 bandiera: Barbados flag: Barbados|🇧🇩 bandiera: Bangladesh flag: Bangladesh|🇧🇪 bandiera: Belgio flag: Belgium|🇧🇫 bandiera: Burkina Faso flag: Burkina Faso|🇧🇬 bandiera: Bulgaria flag: Bulgaria|🇧🇭 bandiera: Bahrein flag: Bahrain|🇧🇮 bandiera: Burundi flag: Burundi|🇧🇯 bandiera: Benin flag: Benin|🇧🇱 bandiera: Saint-Barthélemy flag: St. Barthélemy|🇧🇲 bandiera: Bermuda flag: Bermuda|🇧🇳 bandiera: Brunei flag: Brunei|🇧🇴 bandiera: Bolivia flag: Bolivia|🇧🇶 bandiera: Caraibi Olandesi flag: Caribbean Netherlands|🇧🇷 bandiera: Brasile flag: Brazil|🇧🇸 bandiera: Bahamas flag: Bahamas|🇧🇹 bandiera: Bhutan flag: Bhutan|🇧🇻 bandiera: Isola Bouvet flag: Bouvet Island|🇧🇼 bandiera: Botswana flag: Botswana|🇧🇾 bandiera: Bielorussia flag: Belarus|🇧🇿 bandiera: Belize flag: Belize|🇨🇦 bandiera: Canada flag: Canada|🇨🇨 bandiera: Isole Cocos (Keeling) flag: Cocos (Keeling) Islands|🇨🇩 bandiera: Congo - Kinshasa flag: Congo - Kinshasa|🇨🇫 bandiera: Repubblica Centrafricana flag: Central African Republic|🇨🇬 bandiera: Congo-Brazzaville flag: Congo - Brazzaville|🇨🇭 bandiera: Svizzera flag: Switzerland|🇨🇮 bandiera: Costa d’Avorio flag: Côte d’Ivoire|🇨🇰 bandiera: Isole Cook flag: Cook Islands|🇨🇱 bandiera: Cile flag: Chile|🇨🇲 bandiera: Camerun flag: Cameroon|🇨🇳 bandiera: Cina flag: China|🇨🇴 bandiera: Colombia flag: Colombia|🇨🇵 bandiera: Isola di Clipperton flag: Clipperton Island|🇨🇶 flag: Sark flag: Sark|🇨🇷 bandiera: Costa Rica flag: Costa Rica|🇨🇺 bandiera: Cuba flag: Cuba|🇨🇻 bandiera: Capo Verde flag: Cape Verde|🇨🇼 bandiera: Curaçao flag: Curaçao|🇨🇽 bandiera: Isola Christmas flag: Christmas Island|🇨🇾 bandiera: Cipro flag: Cyprus|🇨🇿 bandiera: Cechia flag: Czechia|🇩🇪 bandiera: Germania flag: Germany|🇩🇬 bandiera: Diego Garcia flag: Diego Garcia|🇩🇯 bandiera: Gibuti flag: Djibouti|🇩🇰 bandiera: Danimarca flag: Denmark|🇩🇲 bandiera: Dominica flag: Dominica|🇩🇴 bandiera: Repubblica Dominicana flag: Dominican Republic|🇩🇿 bandiera: Algeria flag: Algeria|🇪🇦 bandiera: Ceuta e Melilla flag: Ceuta & Melilla|🇪🇨 bandiera: Ecuador flag: Ecuador|🇪🇪 bandiera: Estonia flag: Estonia|🇪🇬 bandiera: Egitto flag: Egypt|🇪🇭 bandiera: Sahara Occidentale flag: Western Sahara|🇪🇷 bandiera: Eritrea flag: Eritrea|🇪🇸 bandiera: Spagna flag: Spain|🇪🇹 bandiera: Etiopia flag: Ethiopia|🇪🇺 bandiera: Unione europea flag: European Union|🇫🇮 bandiera: Finlandia flag: Finland|🇫🇯 bandiera: Figi flag: Fiji|🇫🇰 bandiera: Isole Falkland flag: Falkland Islands|🇫🇲 bandiera: Micronesia flag: Micronesia|🇫🇴 bandiera: Isole Fær Øer flag: Faroe Islands|🇫🇷 bandiera: Francia flag: France|🇬🇦 bandiera: Gabon flag: Gabon|🇬🇧 bandiera: Regno Unito flag: United Kingdom|🇬🇩 bandiera: Grenada flag: Grenada|🇬🇪 bandiera: Georgia flag: Georgia|🇬🇫 bandiera: Guyana Francese flag: French Guiana|🇬🇬 bandiera: Guernsey flag: Guernsey|🇬🇭 bandiera: Ghana flag: Ghana|🇬🇮 bandiera: Gibilterra flag: Gibraltar|🇬🇱 bandiera: Groenlandia flag: Greenland|🇬🇲 bandiera: Gambia flag: Gambia|🇬🇳 bandiera: Guinea flag: Guinea|🇬🇵 bandiera: Guadalupa flag: Guadeloupe|🇬🇶 bandiera: Guinea Equatoriale flag: Equatorial Guinea|🇬🇷 bandiera: Grecia flag: Greece|🇬🇸 bandiera: Georgia del Sud e Sandwich Australi flag: South Georgia & South Sandwich Islands|🇬🇹 bandiera: Guatemala flag: Guatemala|🇬🇺 bandiera: Guam flag: Guam|🇬🇼 bandiera: Guinea-Bissau flag: Guinea-Bissau|🇬🇾 bandiera: Guyana flag: Guyana|🇭🇰 bandiera: RAS di Hong Kong flag: Hong Kong SAR China|🇭🇲 bandiera: Isole Heard e McDonald flag: Heard & McDonald Islands|🇭🇳 bandiera: Honduras flag: Honduras|🇭🇷 bandiera: Croazia flag: Croatia|🇭🇹 bandiera: Haiti flag: Haiti|🇭🇺 bandiera: Ungheria flag: Hungary|🇮🇨 bandiera: Isole Canarie flag: Canary Islands|🇮🇩 bandiera: Indonesia flag: Indonesia|🇮🇪 bandiera: Irlanda flag: Ireland|🇮🇱 bandiera: Israele flag: Israel|🇮🇲 bandiera: Isola di Man flag: Isle of Man|🇮🇳 bandiera: India flag: India|🇮🇴 bandiera: Territorio Britannico dell’Oceano Indiano flag: British Indian Ocean Territory|🇮🇶 bandiera: Iraq flag: Iraq|🇮🇷 bandiera: Iran flag: Iran|🇮🇸 bandiera: Islanda flag: Iceland|🇮🇹 bandiera: Italia flag: Italy|🇯🇪 bandiera: Jersey flag: Jersey|🇯🇲 bandiera: Giamaica flag: Jamaica|🇯🇴 bandiera: Giordania flag: Jordan|🇯🇵 bandiera: Giappone flag: Japan|🇰🇪 bandiera: Kenya flag: Kenya|🇰🇬 bandiera: Kirghizistan flag: Kyrgyzstan|🇰🇭 bandiera: Cambogia flag: Cambodia|🇰🇮 bandiera: Kiribati flag: Kiribati|🇰🇲 bandiera: Comore flag: Comoros|🇰🇳 bandiera: Saint Kitts e Nevis flag: St. Kitts & Nevis|🇰🇵 bandiera: Corea del Nord flag: North Korea|🇰🇷 bandiera: Corea del Sud flag: South Korea|🇰🇼 bandiera: Kuwait flag: Kuwait|🇰🇾 bandiera: Isole Cayman flag: Cayman Islands|🇰🇿 bandiera: Kazakistan flag: Kazakhstan|🇱🇦 bandiera: Laos flag: Laos|🇱🇧 bandiera: Libano flag: Lebanon|🇱🇨 bandiera: Saint Lucia flag: St. Lucia|🇱🇮 bandiera: Liechtenstein flag: Liechtenstein|🇱🇰 bandiera: Sri Lanka flag: Sri Lanka|🇱🇷 bandiera: Liberia flag: Liberia|🇱🇸 bandiera: Lesotho flag: Lesotho|🇱🇹 bandiera: Lituania flag: Lithuania|🇱🇺 bandiera: Lussemburgo flag: Luxembourg|🇱🇻 bandiera: Lettonia flag: Latvia|🇱🇾 bandiera: Libia flag: Libya|🇲🇦 bandiera: Marocco flag: Morocco|🇲🇨 bandiera: Monaco flag: Monaco|🇲🇩 bandiera: Moldavia flag: Moldova|🇲🇪 bandiera: Montenegro flag: Montenegro|🇲🇫 bandiera: Saint Martin flag: St. Martin|🇲🇬 bandiera: Madagascar flag: Madagascar|🇲🇭 bandiera: Isole Marshall flag: Marshall Islands|🇲🇰 bandiera: Macedonia del Nord flag: North Macedonia|🇲🇱 bandiera: Mali flag: Mali|🇲🇲 bandiera: Myanmar (Birmania) flag: Myanmar (Burma)|🇲🇳 bandiera: Mongolia flag: Mongolia|🇲🇴 bandiera: RAS di Macao flag: Macao SAR China|🇲🇵 bandiera: Isole Marianne Settentrionali flag: Northern Mariana Islands|🇲🇶 bandiera: Martinica flag: Martinique|🇲🇷 bandiera: Mauritania flag: Mauritania|🇲🇸 bandiera: Montserrat flag: Montserrat|🇲🇹 bandiera: Malta flag: Malta|🇲🇺 bandiera: Mauritius flag: Mauritius|🇲🇻 bandiera: Maldive flag: Maldives|🇲🇼 bandiera: Malawi flag: Malawi|🇲🇽 bandiera: Messico flag: Mexico|🇲🇾 bandiera: Malaysia flag: Malaysia|🇲🇿 bandiera: Mozambico flag: Mozambique|🇳🇦 bandiera: Namibia flag: Namibia|🇳🇨 bandiera: Nuova Caledonia flag: New Caledonia|🇳🇪 bandiera: Niger flag: Niger|🇳🇫 bandiera: Isola Norfolk flag: Norfolk Island|🇳🇬 bandiera: Nigeria flag: Nigeria|🇳🇮 bandiera: Nicaragua flag: Nicaragua|🇳🇱 bandiera: Paesi Bassi flag: Netherlands|🇳🇴 bandiera: Norvegia flag: Norway|🇳🇵 bandiera: Nepal flag: Nepal|🇳🇷 bandiera: Nauru flag: Nauru|🇳🇺 bandiera: Niue flag: Niue|🇳🇿 bandiera: Nuova Zelanda flag: New Zealand|🇴🇲 bandiera: Oman flag: Oman|🇵🇦 bandiera: Panama flag: Panama|🇵🇪 bandiera: Perù flag: Peru|🇵🇫 bandiera: Polinesia Francese flag: French Polynesia|🇵🇬 bandiera: Papua Nuova Guinea flag: Papua New Guinea|🇵🇭 bandiera: Filippine flag: Philippines|🇵🇰 bandiera: Pakistan flag: Pakistan|🇵🇱 bandiera: Polonia flag: Poland|🇵🇲 bandiera: Saint-Pierre e Miquelon flag: St. Pierre & Miquelon|🇵🇳 bandiera: Isole Pitcairn flag: Pitcairn Islands|🇵🇷 bandiera: Portorico flag: Puerto Rico|🇵🇸 bandiera: Territori Palestinesi flag: Palestinian Territories|🇵🇹 bandiera: Portogallo flag: Portugal|🇵🇼 bandiera: Palau flag: Palau|🇵🇾 bandiera: Paraguay flag: Paraguay|🇶🇦 bandiera: Qatar flag: Qatar|🇷🇪 bandiera: Riunione flag: Réunion|🇷🇴 bandiera: Romania flag: Romania|🇷🇸 bandiera: Serbia flag: Serbia|🇷🇺 bandiera: Russia flag: Russia|🇷🇼 bandiera: Ruanda flag: Rwanda|🇸🇦 bandiera: Arabia Saudita flag: Saudi Arabia|🇸🇧 bandiera: Isole Salomone flag: Solomon Islands|🇸🇨 bandiera: Seychelles flag: Seychelles|🇸🇩 bandiera: Sudan flag: Sudan|🇸🇪 bandiera: Svezia flag: Sweden|🇸🇬 bandiera: Singapore flag: Singapore|🇸🇭 bandiera: Sant’Elena flag: St. Helena|🇸🇮 bandiera: Slovenia flag: Slovenia|🇸🇯 bandiera: Svalbard e Jan Mayen flag: Svalbard & Jan Mayen|🇸🇰 bandiera: Slovacchia flag: Slovakia|🇸🇱 bandiera: Sierra Leone flag: Sierra Leone|🇸🇲 bandiera: San Marino flag: San Marino|🇸🇳 bandiera: Senegal flag: Senegal|🇸🇴 bandiera: Somalia flag: Somalia|🇸🇷 bandiera: Suriname flag: Suriname|🇸🇸 bandiera: Sud Sudan flag: South Sudan|🇸🇹 bandiera: São Tomé e Príncipe flag: São Tomé & Príncipe|🇸🇻 bandiera: El Salvador flag: El Salvador|🇸🇽 bandiera: Sint Maarten flag: Sint Maarten|🇸🇾 bandiera: Siria flag: Syria|🇸🇿 bandiera: Eswatini flag: Eswatini|🇹🇦 bandiera: Tristan da Cunha flag: Tristan da Cunha|🇹🇨 bandiera: Isole Turks e Caicos flag: Turks & Caicos Islands|🇹🇩 bandiera: Ciad flag: Chad|🇹🇫 bandiera: Terre Australi Francesi flag: French Southern Territories|🇹🇬 bandiera: Togo flag: Togo|🇹🇭 bandiera: Thailandia flag: Thailand|🇹🇯 bandiera: Tagikistan flag: Tajikistan|🇹🇰 bandiera: Tokelau flag: Tokelau|🇹🇱 bandiera: Timor Est flag: Timor-Leste|🇹🇲 bandiera: Turkmenistan flag: Turkmenistan|🇹🇳 bandiera: Tunisia flag: Tunisia|🇹🇴 bandiera: Tonga flag: Tonga|🇹🇷 bandiera: Turchia flag: Türkiye|🇹🇹 bandiera: Trinidad e Tobago flag: Trinidad & Tobago|🇹🇻 bandiera: Tuvalu flag: Tuvalu|🇹🇼 bandiera: Taiwan flag: Taiwan|🇹🇿 bandiera: Tanzania flag: Tanzania|🇺🇦 bandiera: Ucraina flag: Ukraine|🇺🇬 bandiera: Uganda flag: Uganda|🇺🇲 bandiera: Isole Minori Esterne degli Stati Uniti flag: U.S. Outlying Islands|🇺🇳 bandiera: Nazioni Unite flag: United Nations|🇺🇸 bandiera: Stati Uniti flag: United States|🇺🇾 bandiera: Uruguay flag: Uruguay|🇺🇿 bandiera: Uzbekistan flag: Uzbekistan|🇻🇦 bandiera: Città del Vaticano flag: Vatican City|🇻🇨 bandiera: Saint Vincent e Grenadine flag: St. Vincent & Grenadines|🇻🇪 bandiera: Venezuela flag: Venezuela|🇻🇬 bandiera: Isole Vergini Britanniche flag: British Virgin Islands|🇻🇮 bandiera: Isole Vergini Americane flag: U.S. Virgin Islands|🇻🇳 bandiera: Vietnam flag: Vietnam|🇻🇺 bandiera: Vanuatu flag: Vanuatu|🇼🇫 bandiera: Wallis e Futuna flag: Wallis & Futuna|🇼🇸 bandiera: Samoa flag: Samoa|🇽🇰 bandiera: Kosovo flag: Kosovo|🇾🇪 bandiera: Yemen flag: Yemen|🇾🇹 bandiera: Mayotte flag: Mayotte|🇿🇦 bandiera: Sudafrica flag: South Africa|🇿🇲 bandiera: Zambia flag: Zambia|🇿🇼 bandiera: Zimbabwe flag: Zimbabwe|🏴󠁧󠁢󠁥󠁮󠁧󠁿 bandiera: Inghilterra flag: England|🏴󠁧󠁢󠁳󠁣󠁴󠁿 bandiera: Scozia flag: Scotland|🏴󠁧󠁢󠁷󠁬󠁳󠁿 bandiera: Galles flag: Wales|👋🏻 mano che saluta waving hand|🤚🏻 dorso mano alzata raised back of hand|✋🏻 mano alzata raised hand|🖖🏻 saluto vulcaniano vulcan salute|🫱🏻 mano rivolta a destra rightwards hand|🫲🏻 mano rivolta a sinistra leftwards hand|🫳🏻 mano con il palmo verso il basso palm down hand|🫴🏻 mano con il palmo verso l’alto palm up hand|🫷🏻 mano che spinge a sinistra leftwards pushing hand|🫸🏻 mano che spinge a destra rightwards pushing hand|👌🏻 mano che fa OK OK hand|🤌🏻 mano a pigna pinched fingers|🤏🏻 mano che fa il gesto del pizzico pinching hand|🤞🏻 dita incrociate crossed fingers|🫰🏻 mano con indice e pollice incrociati hand with index finger and thumb crossed|🤟🏻 gesto ti amo love-you gesture|🤘🏻 segno delle corna sign of the horns|🤙🏻 mano con gesto di chiamata call me hand|👈🏻 indice verso sinistra backhand index pointing left|👉🏻 indice verso destra backhand index pointing right|👆🏻 indice alzato backhand index pointing up|🖕🏻 dito medio middle finger|👇🏻 indice abbassato backhand index pointing down|🫵🏻 indice verso l’osservatore index pointing at the viewer|👍🏻 pollice in su thumbs up|👎🏻 pollice verso thumbs down|✊🏻 pugno raised fist|👊🏻 pugno chiuso oncoming fist|🤛🏻 pugno a sinistra left-facing fist|🤜🏻 pugno a destra right-facing fist|👏🏻 mani che applaudono clapping hands|🙌🏻 mani alzate raising hands|🫶🏻 mani a cuore heart hands|👐🏻 mani aperte open hands|🤲🏻 mani unite in alto palms up together|🤝🏻 stretta di mano handshake|🙏🏻 mani giunte folded hands|💅🏻 smalto per unghie nail polish|🤳🏻 selfie selfie|💪🏻 bicipite flexed biceps|🦵🏻 gamba leg|🦶🏻 piede foot|👂🏻 orecchio ear|🦻🏻 orecchio con apparecchio acustico ear with hearing aid|👃🏻 naso nose|👶🏻 neonato baby|🧒🏻 bimbo child|👦🏻 bambino boy|👧🏻 bambina girl|🧑🏻 persona person|👱🏻 persona bionda person: blond hair|👨🏻 uomo man|🧔🏻 persona con la barba person: beard|🧔🏻‍♂️ uomo con la barba man: beard|🧔🏻‍♀️ donna con la barba woman: beard|👨🏻‍🦰 uomo: capelli rossi man: red hair|👨🏻‍🦱 uomo: capelli ricci man: curly hair|👨🏻‍🦳 uomo: capelli bianchi man: white hair|👨🏻‍🦲 uomo: calvo man: bald|👩🏻 donna woman|👩🏻‍🦰 donna: capelli rossi woman: red hair|🧑🏻‍🦰 persona: capelli rossi person: red hair|👩🏻‍🦱 donna: capelli ricci woman: curly hair|🧑🏻‍🦱 persona: capelli ricci person: curly hair|👩🏻‍🦳 donna: capelli bianchi woman: white hair|🧑🏻‍🦳 persona: capelli bianchi person: white hair|👩🏻‍🦲 donna: calvo woman: bald|🧑🏻‍🦲 persona: calvo person: bald|👱🏻‍♀️ donna bionda woman: blond hair|👱🏻‍♂️ uomo biondo man: blond hair|🧓🏻 persona anziana older person|👴🏻 uomo anziano old man|👵🏻 donna anziana old woman|🙍🏻 persona corrucciata person frowning|🙍🏻‍♂️ uomo corrucciato man frowning|🙍🏻‍♀️ donna corrucciata woman frowning|🙎🏻 persona imbronciata person pouting|🙎🏻‍♂️ uomo imbronciato man pouting|🙎🏻‍♀️ donna imbronciata woman pouting|🙅🏻 persona che fa segno di no person gesturing NO|🙅🏻‍♂️ uomo con gesto di rifiuto man gesturing NO|🙅🏻‍♀️ donna con gesto di rifiuto woman gesturing NO|🙆🏻 persona con gesto OK person gesturing OK|🙆🏻‍♂️ uomo con gesto OK man gesturing OK|🙆🏻‍♀️ donna con gesto OK woman gesturing OK|💁🏻 persona con mano capovolta person tipping hand|💁🏻‍♂️ uomo con mano capovolta man tipping hand|💁🏻‍♀️ donna con mano capovolta woman tipping hand|🙋🏻 persona con mano alzata person raising hand|🙋🏻‍♂️ uomo con mano alzata man raising hand|🙋🏻‍♀️ donna con mano alzata woman raising hand|🧏🏻 persona con problemi di udito deaf person|🧏🏻‍♂️ uomo con problemi di udito deaf man|🧏🏻‍♀️ donna con problemi di udito deaf woman|🙇🏻 persona che fa un inchino profondo person bowing|🙇🏻‍♂️ uomo che fa inchino profondo man bowing|🙇🏻‍♀️ donna che fa inchino profondo woman bowing|🤦🏻 persona esasperata person facepalming|🤦🏻‍♂️ uomo esasperato man facepalming|🤦🏻‍♀️ donna esasperata woman facepalming|🤷🏻 persona che scrolla le spalle person shrugging|🤷🏻‍♂️ uomo che scrolla le spalle man shrugging|🤷🏻‍♀️ donna che scrolla le spalle woman shrugging|🧑🏻‍⚕️ persona che lavora nella sanità health worker|👨🏻‍⚕️ operatore sanitario man health worker|👩🏻‍⚕️ operatrice sanitaria woman health worker|🧑🏻‍🎓 studente student|👨🏻‍🎓 studente maschio man student|👩🏻‍🎓 studentessa woman student|🧑🏻‍🏫 insegnante teacher|👨🏻‍🏫 professore man teacher|👩🏻‍🏫 professoressa woman teacher|🧑🏻‍⚖️ giudice judge|👨🏻‍⚖️ giudice uomo man judge|👩🏻‍⚖️ giudice donna woman judge|🧑🏻‍🌾 agricoltore farmer|👨🏻‍🌾 contadino man farmer|👩🏻‍🌾 contadina woman farmer|🧑🏻‍🍳 persona che cucina cook|👨🏻‍🍳 cuoco man cook|👩🏻‍🍳 cuoca woman cook|🧑🏻‍🔧 meccanico mechanic|👨🏻‍🔧 meccanico uomo man mechanic|👩🏻‍🔧 meccanico donna woman mechanic|🧑🏻‍🏭 persona che lavora in fabbrica factory worker|👨🏻‍🏭 operaio man factory worker|👩🏻‍🏭 operaia woman factory worker|🧑🏻‍💼 persona che fa un lavoro d’ufficio office worker|👨🏻‍💼 impiegato man office worker|👩🏻‍💼 impiegata woman office worker|🧑🏻‍🔬 persona che lavora in campo scientifico scientist|👨🏻‍🔬 scienziato man scientist|👩🏻‍🔬 scienziata woman scientist|🧑🏻‍💻 persona esperta di tecnologia technologist|👨🏻‍💻 tecnologo man technologist|👩🏻‍💻 tecnologa woman technologist|🧑🏻‍🎤 cantante singer|👨🏻‍🎤 cantante uomo man singer|👩🏻‍🎤 cantante donna woman singer|🧑🏻‍🎨 artista artist|👨🏻‍🎨 artista uomo man artist|👩🏻‍🎨 artista donna woman artist|🧑🏻‍✈️ pilota pilot|👨🏻‍✈️ pilota uomo man pilot|👩🏻‍✈️ pilota donna woman pilot|🧑🏻‍🚀 astronauta astronaut|👨🏻‍🚀 astronauta uomo man astronaut|👩🏻‍🚀 astronauta donna woman astronaut|🧑🏻‍🚒 pompiere firefighter|👨🏻‍🚒 pompiere uomo man firefighter|👩🏻‍🚒 pompiere donna woman firefighter|👮🏻 agente di polizia police officer|👮🏻‍♂️ poliziotto man police officer|👮🏻‍♀️ poliziotta woman police officer|🕵🏻‍♂️ investigatore man detective|🕵🏻‍♀️ investigatrice woman detective|💂🏻 guardia guard|💂🏻‍♂️ guardia uomo man guard|💂🏻‍♀️ guardia donna woman guard|🥷🏻 ninja ninja|👷🏻 operaio edile construction worker|👷🏻‍♂️ operaio edile uomo man construction worker|👷🏻‍♀️ operaia edile woman construction worker|🫅🏻 persona con corona person with crown|🤴🏻 principe prince|👸🏻 principessa princess|👳🏻 persona con turbante person wearing turban|👳🏻‍♂️ uomo con turbante man wearing turban|👳🏻‍♀️ donna con turbante woman wearing turban|👲🏻 uomo con zucchetto cinese person with skullcap|🧕🏻 donna con velo woman with headscarf|🤵🏻 persona in smoking person in tuxedo|🤵🏻‍♂️ uomo in smoking man in tuxedo|🤵🏻‍♀️ donna in smoking woman in tuxedo|👰🏻 persona con velo person with veil|👰🏻‍♂️ sposo con velo man with veil|👰🏻‍♀️ sposa con velo woman with veil|🤰🏻 donna incinta pregnant woman|🫃🏻 uomo incinto pregnant man|🫄🏻 persona incinta pregnant person|🤱🏻 allattare breast-feeding|👩🏻‍🍼 donna che allatta woman feeding baby|👨🏻‍🍼 uomo che allatta man feeding baby|🧑🏻‍🍼 persona che allatta person feeding baby|👼🏻 angioletto baby angel|🎅🏻 Babbo Natale Santa Claus|🤶🏻 Mamma Natale Mrs. Claus|🧑🏻‍🎄 Santa Claus Mx Claus|🦸🏻 supereroe superhero|🦸🏻‍♂️ supereroe uomo man superhero|🦸🏻‍♀️ supereroina woman superhero|🦹🏻 supercattivo supervillain|🦹🏻‍♂️ supercattivo uomo man supervillain|🦹🏻‍♀️ supercattiva woman supervillain|🧙🏻 mago mage|🧙🏻‍♂️ mago uomo man mage|🧙🏻‍♀️ maga woman mage|🧚🏻 fata fairy|🧚🏻‍♂️ folletto alato man fairy|🧚🏻‍♀️ fata donna woman fairy|🧛🏻 vampiro vampire|🧛🏻‍♂️ vampiro uomo man vampire|🧛🏻‍♀️ vampira woman vampire|🧜🏻 sirena merperson|🧜🏻‍♂️ tritone merman|🧜🏻‍♀️ sirena donna mermaid|🧝🏻 elfo elf|🧝🏻‍♂️ elfo uomo man elf|🧝🏻‍♀️ elfo donna woman elf|💆🏻 persona che riceve un massaggio person getting massage|💆🏻‍♂️ uomo che riceve un massaggio man getting massage|💆🏻‍♀️ donna che riceve un massaggio woman getting massage|💇🏻 taglio di capelli person getting haircut|💇🏻‍♂️ taglio di capelli per uomo man getting haircut|💇🏻‍♀️ taglio di capelli per donna woman getting haircut|🚶🏻 pedone person walking|🚶🏻‍♂️ uomo che cammina man walking|🚶🏻‍♀️ donna che cammina woman walking|🚶🏻‍➡️ pedone a destra person walking facing right|🚶🏻‍♀️‍➡️ donna che cammina a destra woman walking facing right|🚶🏻‍♂️‍➡️ uomo che cammina a destra man walking facing right|🧍🏻 persona in piedi person standing|🧍🏻‍♂️ uomo in piedi man standing|🧍🏻‍♀️ donna in piedi woman standing|🧎🏻 persona inginocchiata person kneeling|🧎🏻‍♂️ uomo inginocchiato man kneeling|🧎🏻‍♀️ donna inginocchiata woman kneeling|🧎🏻‍➡️ persona inginocchiata a destra person kneeling facing right|🧎🏻‍♀️‍➡️ donna inginocchiata a destra woman kneeling facing right|🧎🏻‍♂️‍➡️ uomo inginocchiato a destra man kneeling facing right|🧑🏻‍🦯 persona con bastone di orientamento person with white cane|🧑🏻‍🦯‍➡️ persona con bastone di orientamento a destra person with white cane facing right|👨🏻‍🦯 uomo con bastone bianco di orientamento man with white cane|👨🏻‍🦯‍➡️ uomo con bastone bianco di orientamento a destra man with white cane facing right|👩🏻‍🦯 donna con bastone bianco di orientamento woman with white cane|👩🏻‍🦯‍➡️ donna con bastone bianco di orientamento a destra woman with white cane facing right|🧑🏻‍🦼 persona su sedia a rotelle motorizzata person in motorized wheelchair|🧑🏻‍🦼‍➡️ persona su sedia a rotelle motorizzata a destra person in motorized wheelchair facing right|👨🏻‍🦼 uomo su sedia a rotelle motorizzata man in motorized wheelchair|👨🏻‍🦼‍➡️ uomo su sedia a rotelle motorizzata a destra man in motorized wheelchair facing right|👩🏻‍🦼 donna su sedia a rotelle motorizzata woman in motorized wheelchair|👩🏻‍🦼‍➡️ donna su sedia a rotelle motorizzata a destra woman in motorized wheelchair facing right|🧑🏻‍🦽 persona su sedia a rotelle manuale person in manual wheelchair|🧑🏻‍🦽‍➡️ persona su sedia a rotelle manuale a destra person in manual wheelchair facing right|👨🏻‍🦽 uomo su sedia a rotelle manuale man in manual wheelchair|👨🏻‍🦽‍➡️ uomo su sedia a rotelle manuale a destra man in manual wheelchair facing right|👩🏻‍🦽 donna su sedia a rotelle manuale woman in manual wheelchair|👩🏻‍🦽‍➡️ donna su sedia a rotelle manuale a destra woman in manual wheelchair facing right|🏃🏻 persona che corre person running|🏃🏻‍♂️ uomo che corre man running|🏃🏻‍♀️ donna che corre woman running|🏃🏻‍➡️ persona che corre a destra person running facing right|🏃🏻‍♀️‍➡️ donna che corre a destra woman running facing right|🏃🏻‍♂️‍➡️ uomo che corre a destra man running facing right|💃🏻 donna che balla woman dancing|🕺🏻 uomo che balla man dancing|🧖🏻 persona in sauna person in steamy room|🧖🏻‍♂️ uomo in sauna man in steamy room|🧖🏻‍♀️ donna in sauna woman in steamy room|🧗🏻 persona che scala person climbing|🧗🏻‍♂️ scalatore man climbing|🧗🏻‍♀️ scalatrice woman climbing|🏇🏻 ippica horse racing|🏂🏻 persona sullo snowboard snowboarder|🏌🏻‍♂️ golfista uomo man golfing|🏌🏻‍♀️ golfista donna woman golfing|🏄🏻 persona che fa surf person surfing|🏄🏻‍♂️ surfista uomo man surfing|🏄🏻‍♀️ surfista donna woman surfing|🚣🏻 persona in barca a remi person rowing boat|🚣🏻‍♂️ uomo in barca a remi man rowing boat|🚣🏻‍♀️ donna in barca a remi woman rowing boat|🏊🏻 persona che nuota person swimming|🏊🏻‍♂️ nuotatore man swimming|🏊🏻‍♀️ nuotatrice woman swimming|⛹🏻‍♂️ uomo che fa rimbalzare una palla man bouncing ball|⛹🏻‍♀️ donna che fa rimbalzare una palla woman bouncing ball|🏋🏻‍♂️ uomo che solleva pesi man lifting weights|🏋🏻‍♀️ donna che solleva pesi woman lifting weights|🚴🏻 ciclista person biking|🚴🏻‍♂️ ciclista uomo man biking|🚴🏻‍♀️ ciclista donna woman biking|🚵🏻 ciclista di mountain bike person mountain biking|🚵🏻‍♂️ ciclista uomo di mountain bike man mountain biking|🚵🏻‍♀️ ciclista donna di mountain bike woman mountain biking|🤸🏻 persona che fa la ruota person cartwheeling|🤸🏻‍♂️ uomo che fa la ruota man cartwheeling|🤸🏻‍♀️ donna che fa la ruota woman cartwheeling|🤽🏻 persona che gioca a pallanuoto person playing water polo|🤽🏻‍♂️ pallanuotista uomo man playing water polo|🤽🏻‍♀️ pallanuotista donna woman playing water polo|🤾🏻 persona che gioca a pallamano person playing handball|🤾🏻‍♂️ pallamanista uomo man playing handball|🤾🏻‍♀️ pallamanista donna woman playing handball|🤹🏻 persona che fa giocoleria person juggling|🤹🏻‍♂️ giocoliere uomo man juggling|🤹🏻‍♀️ giocoliere donna woman juggling|🧘🏻 persona in posizione del loto person in lotus position|🧘🏻‍♂️ uomo in posizione del loto man in lotus position|🧘🏻‍♀️ donna in posizione del loto woman in lotus position|🛀🏻 persona che fa il bagno person taking bath|🛌🏻 persona a letto person in bed|🧑🏻‍🤝‍🧑🏻 persone che si tengono per mano people holding hands|👭🏻 due donne che si tengono per mano women holding hands|👫🏻 uomo e donna che si tengono per mano woman and man holding hands|👬🏻 due uomini che si tengono per mano men holding hands|💏🏻 bacio tra coppia kiss|👩🏻‍❤️‍💋‍👨🏻 bacio tra coppia: donna e uomo kiss: woman, man|👨🏻‍❤️‍💋‍👨🏻 bacio tra coppia: uomo e uomo kiss: man, man|👩🏻‍❤️‍💋‍👩🏻 bacio tra coppia: donna e donna kiss: woman, woman|💑🏻 coppia con cuore couple with heart|👩🏻‍❤️‍👨🏻 coppia con cuore: donna e uomo couple with heart: woman, man|👨🏻‍❤️‍👨🏻 coppia con cuore: uomo e uomo couple with heart: man, man|👩🏻‍❤️‍👩🏻 coppia con cuore: donna e donna couple with heart: woman, woman".split("|").map(x=>{const i=x.indexOf(" "),n=x.slice(i+1);return[x.slice(0,i),n,nz(n)]});
+function eg(){const q=nz($("es").value.trim()),g=$("eg"),fr=document.createDocumentFragment();g.innerHTML="";let c=0;EMO.forEach(x=>{if(!q||x[2].includes(q)){const b=el("button");b.textContent=x[0];b.title=x[1];b.onclick=()=>pick(x[0]);fr.append(b);c++}});g.append(fr);if(!c)g.textContent="Nessuna emoji trovata: prova un'altra parola"}
+$("es").oninput=eg;
+
+/* ---------- finestra "cambia simbolo" ---------- */
+let cu=null;
+const okNb=x=>!!(x&&!x.b&&x.s>=0);
+function ed(it,o={}){
+  cu=it;const ta=$("ta"),loc=it.s>=0;
+  $("lol").hidden=!loc;$("lo").checked=loc&&(!!markAt(it)||UL[it.ctx]!==undefined);
+  $("kk").value=it.key;$("wd").value=loc?ta.value.slice(it.s,it.e):it.label;$("cw").disabled=!loc;
+  $("sq").value=it.multi?it.key:base(it.key);
+  const u=uget(it.key);$("em").value=u&&!/^\d+$/.test(u)&&!/^(data|svg|num):/.test(u)?u:"";
+  $("dpv").innerHTML=sym(it.v!==undefined?it.v:val(it.key));$("bxh").textContent=it.label||it.key;
+  $("mp").hidden=$("mn").hidden=!loc;$("mp").disabled=!okNb(it.prev);$("mn").disabled=!okNb(it.next);
+  $("spl").hidden=!(loc&&it.multi&&uget(it.key)!==undefined);
+  $("dmsg").hidden=!o.msg;$("dmsg").textContent=o.msg||"";
+  $("ov").style.display="flex";$("es").value="";eg();srch()}
+const closeOv=()=>{$("ov").style.display="none"};
+async function srch(){
+  const r=$("rs"),t=$("sq").value.trim();if(!t){r.textContent="";return}r.textContent="Cerco…";
+  try{
+    let j=await api("search/"+encodeURIComponent(t));if(!j.length)j=await api("bestsearch/"+encodeURIComponent(t));netState(true);
+    r.innerHTML="";if(!j.length){r.textContent="Nessun risultato: prova con un'altra parola.";return}
+    j.slice(0,30).forEach(p=>{const id=p._id||p.id,b=el("button");b.innerHTML='<img alt="" src="'+IMG(id)+'">';b.onclick=()=>pick(String(id));r.append(b)});
+  }catch(e){netState(false);r.textContent="ARASAAC non raggiungibile: serve internet."}}
+const cnt=()=>{$("st").textContent="Simboli scelti da te: "+Object.keys(U).filter(k=>U[k]!=="auto").length};
+const done=()=>{sv("caa_u",U);closeOv();render();cnt();if(sOpen())drawBoard()};
+const lem=k=>{const b=base(k),l=(IRM[LANG]&&IRM[LANG][b])||LM[ak(b)];return l&&l!==b?l:""};
+function pick(v){
+  const k=core($("kk").value);if(!k)return;
+  if($("lo").checked&&cu&&cu.s>=0){setMark(cu,v);if(UL[cu.ctx]!==undefined){delete UL[cu.ctx];sv("caa_ul",UL)}done();return}
+  if(cu&&cu.s>=0){clearMark(cu);if(UL[cu.ctx]!==undefined){delete UL[cu.ctx];sv("caa_ul",UL)}}
+  uset(k,v);if($("al").checked&&lem(k))uset(lem(k),v);done()}
+/* unire e separare le parole */
+function tokensIn(s,e){
+  const t=$("ta").value;let a=s,b=e;while(a>0&&!/\s/.test(t[a-1]))a--;while(b<t.length&&!/\s/.test(t[b]))b++;
+  const seg=t.slice(a,b);if(seg.includes("\n"))return null;
+  return[...seg.matchAll(/\S+/g)].map(m=>({s:a+m.index,e:a+m.index+m[0].length,w:m[0]}))}
+function mergeRange(s,e){
+  const tk=tokensIn(s,e);
+  if(!tk){note("Si possono unire solo parole della stessa riga.");return}
+  if(tk.some(x=>!core(x.w))){note("Togli il segno di punteggiatura che sta da solo tra le parole, poi riprova.");return}
+  const ws=tk.map(x=>core(x.w));while(ws.length>1&&stop(ws[0]))ws.shift();
+  if(ws.length<2){note("Scegli almeno due parole da unire.");return}
+  if(ws.length>MW){note("Si possono unire al massimo "+MW+" parole.");return}
+  const key=ws.join(" "),a=tk[0].s,b=tk[tk.length-1].e,its=ITEMS.filter(x=>x.s<b&&x.e>a);
+  let v="";for(let i=its.length-1;i>=0&&!v;i--){const x=its[i].v;if(x!==undefined&&x!==""&&x!=="?"&&x!=="…")v=x}
+  uset(key,v||"?");sv("caa_u",U);PIN=null;drawMark();render();cnt();
+  const it=ITEMS.find(x=>x.s<=a&&x.e>=b&&x.key===key)||ITEMS.find(x=>x.key===key);
+  if(it)ed(it,{msg:"Parole unite in un solo riquadro. Scegli qui sotto il simbolo per tutta l'espressione, oppure chiudi per tenere quello attuale."})}
+$("mp").onclick=()=>{if(cu&&okNb(cu.prev)){const a=cu.prev.s,b=cu.e;closeOv();mergeRange(a,b)}};
+$("mn").onclick=()=>{if(cu&&okNb(cu.next)){const a=cu.s,b=cu.next.e;closeOv();mergeRange(a,b)}};
+$("spl").onclick=()=>{if(cu&&cu.multi){udel(cu.key);done();note("Parole separate: ognuna ha di nuovo il suo simbolo.")}};
+$("mg").onclick=()=>{const ta=$("ta");let s,e;if(PIN&&PIN.e>PIN.s){s=PIN.s;e=PIN.e}else{s=ta.selectionStart;e=ta.selectionEnd}
+  if(!(e>s)){note("Seleziona nel testo due o più parole (oppure clic su un riquadro e Maiusc + clic su un altro), poi premi Unisci.");return}mergeRange(s,e)};
+$("go").onclick=srch;$("sq").onkeydown=e=>{if(e.key==="Enter")srch()};
+$("sv").onclick=()=>{const v=$("em").value.trim();if(v)pick(v)};
+$("rm").onclick=()=>{
+  if(cu&&cu.s>=0&&clearMark(cu)){done();return}
+  if(cu&&UL[cu.ctx]!==undefined){delete UL[cu.ctx];sv("caa_ul",UL);done();return}
+  const k=core($("kk").value);udel(k);if($("al").checked&&lem(k))udel(lem(k));done()};
+$("cl").onclick=closeOv;
+$("jt").onclick=()=>{if(cu){closeOv();jump(cu,LASTP!=="touch")}};
+$("cw").onclick=()=>{if(!cu||cu.s<0)return;const w=$("wd").value;closeOv();editText(cu.s,cu.e,w)};
+$("fi").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{
+  const r=Math.min(1,200/Math.max(im.width,im.height)),cv=el("canvas");cv.width=im.width*r;cv.height=im.height*r;
+  cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);pick(cv.toDataURL("image/png"));e.target.value=""};im.src=rd.result};rd.readAsDataURL(f)};
+
+/* ---------- modelli ---------- */
+const T={h:"# Nome ______________   Data ______________\n",
+mc:"1. Domanda?\nA. Risposta uno\nB. Risposta due\nC. Risposta tre\n",
+vf:"V/F: Scrivi qui l'affermazione.\n",
+col:"1. Collega.\n~ Uno = Primo\n~ Due = Secondo\n~ Tre = Terzo\n",
+cmp:"1. Completa la frase.\nParole: scuola, libro, penna\nNick è a __ con il suo __.\n",
+ord:"1. Metti in ordine: scrivi 1, 2, 3.\n> Prima cosa\n> Seconda cosa\n> Terza cosa\n",
+open:"?? Scrivi qui la domanda.\n",
+ad:"1. Calcola.\nM: 12 + 5\nM: 28 + 9 | stelle\n",
+su:"1. Calcola.\nM: 15 - 6\nM: 30 - 12 | 🍎\n",
+mu:"1. Calcola.\nM: 4 x 6\nM: 5 x 3 | cuori\n",
+di:"1. Calcola.\nM: 20 : 5\nM: 17 : 4 | quadrati\n",
+mel:"1. Ascolta e leggi le note.\nN: 4/4 do re mi fa | sol:2 sol:2 | la la la la | sol:4 ||\n",
+nom:"1. Scrivi il nome di ogni nota.\nN?: mi sol la si | do5 re5 fa re ||\n",
+dur:"1. Le durate delle note.\nN: 4/4 do:4 | do:2 do:2 | do do do do | do:1/2 do:1/2 do:1/2 do:1/2 do:1/2 do:1/2 do:1/2 do:1/2 ||\n",
+vuo:"1. Scrivi le note sul pentagramma.\nN:\nN:\n"};
+function addTpl(k){const ta=$("ta"),t=ta.value,s=t.trimEnd().length;editText(s,t.length,(t.trim()?"\n\n":"")+T[k]);ta.scrollTop=ta.scrollHeight}
+document.querySelectorAll("#tp button[data-t]").forEach(b=>b.onclick=()=>addTpl(b.dataset.t));
+let TAB=ld("caa_tab","ex");
+function setTab(g){TAB=g;sv("caa_tab",g);document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.g===g));document.querySelectorAll("#tp button").forEach(b=>b.hidden=b.dataset.g!==g)}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>setTab(b.dataset.g));
+$("tpt").onclick=()=>{const o=document.querySelector(".ed").classList.toggle("open");$("tpt").setAttribute("aria-expanded",o);$("tpt").textContent=o?"Modelli ▴":"Modelli ▾"};
+$("mopen").onclick=()=>openME(null);
+
+/* ---------- comandi ---------- */
+$("ta").addEventListener("input",()=>{const ta=$("ta"),nt=ta.value;if(nt!==prevT){trackDiff(prevT,nt,ta.selectionEnd);prevT=nt}if(PIN){PIN=null;drawMark()}render()});
+["pointerdown","keydown"].forEach(v=>$("ta").addEventListener(v,()=>{if(PIN){PIN=null;drawMark()}}));
+$("ta").addEventListener("scroll",()=>{$("tab").scrollTop=$("ta").scrollTop});
+["keyup","click","select","focus"].forEach(v=>$("ta").addEventListener(v,hl));
+document.addEventListener("selectionchange",()=>{if(document.activeElement===$("ta"))hl()});
+$("ta").addEventListener("blur",()=>setTimeout(hl,0));
+$("pr").onclick=()=>print();
+/* grandezza del foglio: una per la modalità docente e una (più piccola) per la combinata */
+const curZ=()=>MODE==="comb"?ZSC:ZS;
+function applyZ(){const z=curZ();document.documentElement.style.setProperty("--s",z);$("z").value=z}
+function setZ(v){v=+v||1;if(MODE==="comb"){ZSC=v;sv("caa_zsc",v)}else{ZS=v;sv("caa_zs",v)}applyZ()}
+function setZB(v){ZB=+v||1;document.documentElement.style.setProperty("--bs",ZB);$("z2").value=ZB;sv("caa_zb",ZB)}
+$("z").oninput=e=>{setZ(e.target.value);reflow(true)};
+$("z2").oninput=e=>{setZB(e.target.value);clearTimeout(setZB.h);setZB.h=setTimeout(()=>fitLabels($("sv2")),150)};
+$("up").onchange=e=>{document.body.classList.toggle("nu",!e.target.checked);sv("caa_up",e.target.checked);render()};
+$("sol").onchange=e=>document.body.classList.toggle("sol",e.target.checked);
+$("mcol").onchange=e=>{sv("caa_mc",e.target.checked);render()};
+$("nw").onclick=()=>{if(confirm("Cancellare il testo attuale? I simboli scelti restano salvati.")){PM=[];editText(0,$("ta").value.length,"",true)}};
+function dl(obj,name){const a=el("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(obj)],{type:"application/json"}));a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+$("sa").onclick=()=>dl({t:$("ta").value,u:U,l:UL,p:PM,v:2},"verifica-caa.json");
+$("op").onclick=()=>$("fo").click();
+$("fo").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result),t=typeof j.t==="string"?j.t:"";
+  Object.assign(U,j.u||{});Object.assign(UL,j.l||{});sv("caa_u",U);sv("caa_ul",UL);
+  PM=[];editText(0,$("ta").value.length,t,true);
+  PM=(Array.isArray(j.p)?j.p:[]).filter(m=>m&&m.s>=0&&m.e<=t.length&&m.e>m.s&&!/\s/.test(t.slice(m.s,m.e)));render();cnt()}catch(x){alert("File non valido")}};rd.readAsText(f);e.target.value=""};
+$("lg").value=LANG;$("lg").onchange=e=>{LANG=e.target.value;sv("caa_lg",LANG);render();cnt();loadVoices();if(sOpen())drawBoard()};
+document.addEventListener("click",e=>{const d=$("dmenu");if(d.open&&!d.contains(e.target))d.open=false;const ss=$("sset");if(ss.style.display==="flex"&&!ss.contains(e.target)&&e.target!==$("sg"))toggleSet(false)});
+$("ds").onclick=()=>{$("dmenu").open=false;const boards={};["it","en","es","fr","de","pt"].forEach(l=>{try{const b=localStorage.getItem("caa_board_"+l);if(b!==null)boards[l]=b}catch(e){}});dl({u:U,b:getBoard(),boards},"dizionario-caa.json")};
+$("dl").onclick=()=>{$("dmenu").open=false;$("fd").click()};
+$("fd").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);Object.assign(U,j.u||{});
+  if(j.boards&&typeof j.boards==="object")Object.entries(j.boards).forEach(([l,b])=>{try{localStorage.setItem("caa_board_"+l,b)}catch(x){}});else if(j.b){try{localStorage.setItem(bkey(),j.b)}catch(x){}}
+  sv("caa_u",U);render();cnt();if(sOpen())drawBoard();note("Dizionario caricato.")}catch(x){alert("File non valido")}};rd.readAsText(f);e.target.value=""};
+
+/* ---------- editor visuale delle note ---------- */
+let ME=null;
+const curDur=()=>{const b=ME.dur;return ME.dot&&(b===2||b===1||b===0.5)?b*1.5:b};
+const meIns=()=>ME.sel>=0?ME.sel+1:ME.d.items.length;
+function renum(){ME.d.items.forEach((x,i)=>x.i=i)}
+function openME(range){
+  stopPlay();const t=$("ta").value;let d=null,hide=false;
+  if(!range){const ta=$("ta"),c=ta.selectionStart||0,ls=t.lastIndexOf("\n",c-1)+1;let le=t.indexOf("\n",c);if(le<0)le=t.length;if(/^\s*(N\??:|♪)/i.test(t.slice(ls,le)))range={s:ls,e:le}}
+  if(range){const m=t.slice(range.s,range.e).match(/^\s*N(\?)?:\s*(.*)$/i)||t.slice(range.s,range.e).match(/^\s*♪(\?)?:?\s*(.*)$/);if(m){hide=!!m[1];d=parseMusic(m[2])}else range=null}
+  if(!d)d={items:[],time:null,tempo:90,errs:[]};
+  ME={d,range,hide,sel:-1,dur:1,dot:false,acc:0,xs:[]};
+  $("mhide").checked=hide;$("mtime").value=d.time?d.time.n+"/"+d.time.d:"";$("mtmp").value=d.tempo;$("mdot").checked=false;
+  $("mok").textContent=range?"Aggiorna il foglio":"Inserisci nel foglio";
+  $("mov").style.display="flex";meTools();meDraw();meText()}
+function closeME(){stopPlay();$("mov").style.display="none";ME=null}
+function meText(){$("mtxt").value=toText(ME.d)}
+function meTools(){
+  document.querySelectorAll("#mdurs .dur").forEach(b=>b.classList.toggle("on",+b.dataset.d===ME.dur));
+  const s=ME.d.items[ME.sel],isN=s&&s.t==="note";
+  document.querySelectorAll("#mov .acc").forEach(b=>b.classList.toggle("on",isN?s.acc===+b.dataset.a:ME.acc===+b.dataset.a));
+  $("mup").disabled=$("mdn").disabled=!isN}
+function meDraw(){
+  const its=ME.d.items,k=1.6;let r=sysCore(its,{col:true,ed:true,time:ME.d.time});
+  const last=its.length?r.xs[its.length-1]+slotW(its[its.length-1])/2:(ME.d.time?78:48),cx=ME.sel>=0&&ME.sel<its.length?r.xs[ME.sel]+slotW(its[ME.sel])/2:last;
+  const under=ME.sel>=0&&ME.sel<its.length?'<rect x="'+(r.xs[ME.sel]-17)+'" y="-34" width="34" height="108" rx="9" fill="#bfdbfe" opacity=".6"/>':"";
+  const over=ln(cx,-30,cx,70,2.2,"#2b6cb0")+'<g id="mgh" opacity="0" pointer-events="none"><ellipse rx="6.3" ry="4.5" fill="#2b6cb0" transform="rotate(-22)"/><text x="12" y="4" font-size="11" font-weight="700" fill="#2b6cb0" font-family="Verdana,sans-serif"></text></g>';
+  r=sysCore(its,{col:true,ed:true,time:ME.d.time,under,over,minW:Math.max(($("mstaff").clientWidth-4)/k,last+120)});
+  ME.xs=r.xs;$("mstaff").innerHTML=svgWrap(r,k);
+  const ed=$("mstaff"),cur=ed.scrollLeft;if(cx*k>cur+ed.clientWidth-60||cx*k<cur)ed.scrollLeft=Math.max(0,cx*k-ed.clientWidth/2)}
+function svgPt(ev){const svg=$("mstaff").querySelector("svg"),p=svg.createSVGPoint();p.x=ev.clientX;p.y=ev.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
+const yNote=y=>{const st=Math.max(-4,Math.min(12,Math.round((40-y)/5))),D=30+st;return{n:((D%7)+7)%7,oc:Math.floor(D/7)}};
+function meAdd(it,at){ME.d.items.splice(at,0,it);renum();ME.sel=at;beep(it);meTools();meDraw();meText()}
+$("mstaff").addEventListener("click",ev=>{
+  if(!ME||!$("mstaff").querySelector("svg"))return;const p=svgPt(ev),its=ME.d.items;let hit=-1;
+  if(p.y>72||p.y<-34)return;
+  its.forEach((it,j)=>{const dx=Math.abs(p.x-ME.xs[j]);if(dx>10)return;if(it.t==="note"&&Math.abs(p.y-mY(it))>12)return;hit=j});
+  if(hit>=0){ME.sel=ME.sel===hit?-1:hit;meTools();meDraw();return}
+  let at=its.findIndex((it,j)=>ME.xs[j]>p.x);if(at<0)at=its.length;
+  const q=yNote(p.y);meAdd({t:"note",n:q.n,oc:q.oc,acc:ME.acc,dur:curDur()},at)});
+$("mstaff").addEventListener("pointermove",ev=>{if(!ME||ev.pointerType==="touch")return;const g=$("mgh");if(!g)return;const p=svgPt(ev);if(p.y>72||p.y<-34){g.setAttribute("opacity","0");return}const q=yNote(p.y),o={n:q.n,oc:q.oc,acc:0},y=mY(o);g.setAttribute("transform","translate("+p.x+" "+y+")");g.setAttribute("opacity",".45");g.querySelector("text").textContent=noteName(o)});
+$("mstaff").addEventListener("pointerleave",()=>{const g=$("mgh");if(g)g.setAttribute("opacity","0")});
+function meMove(dy){const s=ME.d.items[ME.sel];if(!s||s.t!=="note")return;const D=Math.max(26,Math.min(42,s.oc*7+s.n+dy));s.n=D%7;s.oc=Math.floor(D/7);beep(s);meDraw();meText()}
+function meDel(){const its=ME.d.items;if(!its.length)return;const j=ME.sel>=0?ME.sel:its.length-1;its.splice(j,1);renum();ME.sel=Math.min(j-1,its.length-1);if(ME.sel<0&&its.length&&j===0)ME.sel=-1;meTools();meDraw();meText()}
+(function(){
+  const keys=$("mkeys");[[0,4],[1,4],[2,4],[3,4],[4,4],[5,4],[6,4],[0,5]].forEach(([n,oc])=>{const b=el("button","nk"),o={n,oc,acc:0};b.textContent=noteName(o)+(oc>4?"'":"");b.style.borderColor=NDK[n];b.style.background=NCOL[n]+"40";b.style.color=NDK[n];b.onclick=()=>meAdd({t:"note",n,oc,acc:ME.acc,dur:curDur()},meIns());b.dataset.n=n;b.dataset.oc=oc;keys.append(b)});
+  const dd=$("mdurs");[4,2,1,0.5,0.25].forEach(v=>{const b=el("button","dur");b.dataset.d=v;b.title=DNAME[v]+" ("+({4:"4 tempi",2:"2 tempi",1:"1 tempo",0.5:"mezzo tempo",0.25:"un quarto di tempo"}[v])+")";
+    b.innerHTML='<svg viewBox="-9 -13 26 46" aria-hidden="true">'+noteS(0,{n:5,oc:4,acc:0,dur:v},{col:false}).replace(/#1a1a1a|#222/g,"currentColor")+'</svg>'+DNAME[v];
+    b.onclick=()=>{ME.dur=v;const s=ME.d.items[ME.sel];if(s&&s.t!=="bar"&&s.t!=="time"){s.dur=curDur();meDraw();meText()}meTools()};dd.append(b)});
+})();
+$("mdot").onchange=e=>{ME.dot=e.target.checked;const s=ME.d.items[ME.sel];if(s&&(s.t==="note"||s.t==="rest")){s.dur=curDur();meDraw();meText()}};
+document.querySelectorAll("#mov .acc").forEach(b=>b.onclick=()=>{const a=+b.dataset.a,s=ME.d.items[ME.sel];if(s&&s.t==="note"){s.acc=s.acc===a?0:a;beep(s);meDraw();meText()}else ME.acc=ME.acc===a?0:a;meTools()});
+$("mup").onclick=()=>meMove(1);$("mdn").onclick=()=>meMove(-1);$("mdel").onclick=meDel;
+$("mrest").onclick=()=>meAdd({t:"rest",dur:curDur()},meIns());
+$("mbar").onclick=()=>meAdd({t:"bar",dbl:false},meIns());
+$("mend").onclick=()=>meAdd({t:"bar",dbl:true},meIns());
+$("mclr").onclick=()=>{ME.d.items=[];ME.sel=-1;meTools();meDraw();meText()};
+$("mply").onclick=()=>{if(PLAY&&PLAY.s===-1){stopPlay();return}if(!ME.d.items.some(x=>x.t==="note")){note("Metti almeno una nota.");return}playMus($("mstaff"),ME.d,$("mply"),-1)};
+$("mtime").onchange=e=>{const m=e.target.value.match(/^(\d+)\/(\d+)$/);ME.d.time=m?{t:"time",n:+m[1],d:+m[2]}:null;meDraw();meText()};
+$("mtmp").onchange=e=>{ME.d.tempo=Math.min(220,Math.max(40,+e.target.value||90));e.target.value=ME.d.tempo;meText()};
+$("mhide").onchange=e=>{ME.hide=e.target.checked};
+$("mtxt").oninput=e=>{const d=parseMusic(e.target.value);d.tempo=d.tempo||90;ME.d=d;ME.sel=-1;$("mtime").value=d.time?d.time.n+"/"+d.time.d:"";$("mtmp").value=d.tempo;$("mhint").textContent=d.errs.length?"Non capisco: "+d.errs.join(" "):"Clic sul pentagramma: la nota va dove clicchi, più in alto è più acuta. Clic su una nota per sceglierla e cambiarla.";meTools();meDraw()};
+$("mx").onclick=closeME;$("mcan").onclick=closeME;
+$("mok").onclick=()=>{
+  const line=(ME.hide?"N?: ":"N: ")+toText(ME.d),r=ME.range,ta=$("ta"),t=ta.value;closeME();
+  if(r){editText(r.s,r.e,line);return}
+  const c=Math.min(ta.selectionEnd||t.length,t.length),ls=t.lastIndexOf("\n",c-1)+1;let le=t.indexOf("\n",c);if(le<0)le=t.length;
+  if(!t.slice(ls,le).trim())editText(ls,le,line);else editText(le,le,"\n"+line)};
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){if($("mov").style.display==="flex")closeME();else if($("ov").style.display==="flex")closeOv();else if($("bov").style.display==="flex")$("bov").style.display="none";else if($("sset").style.display==="flex")toggleSet(false);return}
+  if(!ME||$("mov").style.display!=="flex"||/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName))return;
+  if(e.key==="ArrowUp"){e.preventDefault();meMove(1)}else if(e.key==="ArrowDown"){e.preventDefault();meMove(-1)}
+  else if(e.key==="ArrowLeft"){e.preventDefault();ME.sel=ME.sel<0?ME.d.items.length-1:Math.max(0,ME.sel-1);meTools();meDraw()}
+  else if(e.key==="ArrowRight"){e.preventDefault();ME.sel=ME.sel<0?-1:ME.sel+1>=ME.d.items.length?-1:ME.sel+1;meTools();meDraw()}
+  else if(e.key==="Backspace"||e.key==="Delete"){e.preventDefault();meDel()}});
+
+/* ---------- modalità studente: comunicatore ---------- */
+const DEF=`# 👤 Persone
+io, tu, lui, lei, noi, voi, loro, mamma, papà, nonno, nonna, fratello, sorella, amico, compagno, professore, professoressa, dottore, bambino, bambina, uomo, donna
+# 🏃 Azioni
+volere, mangiare, bere, giocare, dormire, andare, venire, vedere, ascoltare, leggere, scrivere, disegnare, parlare, aiutare, correre, camminare, aprire, chiudere, prendere, dare, fare, sapere, sentire, lavare
+# 🍎 Cibo e bevande
+acqua, latte, pane, pasta, pizza, mela, banana, biscotto, gelato, succo, carne, pesce, formaggio, riso, frutta, verdura, merenda, colazione
+# 😊 Emozioni e bisogni
+felice, triste, arrabbiato, spaventato, stanco, annoiato, contento, preoccupato, sorpreso, confuso, male, fame, sete, paura, caldo, freddo
+# 🏫 Scuola
+scuola, classe, italiano, matematica, storia, geografia, educazione fisica, arte, musica, inglese, sostegno, libro, quaderno, penna, matita, zaino, banco, lavagna, compiti, verifica, ricreazione, bagno, colori, forbici, colla, gomma, righello, campanella
+# 🏠 Casa e luoghi
+casa, cucina, camera, giardino, parco, negozio, ospedale, supermercato, strada, palestra, chiesa, mare, montagna
+# 🐶 Animali
+cane, gatto, uccello, pesce, cavallo, mucca, maiale, pecora, coniglio, leone, elefante, scimmia
+# 🧍 Corpo
+testa, occhi, orecchie, naso, bocca, mano, piede, pancia, braccio, gamba, dente, cuore
+# ⏰ Tempo
+oggi, domani, ieri, adesso, mattina, pomeriggio, sera, notte, giorno, settimana, estate, inverno, sole, pioggia
+# 🔤 Parole utili
+sì, no, e, ma, anche, perché, quando, dove, chi, come, molto, poco, ancora, basta, aiuto, grazie, ciao, scusa, qui, tutto, niente, più, meno
+# 🎨 Colori e forme
+rosso, blu, giallo, verde, nero, bianco, arancione, rosa, viola, marrone, grande, piccolo, cerchio, quadrato, triangolo
+# 🎮 Giochi
+palla, bambola, macchinina, puzzle, disegno, musica, ballare, cantare, computer, televisione, bicicletta, carte`;
+const LC={it:"it-IT",en:"en-GB",es:"es-ES",fr:"fr-FR",de:"de-DE",pt:"pt-PT"};
+const BC=["#2b6cb0","#d97706","#2f855a","#c53030","#6b46c1","#0e7490","#b7791f","#be185d","#4a5568","#2c7a7b","#9c4221","#5a67d8"];
+let SEN=[],CAT=0,VOI=[],MODE="ins";
+const sOpen=()=>MODE!=="ins",bkey=()=>"caa_board_"+LANG;
+const getBoard=()=>{let b=null;try{b=localStorage.getItem(bkey())}catch(e){}return b===null?(LANG==="it"?DEF:""):b};
+function parseBoard(t){const cats=[];let c=null;for(const raw of t.split("\n")){const l=raw.trim();if(!l)continue;
+  if(l[0]==="#"){const h=l.slice(1).trim(),m=h.match(/^(\p{Extended_Pictographic}\S*)\s+(.*)$/u);c={ic:m?m[1]:"",name:m?m[2]:h,w:[]};cats.push(c)}
+  else if(c)l.split(",").forEach(x=>{x=x.trim();if(x)c.w.push(x)})}return cats}
+const PERS={io:0,tu:1,lui:2,lei:2,noi:3,voi:4,loro:5};
+const IRRV={};[["volere","voglio vuoi vuole vogliamo volete vogliono"],["potere","posso puoi può possiamo potete possono"],["dovere","devo devi deve dobbiamo dovete devono"],["andare","vado vai va andiamo andate vanno"],["venire","vengo vieni viene veniamo venite vengono"],["fare","faccio fai fa facciamo fate fanno"],["dare","do dai dà diamo date danno"],["sapere","so sai sa sappiamo sapete sanno"],["bere","bevo bevi beve beviamo bevete bevono"],["dire","dico dici dice diciamo dite dicono"],["stare","sto stai sta stiamo state stanno"],["uscire","esco esci esce usciamo uscite escono"],["essere","sono sei è siamo siete sono"],["avere","ho hai ha abbiamo avete hanno"]].forEach(x=>IRRV[x[0]]=x[1].split(" "));
+const ISC=new Set("capire finire preferire pulire costruire".split(" "));
+function conj(inf,p){
+  if(IRRV[inf])return IRRV[inf][p];
+  const t=inf.slice(-3),st=inf.slice(0,-3);
+  if(t==="are"){if(/i$/.test(st)&&(p===1||p===3))return p===1?st:st+"amo";const E=["o","i","a","iamo","ate","ano"][p];return(/[cg]$/.test(st)&&(p===1||p===3))?st+"h"+E:st+E}
+  if(t==="ere")return st+["o","i","e","iamo","ete","ono"][p];
+  if(t==="ire")return st+(ISC.has(inf)?["isco","isci","isce","iamo","ite","iscono"]:["o","i","e","iamo","ite","ono"])[p];
+  return inf}
+function persOf(i){let p=SEN[i].subj;if(i>=2&&SEN[i-1].w==="e"&&SEN[i-2].subj!==undefined){const q=SEN[i-2].subj;p=(p===0||q===0)?3:(p===1||q===1)?4:5}return p}
+function push(w,col,cat){
+  const it={w,col,lab:w};
+  const subj=PERS[w]!==undefined?PERS[w]:(/person|people|persona/i.test(cat)?2:undefined);
+  if(subj!==undefined)it.subj=subj;
+  if((/azion|verb|action|acci/i.test(cat)||IRRV[w])&&/(are|ere|ire|rre)$/.test(w)){
+    it.verb=1;
+    if($("cj").checked&&LANG==="it")for(let i=SEN.length-1;i>=0;i--){const x=SEN[i];if(x.verb)break;if(x.subj!==undefined){it.lab=conj(w,persOf(i));break}}
+  }
+  SEN.push(it)}
+function cell(w,col,small,lab,cat){
+  const key=core(w),v=val(key),c=el("div","c"),e=el("div","e"),t=el("div","t");
+  e.innerHTML=sym(v||"?");t.textContent=lab||w;c.style.borderColor=col;if(v===""||v==="?")c.classList.add("miss");
+  if(!small)c.onclick=()=>{if($("em2").checked){ed({key,label:w,s:-1,e:-1,v});return}push(w,col,cat||"");drawSen();if($("aw").checked)say(SEN[SEN.length-1].lab)};
+  c.append(e,t);return c}
+function drawSen(){const s=$("sen");s.innerHTML="";SEN.forEach(x=>s.append(cell(x.w,x.col,1,x.lab)));s.scrollLeft=s.scrollWidth;fitLabels(s)}
+function drawBoard(){
+  const cats=parseBoard(getBoard()),tabs=$("stabs"),g=$("sgrid");tabs.innerHTML="";g.innerHTML="";
+  if(!cats.length){g.textContent="Nessuna parola per questa lingua. Premi ⚙ e poi «Modifica tabella» per scriverle.";drawSen();return}
+  CAT=Math.min(CAT,cats.length-1);
+  cats.forEach((c,i)=>{const b=el("button","tab"+(i===CAT?" on":""));b.textContent=(c.ic?c.ic+" ":"")+c.name;b.style.borderColor=BC[i%12];if(i===CAT)b.style.background=BC[i%12];b.onclick=()=>{CAT=i;drawBoard()};tabs.append(b)});
+  cats[CAT].w.forEach(w=>g.append(cell(w,BC[CAT%12],0,"",cats[CAT].name)));drawSen();fitLabels(g)}
+function loadVoices(){if(!window.speechSynthesis)return;VOI=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith(LANG));
+  const s=$("vo");s.innerHTML="";VOI.forEach(v=>{const o=el("option");o.value=v.name;o.textContent=v.name+" ("+v.lang+")";s.append(o)});
+  const p=ld("caa_voice","");if(p&&VOI.some(v=>v.name===p))s.value=p}
+if(window.speechSynthesis)speechSynthesis.onvoiceschanged=loadVoices;
+function say(t){if(!window.speechSynthesis){alert("Questo browser non ha la sintesi vocale");return}
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t),v=VOI.find(x=>x.name===$("vo").value)||VOI[0];
+  if(v){u.voice=v;u.lang=v.lang}else u.lang=LC[LANG];u.rate=+$("rt").value;speechSynthesis.speak(u)}
+$("vo").onchange=()=>sv("caa_voice",$("vo").value);
+function toggleSet(on){const s=$("sset");if(on===undefined)on=s.style.display!=="flex";
+  if(on){const top=$("sbar").offsetHeight+6;s.style.top=top+"px";s.style.maxHeight="calc(100% - "+(top+10)+"px)"}
+  s.style.display=on?"flex":"none";$("sg").setAttribute("aria-expanded",on)}
+$("sg").onclick=e=>{e.stopPropagation();toggleSet()};
+$("sp").onclick=()=>{if(SEN.length)say(SEN.map(x=>x.lab).join(" "))};
+$("su2").onclick=()=>{SEN.pop();drawSen()};$("sc").onclick=()=>{SEN=[];drawSen()};
+$("bed").onclick=()=>{$("bt").value=getBoard();$("bov").style.display="flex"};
+$("bs").onclick=()=>{try{localStorage.setItem(bkey(),$("bt").value)}catch(e){}$("bov").style.display="none";CAT=0;drawBoard()};
+$("bd").onclick=()=>{$("bt").value=LANG==="it"?DEF:""};
+$("bc").onclick=()=>$("bov").style.display="none";
+
+/* ---------- modalità e divisore ---------- */
+function setMode(m){
+  if(!["ins","stu","comb"].includes(m))m="ins";MODE=m;sv("caa_mode",m);
+  document.body.classList.remove("m-ins","m-stu","m-comb");document.body.classList.add("m-"+m);
+  document.querySelectorAll(".modes button").forEach(b=>{const on=b.dataset.m===m;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+  toggleSet(false);applyZ();
+  if(m==="ins"){if(window.speechSynthesis)speechSynthesis.cancel()}else{loadVoices();drawBoard()}
+  requestAnimationFrame(()=>{render();drawMark()})}
+document.querySelectorAll(".modes button").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
+const portrait=()=>matchMedia("(orientation: portrait), (max-width: 900px)").matches;
+let SPL=Object.assign({tw:.36,th:.44},ld("caa_split",{}));
+function applySplit(){const r=document.documentElement.style;r.setProperty("--tw",(SPL.tw*100).toFixed(1)+"%");r.setProperty("--th",(SPL.th*100).toFixed(1)+"%")}
+let RF=0;function reflow(force){clearTimeout(RF);RF=setTimeout(()=>{const w=$("m").clientWidth;if(force||(w>50&&Math.abs(w-SHW)>20&&/^\s*(N\??:|♪)/im.test($("ta").value)))render();syncTa()},120)}
+(function(){
+  const h=$("hdl"),lim=(v,a,b)=>Math.min(b,Math.max(a,v));
+  h.addEventListener("pointerdown",e=>{if(e.button>0)return;e.preventDefault();h.setPointerCapture(e.pointerId);h.classList.add("drag");
+    const r=$("app").getBoundingClientRect(),pt=portrait();
+    const mv=ev=>{if(pt)SPL.th=lim((ev.clientY-r.top)/r.height,.16,.72);else SPL.tw=lim((ev.clientX-r.left)/r.width,.2,.66);applySplit()};
+    const up=()=>{h.classList.remove("drag");h.removeEventListener("pointermove",mv);h.removeEventListener("pointerup",up);h.removeEventListener("pointercancel",up);sv("caa_split",SPL);reflow()};
+    h.addEventListener("pointermove",mv);h.addEventListener("pointerup",up);h.addEventListener("pointercancel",up)});
+  h.addEventListener("dblclick",()=>{SPL={tw:.36,th:.44};applySplit();sv("caa_split",SPL);reflow()});
+  h.addEventListener("keydown",e=>{const d={ArrowLeft:-.03,ArrowUp:-.03,ArrowRight:.03,ArrowDown:.03}[e.key];if(!d)return;e.preventDefault();if(portrait())SPL.th=lim(SPL.th+d,.16,.72);else SPL.tw=lim(SPL.tw+d,.2,.66);applySplit();sv("caa_split",SPL);reflow()});
+})();
+if(window.ResizeObserver){new ResizeObserver(()=>reflow()).observe($("sheet"));new ResizeObserver(()=>syncTa()).observe($("ta"))}
+window.addEventListener("beforeprint",()=>{PRINTW=700;render()});
+window.addEventListener("afterprint",()=>{PRINTW=0;render()});
+$("more").onclick=()=>{const o=document.body.classList.toggle("more");$("more").setAttribute("aria-expanded",o)};
+if(document.fullscreenEnabled){$("fs").hidden=false;$("fs").onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}}
+
+/* ---------- avvio ---------- */
+ZS=+ld("caa_zs",1)||1;ZSC=+ld("caa_zsc",.8)||.8;setZB(ld("caa_zb",1));applySplit();
+$("up").checked=ld("caa_up",true);document.body.classList.toggle("nu",!$("up").checked);
+$("mcol").checked=ld("caa_mc",true);setTab(TAB);
+{const t0=ld("caa_t","");$("ta").value=typeof t0==="string"&&t0?t0:"Benvenuto in CAA Studio!\nCancella questo testo e inizia a scrivere.";prevT=$("ta").value;
+ PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
+cnt();setMode(ld("caa_mode","ins"));render();
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+</script>
+</body>
+</html>

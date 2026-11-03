@@ -1,0 +1,417 @@
+==============================================================
+ CAA STUDIO - per la didattica inclusiva
+ a cura del Prof. Marchitto
+ VADEMECUM PER I COLLEGHI
+==============================================================
+
+COS'E'
+Un programma per scrivere testi, verifiche, esercizi di matematica
+e di musica con i simboli della Comunicazione Aumentativa
+Alternativa (CAA). Scrivi il testo normale e a destra compaiono i
+riquadri con simbolo sopra e parola sotto, pronti da stampare o
+salvare in PDF. Ha anche un comunicatore con la voce per l'alunno.
+Non va installato: e' un unico file che si apre con il browser.
+
+
+1. COME SI APRE
+--------------------------------------------------------------
+- Salva il file CAA_Studio.html sul computer (es. sul Desktop).
+- Fai doppio clic: si apre in Chrome, Edge o Firefox.
+- Serve la connessione a internet: i pittogrammi vengono cercati
+  nell'archivio ARASAAC. Senza internet i simboli non compaiono e
+  in alto appare l'avviso "ARASAAC non raggiungibile".
+- I tuoi simboli, i testi e le modifiche restano salvati nel
+  browser di quel computer.
+
+
+2. COME E' FATTA LA SCHERMATA
+--------------------------------------------------------------
+IN ALTO (sempre visibile, in tutte le modalita'):
+  i tre pulsanti DOCENTE / STUDENTE / COMBINATA, poi Nuovo, Apri,
+  Salva, Dizionario (Salva dizionario / Carica dizionario), Stampa,
+  il menu Lingua simboli e il pulsante Schermo intero.
+  In modalita' Studente restano solo i pulsanti delle modalita' e
+  la lingua, cosi' l'alunno non tocca per sbaglio Nuovo o Stampa.
+
+A SINISTRA: le schede Esercizi / Matematica / Musica con i
+pulsanti dei modelli, il pulsante "Unisci" e lo spazio dove scrivi.
+
+A DESTRA: il foglio, cosi' come verra' stampato. Sopra il foglio:
+Grandezza, MAIUSCOLO, Mostra risultati, Note colorate.
+
+
+3. LE TRE MODALITA'
+--------------------------------------------------------------
+DOCENTE: testo a sinistra, foglio a destra. Per preparare i fogli.
+
+STUDENTE: il comunicatore a tutto schermo (vedi punto 12).
+
+COMBINATA: docente e alunno insieme. A sinistra, piu' piccola, la
+parte del docente (testo sopra, foglio sotto); a destra, piu'
+grande, il comunicatore dell'alunno.
+- La barra in mezzo si trascina per allargare o stringere le due
+  parti (anche con il dito sul tablet). Doppio clic sulla barra:
+  tornano le misure iniziali. Il programma si ricorda la misura.
+- Sul tablet tenuto in verticale la parte del docente va sopra e
+  quella dell'alunno sotto.
+- In Combinata il foglio ha una sua Grandezza, di base un po' piu'
+  piccola; quella della modalita' Docente non cambia.
+- I modelli (Esercizi, Matematica, Musica) si aprono con il
+  pulsante "Modelli".
+
+
+4. COME SI SCRIVE
+--------------------------------------------------------------
+Una riga = una frase. Ogni parola diventa un riquadro con il suo
+simbolo. Articoli e preposizioni si uniscono alla parola seguente
+("la professoressa", "con i compagni"), ma mai oltre un segno di
+punteggiatura.
+
+Righe speciali:
+
+  1. Domanda?          domanda numerata
+  A. Risposta          risposte A, B, C (da segnare)
+  V/F: Frase           vero / falso
+  ~ Nick = Fa domande  collegamento (piu' righe di seguito;
+                       le colonne vengono mischiate da sole)
+  Parole: a, b, c      elenco di parole (per "completa")
+  __                   spazio da completare ("a __" diventa un
+                       solo spazio con scritto A)
+  > Frase              frase da mettere in ordine
+  ?? Domanda           risposta aperta con le righe per scrivere
+  # Titolo             testo semplice, senza simboli
+  ---                  pagina nuova
+  M: 12 + 5            calcolo visivo (vedi punto 9)
+  N: do re mi          pentagramma con le note (vedi punto 10)
+
+I pulsanti a sinistra inseriscono gia' un esempio di ogni tipo.
+Esercizi: Intestazione, Scelta multipla, Vero/Falso, Collegamento,
+Completa, Ordina, Risposta aperta. Matematica: Addizione,
+Sottrazione, Moltiplicazione, Divisione. Musica: Melodia, Nomi
+delle note, Durate, Pentagramma vuoto, Scrivi le note.
+
+IMPORTANTE: i simboli compaiono dopo qualche istante, il tempo che
+il programma li cerchi. Un riquadro con "..." sta ancora cercando.
+
+Ctrl+Z annulla anche le modifiche fatte con i pulsanti (modelli,
+Cambia parola, note inserite).
+
+
+5. CLIC, DOPPIO CLIC E CORREZIONE DEI SIMBOLI
+--------------------------------------------------------------
+UN CLIC su un riquadro del foglio: porta alla parola nel testo a
+sinistra, che si colora di giallo. Sul tablet non si apre la
+tastiera.
+
+DOPPIO CLIC (oppure tasto destro): apre la finestra per cambiare il
+simbolo. Il programma sceglie da solo il primo simbolo trovato e
+puo' sbagliare. Nella finestra:
+
+- Parola nel testo + "Cambia parola": corregge la parola scritta.
+- Unisci con la parola prima / Unisci con la parola dopo: fa un
+  solo riquadro con la parola vicina (vedi sotto).
+- Separa le parole: compare sui riquadri uniti, li divide di nuovo.
+- Parole da coprire: per unire piu' parole scrivendole a mano.
+- Vale anche per le altre forme: se attiva, il simbolo vale per
+  tutto il verbo (fare, faccio, faceva, fatto...).
+- Solo qui: cambia SOLO quel riquadro e non le altre volte che la
+  parola compare, anche se la frase e' identica (es. YOU = tu nella
+  prima riga e YOU = voi in un'altra riga uguale). Il bordo del
+  riquadro diventa viola. La scelta resta attaccata a quella
+  parola anche se aggiungi o togli righe prima o dopo.
+- Cerca in ARASAAC: scegli tra le immagini proposte.
+- Emoji: scrivi una parola (es. "sorriso") e scegli dall'elenco,
+  oppure incolla un'emoji.
+- Immagine dal computer: usa un'immagine tua (es. la foto di un
+  compagno).
+- Ripristina automatico: torna al simbolo scelto dal programma.
+- Vai al testo: porta alla parola nel testo.
+
+Quello che scegli viene ricordato per sempre, anche nei fogli
+futuri (tranne "Solo qui", che vale solo per quel riquadro).
+
+UNIRE PIU' PAROLE IN UN SOLO SIMBOLO (es. "gelato al cioccolato"):
+- doppio clic su un riquadro e "Unisci con la parola dopo"
+  (o "prima"); oppure
+- seleziona le parole nel testo e premi "Unisci"; oppure
+- clic su un riquadro, poi Maiusc + clic su un altro riquadro della
+  stessa riga, poi "Unisci".
+Si apre la finestra con la ricerca gia' pronta per tutta
+l'espressione: scegli il simbolo. L'unione vale ovunque ricompaiano
+quelle parole, anche con un articolo diverso davanti ("il gelato al
+cioccolato", "un gelato al cioccolato").
+
+RIQUADRO CON BORDO TRATTEGGIATO: nessun simbolo trovato. Doppio
+clic e scegline uno.
+
+EVIDENZIAZIONE: quando selezioni o clicchi una parola nel testo a
+sinistra, i riquadri corrispondenti si colorano di giallo.
+
+
+6. COSA FA DA SOLO
+--------------------------------------------------------------
+- Verbi: forme diverse dello stesso verbo hanno lo stesso simbolo.
+- Passato con "avere": "ha dato", "aveva capito" sono un solo
+  riquadro con il simbolo del verbo.
+- Passato con "essere" dei verbi come andare, venire, cadere,
+  nascere, arrivare...: "e' andata", "e' caduto" sono un solo
+  riquadro. Anche i verbi con si/mi/ti: "si e' fermato", "si e'
+  arrabbiato" (= si e' arrabbiato in quel momento).
+- "Essere" + aggettivo o emozione resta SEPARATO: "Marco e'
+  arrabbiato" = MARCO  =  ARRABBIATO, come "Marco e' felice".
+  Il simbolo = rende chiaro "persona = come sta".
+- "Sei": dopo "tu", a inizio frase o prima di un aggettivo e' il
+  verbo (=); in "ho sei anni", "alle sei", "sei mele" e' il numero 6.
+- "Fare" + complemento ("fare un compito", "fa freddo"): un solo
+  riquadro con il simbolo del complemento.
+- Inglese: "do / does / did" si uniscono alla parola dopo.
+- Emozioni (felice, contento, triste, arrabbiato, spaventato,
+  paura, stanco, annoiato, sorpreso, confuso, preoccupato, fame,
+  caldo, freddo): sempre la stessa serie di volti ARASAAC, anche
+  in inglese, spagnolo, francese, tedesco e portoghese.
+- Simboli disegnati apposta, in linee blu, solo per le parole
+  grammaticali (e, ma, che, non, perche', quando, dove, chi, poi,
+  prima, molto, poco, se, e' / sono, sempre...) e per i numeri.
+  Tutte le altre parole usano ARASAAC.
+- Un numero scritto con le cifre (es. 35) diventa un riquadro con
+  il numero grande. "Uno" o "una" da soli sono il numero 1.
+Se una scelta automatica non va bene, correggila (punto 5).
+
+
+7. LINGUE
+--------------------------------------------------------------
+Il menu "Lingua simboli" cambia la lingua della ricerca:
+Italiano, English, Espanol, Francais, Deutsch, Portugues.
+Le scelte dei simboli sono separate per lingua: cambiare "come" in
+inglese (venire) non cambia "come" in italiano. Le immagini tue
+(foto) valgono invece in tutte le lingue.
+L'unione dei verbi con avere / essere funziona per ora solo in
+italiano.
+
+
+8. GRANDEZZA, MAIUSCOLO, MOSTRA RISULTATI, NOTE COLORATE
+--------------------------------------------------------------
+Sopra il foglio:
+- Grandezza: ingrandisce o rimpicciolisce i riquadri e i
+  pentagrammi (anche in stampa).
+- MAIUSCOLO: attivo di default (stampatello maiuscolo).
+- Mostra risultati: mostra i risultati dei calcoli e i nomi delle
+  note nascosti (per correggere).
+- Note colorate: le note hanno un colore per ogni nome (do rosso,
+  re arancione, mi giallo, fa verde, sol azzurro, la blu, si
+  viola). Toglila per le note nere.
+
+
+9. MATEMATICA (scheda Matematica a sinistra)
+--------------------------------------------------------------
+Scrivi una riga che inizia con M: oppure usa i pulsanti
+Addizione, Sottrazione, Moltiplicazione, Divisione.
+Numeri e risultati fino a 100.
+
+  M: 12 + 5            addizione
+  M: 15 - 6            sottrazione
+  M: 4 x 6             moltiplicazione
+  M: 17 : 4            divisione
+
+- Addizione: due gruppi di oggetti di colore diverso.
+- Sottrazione: gli oggetti da togliere sono barrati con una X.
+- Moltiplicazione: tanti riquadri quanti il primo numero, ognuno
+  con il secondo numero di oggetti.
+- Divisione: oggetti distribuiti in parti uguali; l'eventuale
+  resto resta fuori in un riquadro tratteggiato.
+
+Cambiare gli oggetti: aggiungi | e la forma, oppure un'emoji.
+  M: 20 + 8 | stelle        (anche cerchi, quadrati, cuori,
+  M: 15 - 6 | (una emoji)    triangoli)
+
+Risultato: nel riquadro tratteggiato e' nascosto. La casella
+"Mostra risultati" lo mostra (per correggere). Con "= 17" dopo il
+calcolo il risultato e' sempre visibile (per gli esempi svolti).
+  M: 28 + 9 = 37
+
+
+10. MUSICA (scheda Musica a sinistra)
+--------------------------------------------------------------
+Una riga che inizia con N: diventa un pentagramma con la chiave di
+violino. Le note si scrivono con il loro nome, separate da spazi:
+
+  N: do re mi fa | sol:2 sol:2 | la la la la | sol:4 ||
+
+  do re mi fa sol la si   le note (ottava centrale)
+  do5  re5 ...            ottava sopra (anche do')
+  la3  si3                ottava sotto
+  fa#  sib                diesis e bemolle
+  :4                      semibreve (4 tempi)
+  :2                      minima (2 tempi)
+  (niente)                semiminima (1 tempo)
+  :1/2                    croma
+  :1/4                    semicroma
+  :3  :1.5                minima e semiminima col punto
+  p   p:2   p:4           pausa (stesse durate delle note)
+  |                       stanghetta di battuta
+  ||                      doppia stanghetta finale
+  4/4  3/4  2/4           tempo, all'inizio della riga
+  t=100                   velocita' dell'ascolto (di base 90)
+
+Si possono usare anche le lettere inglesi (C D E F G A B).
+Sotto ogni nota c'e' il suo nome, nel colore della nota.
+
+ESERCIZI:
+- N?: al posto di N: nasconde i nomi: sotto le note restano i
+  riquadri tratteggiati da completare. "Mostra risultati" li
+  mostra per correggere.
+    N?: mi sol la si | do5 re5 fa re ||
+- N: da solo = pentagramma vuoto, per far scrivere le note.
+- Se il rigo e' lungo va a capo da solo alle battute.
+
+ASCOLTA: sopra ogni pentagramma c'e' il pulsante "Ascolta": suona
+la melodia e colora di giallo la nota che sta suonando (non viene
+stampato). Il volume e' quello del computer.
+
+SCRIVI LE NOTE (editor a clic, pulsante "Scrivi le note..."):
+- Clic sul pentagramma: la nota va dove clicchi; piu' in alto e'
+  piu' acuta. Passando con il mouse vedi quale nota stai mettendo.
+- Oppure usa i pulsanti colorati DO RE MI FA SOL LA SI DO'.
+- Scegli prima la durata (Semibreve, Minima, Semiminima, Croma,
+  Semicroma, con il punto).
+- Clic su una nota per sceglierla: Su / Giu' (o le frecce della
+  tastiera) la spostano, Diesis / Bemolle, Cancella (o il tasto
+  di cancellazione). Le frecce sinistra / destra scelgono la nota
+  vicina.
+- Pausa, Battuta, Fine, Svuota tutto, Ascolta.
+- Misura e Velocita'. "Esercizio: nascondi i nomi" crea una riga
+  N?:.
+- "Come testo" mostra la riga scritta: si puo' anche correggere
+  li'.
+- "Inserisci nel foglio" aggiunge la riga nel testo. Con il doppio
+  clic su un pentagramma gia' fatto l'editor si apre su quella
+  riga e il pulsante diventa "Aggiorna il foglio".
+
+
+11. SALVARE, APRIRE, STAMPARE
+--------------------------------------------------------------
+SALVA / APRI: salva la verifica in un file (.json) che puoi
+conservare, rimandare ai colleghi e riaprire con "Apri". Contiene
+il testo, le modifiche ai simboli e le scelte "Solo qui".
+
+DIZIONARIO > SALVA DIZIONARIO / CARICA DIZIONARIO: salva i simboli
+che hai scelto nel tempo e le tabelle del comunicatore di tutte le
+lingue. Servono come copia di sicurezza e per passarli ad altri
+computer o colleghi. Fallo ogni tanto: se cancelli i dati di
+navigazione del browser, i simboli salvati nel programma si
+perdono.
+
+STAMPA: apre la finestra di stampa del browser. Per fare un PDF
+scegli "Salva come PDF" al posto della stampante. Viene stampato
+solo il foglio, da qualunque modalita' (anche da Studente). Ogni
+riquadro e ogni rigo musicale resta intero (non viene mai spezzato
+tra due pagine). Con "---" decidi dove iniziare una pagina nuova.
+Per far stare piu' cose in un foglio riduci la Grandezza.
+
+
+12. PROBLEMI FREQUENTI
+--------------------------------------------------------------
+"ARASAAC non raggiungibile": manca la connessione a internet o e'
+bloccata dalla rete della scuola. Prova da un'altra rete.
+
+Troppi riquadri tratteggiati: parole rare o forme verbali poco
+comuni. Correggili uno per uno: la volta dopo li ritrovi.
+
+"Sei" letto come numero quando e' il verbo (o il contrario):
+doppio clic sul riquadro e scegli il simbolo con "Solo qui".
+
+Simbolo sbagliato dappertutto: doppio clic e scegli quello giusto,
+vale per tutte le volte che la parola compare.
+
+Scelte "solo in questa frase" fatte con le versioni precedenti:
+continuano a funzionare. Se riguardavano due righe identiche (YOU
+tu / voi), rifai una volta la scelta con "Solo qui" sul riquadro
+giusto: da quel momento cambia solo quello.
+
+Simboli scelti in inglese (o altre lingue) con le versioni
+precedenti: ora ogni lingua ha le sue scelte, quindi quelle vanno
+rifatte una volta in quella lingua.
+
+Note "Non capisco: ...": sotto il pentagramma compare la parte che
+il programma non riconosce. Controlla gli spazi tra le note e il
+modo di scrivere le durate (do:2, non do2 se intendi la minima:
+do2 e' il do di due ottave sotto e non esiste).
+
+
+13. MODALITA' STUDENTE (comunicatore con voce)
+--------------------------------------------------------------
+Il pulsante "Studente" in alto apre una schermata a tutto schermo
+pensata per l'alunno. Funziona bene anche sul tablet o sul computer
+touch. I pulsanti delle modalita' restano in alto: con "Docente" o
+"Combinata" si torna indietro con un tocco. Il pulsante Schermo
+intero nasconde anche la barra del browser.
+
+- In alto c'e' la STRISCIA DELLA FRASE: ogni simbolo toccato vi
+  si aggiunge.
+- Il pulsante verde PARLA legge ad alta voce la frase.
+  Gli altri pulsanti cancellano l'ultima parola o tutta la frase.
+- Sotto ci sono le SCHEDE dei campi semantici: Persone, Azioni,
+  Cibo e bevande, Emozioni e bisogni, Scuola, Casa e luoghi,
+  Animali, Corpo, Tempo, Parole utili, Colori e forme, Giochi.
+  Ogni scheda ha un colore diverso. Toccando una scheda si vedono
+  i suoi simboli.
+- L'ingranaggio apre le impostazioni (si chiudono toccando fuori):
+    * Voce e Velocita' della lettura
+    * Grandezza riquadri (separata da quella del foglio)
+    * "Pronuncia ogni parola toccata": legge ogni parola appena
+      viene scelta
+    * "Coniuga i verbi"
+    * "Modifica simboli": tocca un riquadro per cambiare il suo
+      simbolo (come nel foglio)
+    * Modifica tabella: scrivi tu i campi e le parole
+
+CONIUGAZIONE AUTOMATICA DEI VERBI (solo italiano)
+Se tocchi prima una persona e poi un verbo, il verbo si coniuga:
+  IO + VOLERE      -> io voglio
+  TU + BERE        -> tu bevi
+  MAMMA + MANGIARE -> mamma mangia
+  NOI + GIOCARE    -> noi giochiamo
+Il simbolo resta quello dell'infinito. Un secondo verbo di seguito
+resta all'infinito: IO + VOLERE + MANGIARE = "io voglio mangiare".
+Anche le parole in mezzo vanno bene: IO + NON + VOLERE = "io non
+voglio". "IO E TU + VOLERE" diventa "vogliamo".
+Funziona per le persone del campo "Persone" (tutte le altre parole
+sono trattate come terza persona singolare) e per i verbi del campo
+"Azioni". Si puo' spegnere con la casella "Coniuga i verbi" nelle
+impostazioni. Nelle tabelle tue il campo delle persone deve chiamarsi
+"Persone" e quello dei verbi "Azioni".
+
+COME SI PERSONALIZZA LA TABELLA ("Modifica tabella")
+  # Nome del campo
+  parola, parola, parola
+Per l'icona della scheda scrivi un'emoji prima del nome:
+  # (emoji) Cibo
+Ogni parola e' un riquadro. I simboli sono cercati in ARASAAC e
+si correggono come nel foglio (vedi punto 5). La tabella e' salvata
+per ogni lingua: se cambi "Lingua simboli" ne puoi scrivere una
+diversa. Viene salvata anche con "Salva dizionario".
+
+LA VOCE dipende dal computer o dal tablet: il programma usa le voci
+installate (Windows, Mac, Android, iPad...). Se non ce ne sono per
+la lingua scelta, il menu "Voce" resta vuoto e la lettura puo'
+essere in un'altra lingua o non funzionare. Provala prima di
+usarla con l'alunno.
+
+CONSIGLIO: nella tabella di base le azioni sono all'infinito
+(mangiare, bere...). Per frasi piu' naturali puoi aggiungere i
+tuoi riquadri, per esempio "voglio", "mi piace", "ho bisogno".
+
+
+14. LICENZA E CREDITI
+--------------------------------------------------------------
+I pittogrammi ARASAAC sono di Sergio Palao e proprieta' del
+Governo di Aragona (arasaac.org), licenza CC BY-NC-SA: solo uso
+non commerciale, con indicazione della fonte. In fondo a ogni
+foglio il programma stampa gia' questa dicitura e il nome
+"CAA Studio, per la didattica inclusiva. A cura del Prof.
+Marchitto": va lasciata.
+
+Consiglio: prima di usare una verifica con l'alunno, controlla
+sempre che i simboli scelti abbiano senso per quel contesto. Il
+programma e' un aiuto, non sostituisce la tua revisione.
+==============================================================
