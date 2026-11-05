@@ -99,6 +99,7 @@ footer{margin-top:24px;font-size:.7rem;color:var(--mut);border-top:1px solid #cc
 .e{font-size:calc(40px*var(--s));line-height:1.15;min-width:calc(56px*var(--s));min-height:calc(60px*var(--s));display:flex;align-items:center;justify-content:center;color:#aaa}
 .e svg{width:calc(70px*var(--s));height:calc(70px*var(--s))}
 .e img{width:calc(78px*var(--s));height:calc(78px*var(--s));object-fit:contain}
+body.bw .e{filter:grayscale(1) contrast(1.3)}
 .t{font-size:calc(15px*var(--s));font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:3px;overflow-wrap:normal;word-break:normal;white-space:normal}
 body.nu .t{text-transform:none}
 .c.hl{outline:4px solid #f59e0b;outline-offset:2px;background:#fff4cc}
@@ -280,6 +281,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <label><input id="up" type="checkbox" checked> MAIUSCOLO</label>
 <label title="Mostra i risultati dei calcoli e i nomi delle note nascosti"><input id="sol" type="checkbox"> Mostra risultati</label>
 <label><input id="mcol" type="checkbox" checked> Note colorate</label>
+<label title="Mostra i pittogrammi in bianco e nero (utile per stampare con meno inchiostro)"><input id="bw" type="checkbox"> Pittogrammi in bianco e nero</label>
 <span id="st"></span>
 </div>
 <div class="sheet" id="sheet"><div class="paper"><div id="m"></div>
@@ -296,6 +298,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <label>Grandezza riquadri <input id="z2" type="range" min="0.6" max="1.8" step="0.1" value="1"></label>
 <label class="ck"><input id="aw" type="checkbox"> Pronuncia ogni parola toccata</label>
 <label class="ck"><input id="cj" type="checkbox" checked> Coniuga i verbi (italiano): IO + VOLERE = IO VOGLIO</label>
+<label class="ck"><input id="bw2" type="checkbox"> Pittogrammi in bianco e nero</label>
 <label class="ck"><input id="em2" type="checkbox"> Modifica simboli: tocca un riquadro per cambiarne il simbolo</label>
 <button id="bed">Modifica tabella</button>
 </div>
@@ -916,6 +919,8 @@ $("z2").oninput=e=>{setZB(e.target.value);clearTimeout(setZB.h);setZB.h=setTimeo
 $("up").onchange=e=>{document.body.classList.toggle("nu",!e.target.checked);sv("caa_up",e.target.checked);render()};
 $("sol").onchange=e=>document.body.classList.toggle("sol",e.target.checked);
 $("mcol").onchange=e=>{sv("caa_mc",e.target.checked);render()};
+function setBW(on){on=!!on;document.body.classList.toggle("bw",on);$("bw").checked=on;$("bw2").checked=on;sv("caa_bw",on)}
+$("bw").onchange=e=>setBW(e.target.checked);$("bw2").onchange=e=>setBW(e.target.checked);
 $("nw").onclick=()=>{if(confirm("Cancellare il testo attuale? I simboli scelti restano salvati.")){PM=[];editText(0,$("ta").value.length,"",true)}};
 function dl(obj,name){const a=el("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(obj)],{type:"application/json"}));a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 $("sa").onclick=()=>dl({t:$("ta").value,u:U,l:UL,p:PM,v:2},"verifica-caa.json");
@@ -1123,7 +1128,7 @@ if(document.fullscreenEnabled){$("fs").hidden=false;$("fs").onclick=()=>{if(docu
 /* ---------- avvio ---------- */
 ZS=+ld("caa_zs",1)||1;ZSC=+ld("caa_zsc",.8)||.8;setZB(ld("caa_zb",1));applySplit();
 $("up").checked=ld("caa_up",true);document.body.classList.toggle("nu",!$("up").checked);
-$("mcol").checked=ld("caa_mc",true);setTab(TAB);
+$("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
 {const t0=ld("caa_t","");$("ta").value=typeof t0==="string"&&t0?t0:"Benvenuto in CAA Studio!\nCancella questo testo e inizia a scrivere.";prevT=$("ta").value;
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
