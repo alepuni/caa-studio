@@ -141,6 +141,16 @@ h3{margin:0 0 14px;font-size:1.05rem;font-weight:700}
 .bx{border:3px solid var(--line);border-radius:12px;padding:calc(6px*var(--s))}
 .bx.rest{border-color:#d97706;border-style:dashed}
 
+/* tabelle */
+.tbw{overflow-x:auto;margin:0 0 18px}
+.tb{border-collapse:collapse;width:100%}
+.tb th,.tb td{border:2px solid var(--line);padding:calc(6px*var(--s));text-align:center;vertical-align:middle;height:calc(64px*var(--s));min-width:calc(70px*var(--s))}
+.tb th{background:#e3eefb}
+.tb .p{margin:0;justify-content:center}
+.tb tr{break-inside:avoid;page-break-inside:avoid}
+#nvb h4{margin:12px 0 4px}#nvb ul{margin:0;padding-left:20px;line-height:1.5}
+.np a{color:var(--line)}
+
 /* musica */
 .mus{position:relative;margin:0 0 22px;cursor:pointer;touch-action:manipulation;border-radius:8px}
 .mus svg{display:block;max-width:100%;height:auto;overflow:visible;margin:0 0 6px}
@@ -229,6 +239,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 .qh .p,.o .p,.mt .p,.sq .p{display:flex}
 .qh .c,.o .c,.mt .c,.sq .c{margin:0}
 .pb{break-before:page}
+.np{display:none!important}
 .o,.q,.mt>div,.sq,.bank,.qh,.ln,.mus svg{break-inside:avoid;page-break-inside:avoid}
 .c.hl{outline:none;background:#fff}.c.loc{border-color:var(--line)}.mus.hl{outline:none}
 *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -262,7 +273,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <button id="mg" type="button" title="Unisci in un solo simbolo le parole selezionate">🔗 Unisci</button>
 </div>
 <div class="tp" id="tp">
-<button data-g="ex" data-t="h">Intestazione</button><button data-g="ex" data-t="mc">Scelta multipla</button><button data-g="ex" data-t="vf">Vero/Falso</button><button data-g="ex" data-t="col">Collegamento</button><button data-g="ex" data-t="cmp">Completa</button><button data-g="ex" data-t="ord">Ordina</button><button data-g="ex" data-t="open">Risposta aperta</button>
+<button data-g="ex" data-t="h">Intestazione</button><button data-g="ex" data-t="mc">Scelta multipla</button><button data-g="ex" data-t="vf">Vero/Falso</button><button data-g="ex" data-t="col">Collegamento</button><button data-g="ex" data-t="cmp">Completa</button><button data-g="ex" data-t="ord">Ordina</button><button data-g="ex" data-t="open">Risposta aperta</button><button data-g="ex" id="tbopen">▦ Tabella…</button>
 <button data-g="ma" data-t="ad">Addizione</button><button data-g="ma" data-t="su">Sottrazione</button><button data-g="ma" data-t="mu">Moltiplicazione</button><button data-g="ma" data-t="di">Divisione</button>
 <button data-g="mu" data-t="mel">Melodia</button><button data-g="mu" data-t="nom">Nomi delle note</button><button data-g="mu" data-t="dur">Durate</button><button data-g="mu" data-t="vuo">Pentagramma vuoto</button><button data-g="mu" id="mopen">🎹 Scrivi le note…</button>
 </div>
@@ -272,6 +283,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <p>Una riga = una frase con i simboli.<br><b>1. Domanda?</b> e sotto <b>A. / B. / C.</b> risposte<br><b>V/F: frase</b> vero o falso<br><b>~ Sinistra = Destra</b> collegamento<br><b>Parole: a, b, c</b> elenco di parole<br><b>__</b> spazio da completare<br><b>&gt; frase</b> da mettere in ordine<br><b>?? domanda</b> risposta aperta<br><b># titolo</b> testo senza simboli<br><b>---</b> pagina nuova</p>
 <p><b>M: 12 + 5</b> calcolo visivo fino a 100 (+ − x :). Aggiungi <b>| stelle</b> o un’emoji per cambiare gli oggetti, <b>= 17</b> per mostrare il risultato.</p>
 <p><b>N: do re mi | sol:2 sol:2</b> pentagramma. Durate: <b>:4</b> semibreve, <b>:2</b> minima, <b>:1</b> semiminima (se non scrivi niente), <b>:1/2</b> croma, <b>:1/4</b> semicroma, <b>:3</b> o <b>:1.5</b> col punto. <b>p</b> pausa, <b>|</b> battuta, <b>||</b> fine, <b>4/4</b> misura, <b>do5</b> ottava sopra, <b>fa#</b> diesis, <b>sib</b> bemolle, <b>t=100</b> velocità. <b>N?:</b> nasconde i nomi delle note.</p>
+<p><b>Tabella:</b> una riga per ogni riga della tabella, con le colonne separate da <b>|</b>, per esempio <b>| Animale | Cosa mangia |</b>. Una riga <b>|---|---|</b> sotto la prima la rende la riga dei titoli. Le celle vuote restano da compilare. Nelle celle i simboli funzionano come nel resto del foglio. Per partire in fretta usa <b>▦ Tabella…</b>.</p>
 </details>
 </section>
 
@@ -285,7 +297,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <span id="st"></span>
 </div>
 <div class="sheet" id="sheet"><div class="paper"><div id="m"></div>
-<footer><b>CAA Studio</b>, per la didattica inclusiva. A cura del Prof. Marchitto.<br>Pittogrammi: ARASAAC (arasaac.org). Autore Sergio Palao, propriet&agrave; del Governo di Aragona. Licenza CC BY-NC-SA: solo uso non commerciale, con attribuzione.</footer></div></div>
+<footer><b>CAA Studio</b>, per la didattica inclusiva. A cura del Prof. Marchitto.<br>Pittogrammi: ARASAAC (arasaac.org). Autore Sergio Palao, propriet&agrave; del Governo di Aragona. Licenza CC BY-NC-SA: solo uso non commerciale, con attribuzione.<br><span class="np">Versione <span id="vn"></span> · <a href="#" id="nv">Che cosa c&rsquo;è di nuovo</a></span></footer></div></div>
 </section>
 
 <div id="hdl" role="separator" tabindex="0" aria-label="Divisore tra docente e studente" title="Trascina per allargare o stringere le due parti. Doppio clic: misure iniziali"></div>
@@ -330,6 +342,15 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <label>Oppure un&rsquo;immagine dal computer</label><input type="file" id="fi" accept="image/*">
 <div class="rw"><button id="rm">Ripristina automatico</button><button id="jt">Vai al testo</button></div>
 </div></div>
+
+<div id="tov" class="ovl"><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="tvh">
+<div class="dh"><b id="tvh">Crea una tabella</b><button id="tx" class="x" title="Chiudi">✕</button></div>
+<div class="mrow"><label>Righe <input id="tr" type="number" min="1" max="15" value="3" style="width:70px"></label><label>Colonne <input id="tc" type="number" min="1" max="6" value="3" style="width:70px"></label><label><input type="checkbox" id="th" checked> La prima riga contiene i titoli</label></div>
+<p class="hint">Le righe comprendono quella dei titoli. Poi scrivi nelle celle direttamente nel testo: puoi usare parole con simboli, oppure lasciarle vuote da compilare.</p>
+<div class="rw"><button id="tok" class="pri">Inserisci nel foglio</button><button id="tcn">Annulla</button></div>
+</div></div>
+
+<div id="nov" class="ovl"><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="nvh"><div class="dh"><b id="nvh">Novità di CAA Studio</b><button id="nx" class="x" title="Chiudi">✕</button></div><div id="nvb"></div><div class="rw"><button id="nok" class="pri">Ho capito</button></div></div></div>
 
 <div id="mov" class="ovl"><div class="dlg mdlg" role="dialog" aria-modal="true" aria-labelledby="mvh">
 <div class="dh"><b id="mvh">Scrivi le note</b><button id="mx" class="x" title="Chiudi">✕</button></div>
@@ -747,15 +768,22 @@ function relinkPlay(){if(!PLAY||PLAY.s===undefined||PLAY.s===-1)return;const b=$
 function render(){
   const m=$("m"),ta=$("ta"),all=ta.value,cw=m.clientWidth;if(cw>50)SHW=cw;
   m.innerHTML="";ITEMS=[];sv("caa_t",all);sv("caa_pm",PM);
-  let cur=null,k=0,M=[],ls=0;
+  let cur=null,k=0,M=[],ls=0,TB=[],TH=0;
   const flush=()=>{if(M.length){match(M,cur||m);M=[]}};
+  const flushT=()=>{if(TB.length){(cur||m).append(tabl(TB,TH));TB=[];TH=0}};
+  const tabRow=(raw,L0)=>{
+    if(/^\|[\s|:-]*-[\s|:-]*$/.test(raw.trim())){if(TB.length===1)TH=1;return}
+    const p=raw.indexOf("|")+1,sg=raw.slice(p).split("|");if(sg.length>1&&!sg[sg.length-1].trim())sg.pop();
+    let q=p;TB.push(sg.map(x=>{const t=x.trim(),off=L0+q+x.length-x.trimStart().length;q+=x.length+1;return{t,off}}))};
   const head=(txt,off)=>{const b=el("section","q"),hd=el("div","qh"),n=el("span","n");n.textContent=++k;hd.append(n,build(txt,off));b.append(hd);m.append(b);cur=b;return b};
   for(const raw of all.split("\n")){
     const L0=ls;ls+=raw.length+1;
-    const line=raw.trim();if(!line)continue;let mm;
+    const line=raw.trim();if(!line){flushT();continue}let mm;
     const at=(s,from=0)=>{const i=raw.indexOf(s,from);return i<0?-1:L0+i};
     if(!/^~/.test(line))flush();
-    if(line==="---"){m.append(el("div","pb"));cur=null}
+    if(!/^\|/.test(line))flushT();
+    if(/^\|/.test(line)){tabRow(raw,L0)}
+    else if(line==="---"){m.append(el("div","pb"));cur=null}
     else if(mm=line.match(/^M:\s*(.+)/i)){(cur||m).append(math(mm[1]))}
     else if(mm=line.match(/^N(\?)?:\s*(.*)$/i)||line.match(/^♪(\?)?:?\s*(.*)$/)){(cur||m).append(music(mm[2],!!mm[1],L0,L0+raw.length))}
     else if(mm=line.match(/^#\s*(.+)/)){const h=el("h3");h.textContent=mm[1];m.append(h);cur=null}
@@ -769,8 +797,12 @@ function render(){
     else if(mm=line.match(/^>\s*(.+)/)){const w=el("div","sq"),k2=el("span","k");k2.style.marginLeft="0";w.append(k2,build(mm[1],at(mm[1])));m.append(w)}
     else{cur=null;m.append(build(line,at(line)))}
   }
-  flush();hl();fitLabels(m);relinkPlay();
+  flush();flushT();hl();fitLabels(m);relinkPlay();
 }
+function tabl(rows,hd){
+  const w=el("div","tbw"),t=el("table","tb"),n=Math.max(...rows.map(r=>r.length));
+  rows.forEach((r,i)=>{const tr=el("tr");for(let j=0;j<n;j++){const c=r[j],td=el(hd&&i===0?"th":"td");if(c&&c.t)td.append(build(c.t,c.off));tr.append(td)}t.append(tr)});
+  w.append(t);return w}
 /* le parole troppo lunghe si rimpiccioliscono per restare nel riquadro */
 function fitLabels(root){
   const ts=[...root.querySelectorAll(".c .t")];if(!ts.length)return;ts.forEach(t=>t.style.fontSize="");
@@ -900,6 +932,13 @@ function setTab(g){TAB=g;sv("caa_tab",g);document.querySelectorAll(".tabs button
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>setTab(b.dataset.g));
 $("tpt").onclick=()=>{const o=document.querySelector(".ed").classList.toggle("open");$("tpt").setAttribute("aria-expanded",o);$("tpt").textContent=o?"Modelli ▴":"Modelli ▾"};
 $("mopen").onclick=()=>openME(null);
+const closeTb=()=>{$("tov").style.display="none"};
+$("tbopen").onclick=()=>{$("tov").style.display="flex"};$("tx").onclick=closeTb;$("tcn").onclick=closeTb;
+$("tok").onclick=()=>{
+  const R=Math.max(1,Math.min(15,+$("tr").value||3)),C=Math.max(1,Math.min(6,+$("tc").value||3)),h=$("th").checked,L=[];
+  if(h)L.push("|"+Array.from({length:C},(_,i)=>" Titolo "+(i+1)+" ").join("|")+"|","|"+"---|".repeat(C));
+  for(let i=h?1:0;i<R;i++)L.push("|"+" |".repeat(C));
+  T.tbl=L.join("\n")+"\n";closeTb();addTpl("tbl")};
 
 /* ---------- comandi ---------- */
 $("ta").addEventListener("input",()=>{const ta=$("ta"),nt=ta.value;if(nt!==prevT){trackDiff(prevT,nt,ta.selectionEnd);prevT=nt}if(PIN){PIN=null;drawMark()}render()});
@@ -1005,7 +1044,7 @@ $("mok").onclick=()=>{
   const c=Math.min(ta.selectionEnd||t.length,t.length),ls=t.lastIndexOf("\n",c-1)+1;let le=t.indexOf("\n",c);if(le<0)le=t.length;
   if(!t.slice(ls,le).trim())editText(ls,le,line);else editText(le,le,"\n"+line)};
 document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){if($("mov").style.display==="flex")closeME();else if($("ov").style.display==="flex")closeOv();else if($("bov").style.display==="flex")$("bov").style.display="none";else if($("sset").style.display==="flex")toggleSet(false);return}
+  if(e.key==="Escape"){if($("mov").style.display==="flex")closeME();else if($("tov").style.display==="flex")closeTb();else if($("nov").style.display==="flex")closeNews();else if($("ov").style.display==="flex")closeOv();else if($("bov").style.display==="flex")$("bov").style.display="none";else if($("sset").style.display==="flex")toggleSet(false);return}
   if(!ME||$("mov").style.display!=="flex"||/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName))return;
   if(e.key==="ArrowUp"){e.preventDefault();meMove(1)}else if(e.key==="ArrowDown"){e.preventDefault();meMove(-1)}
   else if(e.key==="ArrowLeft"){e.preventDefault();ME.sel=ME.sel<0?ME.d.items.length-1:Math.max(0,ME.sel-1);meTools();meDraw()}
@@ -1125,13 +1164,27 @@ window.addEventListener("afterprint",()=>{PRINTW=0;render()});
 $("more").onclick=()=>{const o=document.body.classList.toggle("more");$("more").setAttribute("aria-expanded",o)};
 if(document.fullscreenEnabled){$("fs").hidden=false;$("fs").onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}}
 
+/* ---------- novità: avviso a chi riapre il programma dopo un aggiornamento ----------
+   Per ogni aggiornamento: cambia VERSION e aggiungi in cima a NEWS una voce con le novità. */
+const VERSION="1.1";
+const NEWS=[{v:"1.1",d:"6 novembre 2026",t:["Nuove tabelle: il pulsante «▦ Tabella…» (scheda Esercizi) crea la tabella; si scrive con le colonne separate da | e nelle celle i simboli funzionano come nel resto del foglio. Utili per gli schemi.","Nuovo avviso delle novità: quando il programma viene aggiornato, chi lo riapre sullo stesso browser vede questo elenco. In fondo al foglio c'è il link per rileggerlo."]}];
+function closeNews(){$("nov").style.display="none";sv("caa_ver",VERSION)}
+function showNews(from){
+  const b=$("nvb");b.innerHTML="";let l=NEWS;if(from){const i=NEWS.findIndex(x=>x.v===from);if(i>=0)l=NEWS.slice(0,i)}
+  l.forEach(x=>{const h=el("h4");h.textContent="Versione "+x.v+" · "+x.d;const u=el("ul");x.t.forEach(s=>{const i=el("li");i.textContent=s;u.append(i)});b.append(h,u)});
+  if(l.length)$("nov").style.display="flex"}
+function checkNews(had){const seen=ld("caa_ver",null);if(seen===VERSION)return;if(seen===null&&!had){sv("caa_ver",VERSION);return}showNews(seen)}
+$("nx").onclick=closeNews;$("nok").onclick=closeNews;$("vn").textContent=VERSION;
+$("nv").onclick=e=>{e.preventDefault();showNews(null)};
+
 /* ---------- avvio ---------- */
+const HAD=ld("caa_t",null)!==null;
 ZS=+ld("caa_zs",1)||1;ZSC=+ld("caa_zsc",.8)||.8;setZB(ld("caa_zb",1));applySplit();
 $("up").checked=ld("caa_up",true);document.body.classList.toggle("nu",!$("up").checked);
 $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
 {const t0=ld("caa_t","");$("ta").value=typeof t0==="string"&&t0?t0:"Benvenuto in CAA Studio!\nCancella questo testo e inizia a scrivere.";prevT=$("ta").value;
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
-cnt();setMode(ld("caa_mode","ins"));render();
+cnt();setMode(ld("caa_mode","ins"));render();checkNews(HAD);
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 </script>
 </body>
