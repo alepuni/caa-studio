@@ -896,7 +896,7 @@ function render(){
     else if(mm=line.match(/^N(\?)?:\s*(.*)$/i)||line.match(/^♪(\?)?:?\s*(.*)$/)){(cur||m).append(music(mm[2],!!mm[1],L0,L0+raw.length))}
     else if(mm=line.match(/^#\s*(.+)/)){const h=el("h3");h.textContent=mm[1];m.append(h);cur=null}
     else if(mm=line.match(/^(V\/F|S\/N):\s*(.+)/i)){const b=head(mm[2],at(mm[2]));
-      (mm[1].toUpperCase()==="S/N"?[["✅","SÌ"],["❌","NO"]]:[["✅","VERO"],["❌","FALSO"]]).forEach(x=>{const w=el("div","p"),c=el("div","c"),e=el("div","e"),t=el("div","t");e.textContent=x[0];t.textContent=x[1];c.append(e,t);w.append(c);opt(b,"",w)})}
+      (mm[1].toUpperCase()==="S/N"?[["👍","SÌ"],["👎","NO"]]:[["✅","VERO"],["❌","FALSO"]]).forEach(x=>{const w=el("div","p"),c=el("div","c"),e=el("div","e"),t=el("div","t");e.textContent=x[0];t.textContent=x[1];c.append(e,t);w.append(c);opt(b,"",w)})}
     else if(mm=line.match(/^\?\?\s*(.+)/)){const b=head(mm[1],at(mm[1]));for(let i=0;i<3;i++)b.append(el("div","ln"))}
     else if(mm=line.match(/^\d+[.)]\s*(.+)/)){head(mm[1],at(mm[1]))}
     else if(mm=line.match(/^([A-D])\.\s+(.+)/)){opt(cur||m,mm[1],build(mm[2],at(mm[2])))}
@@ -1476,8 +1476,11 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-10f";
+const VER="2026-11-10g";
 const NEWS=[
+{v:"2026-11-10g",h:"Sì/No con i pollici",t:[
+"Nell'esercizio Sì/No ora ci sono il pollice in su 👍 (SÌ) e il pollice in giù 👎 (NO), al posto della spunta e della croce.",
+"Il Vero/Falso resta con la spunta ✅ e la croce ❌."]},
 {v:"2026-11-10f",h:"Esercizio Sì/No",t:[
 "Nuovo esercizio Sì/No: nella scheda Esercizi c'è il pulsante «Sì/No» accanto a «Vero/Falso». Al posto di VERO e FALSO ci sono SÌ e NO.",
 "Si può scrivere anche a mano: S/N: frase. Il Vero/Falso (V/F: frase) resta come prima."]},
