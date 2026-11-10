@@ -235,6 +235,7 @@ body.m-comb #stabs .tab{font-size:.92rem;padding:5px 10px}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 @media(prefers-reduced-motion:reduce){#toast,.nt .hb{transition:none}}
 
+#pdfhost{padding:0}#pdfhost .mhd{display:none}#pdfhost .c.hl{outline:none;background:#fff}#pdfhost .c.loc{border-color:var(--line)}#pdfhost .mus.hl{outline:none}
 /* ---------- stampa ---------- */
 @page{margin:12mm}
 @media print{
@@ -266,7 +267,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <button id="op" title="Apri una verifica salvata (.json). Poi Salva la aggiorna nello stesso posto">Apri</button><input id="fo" type="file" accept=".json,application/json" hidden>
 <button id="sa" title="Salva: aggiorna il file dove si trova (Ctrl+S). Se il foglio non è ancora stato salvato, funziona come Salva con nome">Salva</button><button id="sas" title="Salva con nome: crea un nuovo file, scegliendo dove e con che nome (Ctrl+Maiusc+S)">Salva con nome</button><span id="fnm" hidden></span>
 <details class="menu" id="dmenu"><summary title="Copia di sicurezza dei simboli che hai scelto">Dizionario ▾</summary><div class="pop"><button id="ds">Salva dizionario</button><button id="dl">Carica dizionario</button></div></details><input id="fd" type="file" accept=".json,application/json" hidden>
-<button id="pdf" title="Salva il foglio come file PDF">Salva PDF</button><button id="pr" title="Stampa il foglio">Stampa</button>
+<button id="pdf" title="Salva subito il foglio come file PDF, senza finestra di stampa">Salva PDF</button><button id="pr" title="Stampa il foglio">Stampa</button>
 </div>
 <div class="hsp"></div>
 <span id="net" hidden>⚠ ARASAAC non raggiungibile: serve internet</span>
@@ -283,7 +284,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <button id="mg" type="button" title="Unisci in un solo simbolo le parole selezionate">🔗 Unisci</button>
 </div>
 <div class="tp" id="tp">
-<button data-g="ex" data-t="h">Intestazione</button><button data-g="ex" data-t="mc">Scelta multipla</button><button data-g="ex" data-t="vf">Vero/Falso</button><button data-g="ex" data-t="col">Collegamento</button><button data-g="ex" data-t="cmp">Completa</button><button data-g="ex" data-t="ord">Ordina</button><button data-g="ex" data-t="open">Risposta aperta</button><button data-g="ex" id="tbopen">▦ Tabella…</button>
+<button data-g="ex" data-t="h">Intestazione</button><button data-g="ex" data-t="mc">Scelta multipla</button><button data-g="ex" data-t="vf">Vero/Falso</button><button data-g="ex" data-t="sn">Sì/No</button><button data-g="ex" data-t="col">Collegamento</button><button data-g="ex" data-t="cmp">Completa</button><button data-g="ex" data-t="ord">Ordina</button><button data-g="ex" data-t="open">Risposta aperta</button><button data-g="ex" id="tbopen">▦ Tabella…</button>
 <button data-g="ma" data-t="gr">Grafico a quadretti</button><button data-g="ma" data-t="ad">Addizione</button><button data-g="ma" data-t="su">Sottrazione</button><button data-g="ma" data-t="mu">Moltiplicazione</button><button data-g="ma" data-t="di">Divisione</button>
 <button data-g="mu" data-t="mel">Melodia</button><button data-g="mu" data-t="nom">Nomi delle note</button><button data-g="mu" data-t="dur">Durate</button><button data-g="mu" data-t="vuo">Pentagramma vuoto</button><button data-g="mu" id="mopen">🎹 Scrivi le note…</button>
 <button data-g="ge" data-t="gre">Retta</button><button data-g="ge" data-t="gsr">Semiretta</button><button data-g="ge" data-t="gsg">Segmento</button><button data-g="ge" data-t="gpa">Rette parallele</button><button data-g="ge" data-t="gin">Rette incidenti</button><button data-g="ge" data-t="gpe">Rette perpendicolari</button><button data-g="ge" data-t="gri">Riconosci la linea</button><button data-g="ge" data-t="gpi">Il piano</button><button data-g="ge" data-t="ggr">Lettere greche</button><button data-g="ge" data-t="gap">Appartiene o no?</button>
@@ -291,7 +292,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <div class="taw"><div id="tab" aria-hidden="true"></div><textarea id="ta" spellcheck="false" aria-label="Testo del foglio"></textarea></div>
 <details><summary>Come si scrive</summary>
 <p><b>Clic</b> su un riquadro: vai alla parola nel testo. <b>Doppio clic</b> (o tasto destro): cambia il simbolo. <b>Maiusc + clic</b> su un altro riquadro: scegli più parole, poi <b>🔗 Unisci</b>.</p>
-<p>Una riga = una frase con i simboli.<br><b>1. Domanda?</b> e sotto <b>A. / B. / C.</b> risposte<br><b>V/F: frase</b> vero o falso<br><b>~ Sinistra = Destra</b> collegamento<br><b>Parole: a, b, c</b> elenco di parole<br><b>__</b> spazio da completare<br><b>Mela ⬜⬜⬜⬜</b> emoji o quadratini accanto alle parole (per i grafici): restano così come li scrivi, senza etichetta<br><b>&gt; frase</b> da mettere in ordine<br><b>?? domanda</b> risposta aperta<br><b># titolo</b> testo senza simboli<br><b>---</b> pagina nuova</p>
+<p>Una riga = una frase con i simboli.<br><b>1. Domanda?</b> e sotto <b>A. / B. / C.</b> risposte<br><b>V/F: frase</b> vero o falso<br><b>S/N: frase</b> sì o no<br><b>~ Sinistra = Destra</b> collegamento<br><b>Parole: a, b, c</b> elenco di parole<br><b>__</b> spazio da completare<br><b>Mela ⬜⬜⬜⬜</b> emoji o quadratini accanto alle parole (per i grafici): restano così come li scrivi, senza etichetta<br><b>&gt; frase</b> da mettere in ordine<br><b>?? domanda</b> risposta aperta<br><b># titolo</b> testo senza simboli<br><b>---</b> pagina nuova</p>
 <p><b>M: 12 + 5</b> calcolo visivo fino a 100 (+ − x :). Aggiungi <b>| stelle</b> o un’emoji per cambiare gli oggetti, <b>= 17</b> per mostrare il risultato.</p>
 <p><b>N: do re mi | sol:2 sol:2</b> pentagramma. Durate: <b>:4</b> semibreve, <b>:2</b> minima, <b>:1</b> semiminima (se non scrivi niente), <b>:1/2</b> croma, <b>:1/4</b> semicroma, <b>:3</b> o <b>:1.5</b> col punto. <b>p</b> pausa, <b>|</b> battuta, <b>||</b> fine, <b>4/4</b> misura, <b>do5</b> ottava sopra, <b>fa#</b> diesis, <b>sib</b> bemolle, <b>t=100</b> velocità. <b>N?:</b> nasconde i nomi delle note.</p>
 <p><b>Tabella:</b> una riga per ogni riga della tabella, con le colonne separate da <b>|</b>, per esempio <b>| Animale | Cosa mangia |</b>. Una riga <b>|---|---|</b> sotto la prima la rende la riga dei titoli. Le celle vuote restano da compilare. Più comodo: <b>▦ Tabella…</b> apre una griglia dove scrivi nelle celle e aggiungi o togli righe e colonne. Per cambiare una tabella già fatta, doppio clic su di essa (o sul pulsante ✎).</p>
@@ -894,8 +895,8 @@ function render(){
     else if(mm=line.match(/^G(\?)?:\s*(.*)$/i)){(cur||m).append(geo(mm[2],!!mm[1],L0,L0+raw.length))}
     else if(mm=line.match(/^N(\?)?:\s*(.*)$/i)||line.match(/^♪(\?)?:?\s*(.*)$/)){(cur||m).append(music(mm[2],!!mm[1],L0,L0+raw.length))}
     else if(mm=line.match(/^#\s*(.+)/)){const h=el("h3");h.textContent=mm[1];m.append(h);cur=null}
-    else if(mm=line.match(/^V\/F:\s*(.+)/i)){const b=head(mm[1],at(mm[1]));
-      [["✅","VERO"],["❌","FALSO"]].forEach(x=>{const w=el("div","p"),c=el("div","c"),e=el("div","e"),t=el("div","t");e.textContent=x[0];t.textContent=x[1];c.append(e,t);w.append(c);opt(b,"",w)})}
+    else if(mm=line.match(/^(V\/F|S\/N):\s*(.+)/i)){const b=head(mm[2],at(mm[2]));
+      (mm[1].toUpperCase()==="S/N"?[["✅","SÌ"],["❌","NO"]]:[["✅","VERO"],["❌","FALSO"]]).forEach(x=>{const w=el("div","p"),c=el("div","c"),e=el("div","e"),t=el("div","t");e.textContent=x[0];t.textContent=x[1];c.append(e,t);w.append(c);opt(b,"",w)})}
     else if(mm=line.match(/^\?\?\s*(.+)/)){const b=head(mm[1],at(mm[1]));for(let i=0;i<3;i++)b.append(el("div","ln"))}
     else if(mm=line.match(/^\d+[.)]\s*(.+)/)){head(mm[1],at(mm[1]))}
     else if(mm=line.match(/^([A-D])\.\s+(.+)/)){opt(cur||m,mm[1],build(mm[2],at(mm[2])))}
@@ -1062,6 +1063,7 @@ $("gg").onclick=()=>{const q=$("iq").value.trim()||$("kk").value.trim();window.o
 const T={gr:"1. Colora un quadretto per ogni dato.\nMela ⬜⬜⬜⬜⬜⬜\nPera ⬜⬜⬜⬜⬜⬜\nBanana ⬜⬜⬜⬜⬜⬜\n",h:"# Nome ______________   Data ______________\n",
 mc:"1. Domanda?\nA. Risposta uno\nB. Risposta due\nC. Risposta tre\n",
 vf:"V/F: Scrivi qui l'affermazione.\n",
+sn:"S/N: Scrivi qui la domanda.\n",
 col:"1. Collega.\n~ Uno = Primo\n~ Due = Secondo\n~ Tre = Terzo\n",
 cmp:"1. Completa la frase.\nParole: scuola, libro, penna\nIl bambino è a __ con il suo __.\n",
 ord:"1. Metti in ordine: scrivi 1, 2, 3.\n> Prima cosa\n> Seconda cosa\n> Terza cosa\n",
@@ -1200,7 +1202,65 @@ $("op").onclick=async()=>{
 $("fo").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>loadDoc(rd.result,f.name,null);rd.readAsText(f);e.target.value=""};
 /* Salva PDF: apre la stampa del foglio; il nome proposto è quello del file */
 const TITLE0=document.title;
-$("pdf").onclick=()=>{document.title=titleName();note("Nella finestra che si apre, come stampante scegli «Salva come PDF».");setTimeout(()=>print(),400)};
+/* Salva PDF diretto: disegna il foglio a pagine A4 e scarica il file, senza finestra di stampa.
+   Se non riesce (es. senza internet) ripiega sulla finestra di stampa. */
+const loadScript=u=>new Promise((ok,ko)=>{const x=document.createElement("script");x.src=u;x.onload=ok;x.onerror=()=>ko(new Error("Libreria non raggiungibile"));document.head.append(x)});
+async function loadPdfLibs(){
+  if(!window.html2canvas)await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+  if(!(window.jspdf&&window.jspdf.jsPDF))await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")}
+const blobURL=b=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=()=>ko(r.error);r.readAsDataURL(b)});
+async function inlineImages(root){
+  const cache={};
+  for(const im of[...root.querySelectorAll("img")]){
+    const u=im.currentSrc||im.src;if(!/^https?:/i.test(u))continue;
+    if(!cache[u]){const r=await fetch(u,{mode:"cors"});if(!r.ok)throw new Error("Immagine non scaricabile");cache[u]=await blobURL(await r.blob())}
+    im.src=cache[u];try{await im.decode()}catch(e){}}}
+function printFallback(){document.title=titleName();setTimeout(()=>print(),700)}
+async function savePDF(){
+  const btn=$("pdf");if(btn.disabled)return;btn.disabled=true;stopPlay();
+  const m=$("m"),par=m.parentNode,nxt=m.nextSibling,oldPW=PRINTW;let host=null,fail=false;
+  try{
+    note("Preparo il PDF…");await loadPdfLibs();
+    PRINTW=700;render();
+    host=el("div");host.id="pdfhost";host.style.cssText="position:fixed;left:-10000px;top:0;width:700px;background:#fff;color:#1f2430";
+    const ft=document.querySelector(".paper footer");
+    document.body.append(host);host.append(m);if(ft)host.append(ft.cloneNode(true));
+    await inlineImages(host);fitLabels(m);
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+    const W=700,PH=Math.floor(273/186*W),H=host.scrollHeight,top0=host.getBoundingClientRect().top;
+    const rel=n=>Math.round(n.getBoundingClientRect().top-top0),relB=n=>Math.round(n.getBoundingClientRect().bottom-top0);
+    const atoms=[...m.children,...m.querySelectorAll(".q>*"),...host.querySelectorAll("footer")].filter(n=>!n.classList.contains("pb"));
+    const bots=[...new Set(atoms.map(relB))].sort((a,b)=>a-b),tops=[...new Set(atoms.map(rel))].sort((a,b)=>a-b);
+    const pbs=[...m.querySelectorAll(".pb")].map(rel).sort((a,b)=>a-b);
+    const pages=[];let y0=0;
+    while(y0<H-4){
+      let end;
+      if(H<=y0+PH+1)end=H;
+      else{const f=pbs.find(p=>p>y0+2&&p<=y0+PH);
+        if(f!==undefined)end=f;
+        else{let b=-1;for(const c of bots)if(c>y0+20&&c<=y0+PH)b=c;end=b>0?b:y0+PH}}
+      pages.push([y0,end]);
+      const nx=tops.find(t=>t>=end-1&&t<end+90);y0=nx!==undefined?nx:end}
+    if(!pages.length)pages.push([0,Math.max(H,10)]);
+    const pdf=new window.jspdf.jsPDF({unit:"mm",format:"a4",orientation:"p",compress:true});
+    for(let i=0;i<pages.length;i++){
+      const[a,b]=pages[i],h=Math.max(10,b-a);note("Creo il PDF… pagina "+(i+1)+" di "+pages.length);
+      await new Promise(r=>setTimeout(r,30));
+      const cv=await window.html2canvas(host,{scale:2,x:0,y:a,width:W,height:h,backgroundColor:"#fff",useCORS:true,logging:false,scrollX:0,scrollY:0,windowWidth:Math.max(innerWidth,W+20),
+        onclone:d=>{const hh=d.getElementById("pdfhost");[...d.body.children].forEach(c=>{if(c!==hh)c.style.display="none"});
+          d.body.style.cssText="display:block;height:auto;overflow:visible;margin:0;background:#fff";d.documentElement.style.height="auto";
+          hh.style.position="absolute";hh.style.left="0";hh.style.top="0"}});
+      if(i)pdf.addPage();
+      pdf.addImage(cv.toDataURL("image/jpeg",.95),"JPEG",12,12,186,h*186/W,undefined,"FAST")}
+    const nm=(titleName()||"verifica-caa").replace(/\.(json|pdf)$/i,"").replace(/[\\\/:*?"<>|]+/g,"-");
+    pdf.save(nm+".pdf");note("PDF salvato: lo trovi nella cartella dei download.");
+  }catch(e){console.error(e);fail=true}
+  finally{
+    if(host){par.insertBefore(m,nxt);host.remove()}
+    PRINTW=oldPW;render();btn.disabled=false}
+  if(fail){note("Non sono riuscito a creare il PDF direttamente (serve internet). Apro la finestra di stampa: scegli «Salva come PDF».");printFallback()}
+}
+$("pdf").onclick=savePDF;
 window.addEventListener("afterprint",()=>{document.title=TITLE0});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&!e.altKey&&e.key.toLowerCase()==="s"&&MODE!=="stu"){e.preventDefault();e.shiftKey?saveAs():saveDoc()}});
 $("lg").value=LANG;$("lg").onchange=e=>{LANG=e.target.value;sv("caa_lg",LANG);render();cnt();loadVoices();if(sOpen())drawBoard()};
@@ -1416,8 +1476,15 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-10d";
+const VER="2026-11-10f";
 const NEWS=[
+{v:"2026-11-10f",h:"Esercizio Sì/No",t:[
+"Nuovo esercizio Sì/No: nella scheda Esercizi c'è il pulsante «Sì/No» accanto a «Vero/Falso». Al posto di VERO e FALSO ci sono SÌ e NO.",
+"Si può scrivere anche a mano: S/N: frase. Il Vero/Falso (V/F: frase) resta come prima."]},
+{v:"2026-11-10e",h:"Salva PDF diretto",t:[
+"Il pulsante «Salva PDF» ora scarica subito il file PDF, senza aprire la finestra di stampa. Il file prende il nome dalla prima riga del foglio.",
+"Serve la connessione a internet (come per i pittogrammi). Se qualcosa non va, si apre la finestra di stampa come prima: scegli «Salva come PDF».",
+"Il pulsante «Stampa» resta per stampare su carta."]},
 {v:"2026-11-10d",h:"Tabelle",t:[
 "Nuove tabelle, utili per gli schemi: il pulsante «▦ Tabella…» (scheda Esercizi) apre una griglia dove scrivi nelle celle e aggiungi o togli righe e colonne.",
 "Nelle celle i simboli funzionano come nel resto del foglio; le celle vuote restano da compilare. La prima riga può essere quella dei titoli.",
