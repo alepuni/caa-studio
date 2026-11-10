@@ -33,6 +33,7 @@ button{cursor:pointer}button:hover{filter:brightness(.95)}button:disabled{opacit
 .hsp{flex:1}
 #hd .lang{display:flex;align-items:center;gap:6px;font-size:.82rem;white-space:nowrap}
 #hd .lang select{padding:4px 6px;font-size:.85rem}
+#fnm{color:#fff;font-size:.8rem;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #net{background:#fde68a;color:#7c2d12;border-radius:8px;padding:4px 9px;font-size:.78rem;font-weight:700}
 #fs{background:transparent;color:#fff;border-color:#ffffffa0;padding:4px 9px}
 body.m-stu .tools{display:none}
@@ -103,6 +104,9 @@ body.bw .e{filter:grayscale(1) contrast(1.3)}
 .t{font-size:calc(15px*var(--s));font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:3px;overflow-wrap:normal;word-break:normal;white-space:normal}
 body.nu .t{text-transform:none}
 .c.hl{outline:4px solid #f59e0b;outline-offset:2px;background:#fff4cc}
+.c.gl{border:none;background:transparent;padding:0 1px;min-width:0;max-width:none;align-self:center;justify-content:center}
+.c.gl .e{font-size:calc(38px*var(--s));min-width:0;min-height:0;color:var(--fg);letter-spacing:.06em}
+.c.gl .t{display:none}
 .c.loc{border-color:#7c3aed}
 h3{margin:0 0 14px;font-size:1.05rem;font-weight:700}
 .qh{display:flex;align-items:center;gap:12px;margin:0 0 8px}
@@ -248,10 +252,10 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 <nav class="modes" aria-label="Modalità"><button data-m="ins" title="Scrivi e prepara i fogli">Docente</button><button data-m="stu" title="Comunicatore a tutto schermo per l'alunno">Studente</button><button data-m="comb" title="Foglio del docente e comunicatore insieme">Combinata</button></nav>
 <div class="tools">
 <button id="nw" title="Cancella il testo e inizia un foglio nuovo">Nuovo</button>
-<button id="op" title="Apri una verifica salvata (.json)">Apri</button><input id="fo" type="file" accept=".json,application/json" hidden>
-<button id="sa" title="Salva la verifica in un file">Salva</button>
+<button id="op" title="Apri una verifica salvata (.json). Poi Salva la aggiorna nello stesso posto">Apri</button><input id="fo" type="file" accept=".json,application/json" hidden>
+<button id="sa" title="Salva: aggiorna il file dove si trova (Ctrl+S). Se il foglio non è ancora stato salvato, funziona come Salva con nome">Salva</button><button id="sas" title="Salva con nome: crea un nuovo file, scegliendo dove e con che nome (Ctrl+Maiusc+S)">Salva con nome</button><span id="fnm" hidden></span>
 <details class="menu" id="dmenu"><summary title="Copia di sicurezza dei simboli che hai scelto">Dizionario ▾</summary><div class="pop"><button id="ds">Salva dizionario</button><button id="dl">Carica dizionario</button></div></details><input id="fd" type="file" accept=".json,application/json" hidden>
-<button id="pr" title="Stampa o salva in PDF">Stampa</button>
+<button id="pdf" title="Salva il foglio come file PDF">Salva PDF</button><button id="pr" title="Stampa il foglio">Stampa</button>
 </div>
 <div class="hsp"></div>
 <span id="net" hidden>⚠ ARASAAC non raggiungibile: serve internet</span>
@@ -269,14 +273,14 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 </div>
 <div class="tp" id="tp">
 <button data-g="ex" data-t="h">Intestazione</button><button data-g="ex" data-t="mc">Scelta multipla</button><button data-g="ex" data-t="vf">Vero/Falso</button><button data-g="ex" data-t="col">Collegamento</button><button data-g="ex" data-t="cmp">Completa</button><button data-g="ex" data-t="ord">Ordina</button><button data-g="ex" data-t="open">Risposta aperta</button>
-<button data-g="ma" data-t="ad">Addizione</button><button data-g="ma" data-t="su">Sottrazione</button><button data-g="ma" data-t="mu">Moltiplicazione</button><button data-g="ma" data-t="di">Divisione</button>
+<button data-g="ma" data-t="gr">Grafico a quadretti</button><button data-g="ma" data-t="ad">Addizione</button><button data-g="ma" data-t="su">Sottrazione</button><button data-g="ma" data-t="mu">Moltiplicazione</button><button data-g="ma" data-t="di">Divisione</button>
 <button data-g="mu" data-t="mel">Melodia</button><button data-g="mu" data-t="nom">Nomi delle note</button><button data-g="mu" data-t="dur">Durate</button><button data-g="mu" data-t="vuo">Pentagramma vuoto</button><button data-g="mu" id="mopen">🎹 Scrivi le note…</button>
 <button data-g="ge" data-t="gre">Retta</button><button data-g="ge" data-t="gsr">Semiretta</button><button data-g="ge" data-t="gsg">Segmento</button><button data-g="ge" data-t="gpa">Rette parallele</button><button data-g="ge" data-t="gin">Rette incidenti</button><button data-g="ge" data-t="gpe">Rette perpendicolari</button><button data-g="ge" data-t="gri">Riconosci la linea</button><button data-g="ge" data-t="gpi">Il piano</button><button data-g="ge" data-t="ggr">Lettere greche</button><button data-g="ge" data-t="gap">Appartiene o no?</button>
 </div>
 <div class="taw"><div id="tab" aria-hidden="true"></div><textarea id="ta" spellcheck="false" aria-label="Testo del foglio"></textarea></div>
 <details><summary>Come si scrive</summary>
 <p><b>Clic</b> su un riquadro: vai alla parola nel testo. <b>Doppio clic</b> (o tasto destro): cambia il simbolo. <b>Maiusc + clic</b> su un altro riquadro: scegli più parole, poi <b>🔗 Unisci</b>.</p>
-<p>Una riga = una frase con i simboli.<br><b>1. Domanda?</b> e sotto <b>A. / B. / C.</b> risposte<br><b>V/F: frase</b> vero o falso<br><b>~ Sinistra = Destra</b> collegamento<br><b>Parole: a, b, c</b> elenco di parole<br><b>__</b> spazio da completare<br><b>&gt; frase</b> da mettere in ordine<br><b>?? domanda</b> risposta aperta<br><b># titolo</b> testo senza simboli<br><b>---</b> pagina nuova</p>
+<p>Una riga = una frase con i simboli.<br><b>1. Domanda?</b> e sotto <b>A. / B. / C.</b> risposte<br><b>V/F: frase</b> vero o falso<br><b>~ Sinistra = Destra</b> collegamento<br><b>Parole: a, b, c</b> elenco di parole<br><b>__</b> spazio da completare<br><b>Mela ⬜⬜⬜⬜</b> emoji o quadratini accanto alle parole (per i grafici): restano così come li scrivi, senza etichetta<br><b>&gt; frase</b> da mettere in ordine<br><b>?? domanda</b> risposta aperta<br><b># titolo</b> testo senza simboli<br><b>---</b> pagina nuova</p>
 <p><b>M: 12 + 5</b> calcolo visivo fino a 100 (+ − x :). Aggiungi <b>| stelle</b> o un’emoji per cambiare gli oggetti, <b>= 17</b> per mostrare il risultato.</p>
 <p><b>N: do re mi | sol:2 sol:2</b> pentagramma. Durate: <b>:4</b> semibreve, <b>:2</b> minima, <b>:1</b> semiminima (se non scrivi niente), <b>:1/2</b> croma, <b>:1/4</b> semicroma, <b>:3</b> o <b>:1.5</b> col punto. <b>p</b> pausa, <b>|</b> battuta, <b>||</b> fine, <b>4/4</b> misura, <b>do5</b> ottava sopra, <b>fa#</b> diesis, <b>sib</b> bemolle, <b>t=100</b> velocità. <b>N?:</b> nasconde i nomi delle note.</p>
 <p><b>G: retta r A B</b> retta infinita (frecce da tutte e due le parti) con nome <b>r</b> e punti <b>A</b> e <b>B</b>. <b>G: semiretta s A</b> parte dal punto A e va avanti. <b>G: segmento A B</b> ha un inizio e una fine. <b>G: parallele r s</b>, <b>G: incidenti r s P</b>, <b>G: perpendicolari r s P</b> disegnano due rette. Per cambiare la posizione aggiungi <b>verticale</b>, <b>obliqua</b> (o <b>sinistra</b> per la semiretta). <b>G?:</b> nasconde il nome del tipo di linea (si vede con «Mostra risultati»).</p>
@@ -537,13 +541,15 @@ function seiVerb(tk,i){
   if(!pr||/[.!?:;,]$/.test(pr))return /^(anni|mesi|giorni|ore|volte|euro|metri|chili|minuti|persone)$/.test(n)?0:1;
   if(n&&(stop(n)||part(n)))return 1;
   return 0}
-const MW=8;let ITEMS=[];
+const MW=8,GLY=/[\p{Extended_Pictographic}□■▢▣☐◯○●◻◼]/u;let ITEMS=[];
 function plan(par,off){
   const tm=[...par.matchAll(/\S+/g)],tk=tm.map(x=>x[0]),out=[];let i=0,pre="";
   const pos=a=>off>=0?off+tm[a].index:-1,end=b=>off>=0?off+tm[b].index+tm[b][0].length:-1;
   while(i<tk.length){
     const t=tk[i];
     if(/^_{2,}\W*$/.test(t)){out.push({b:1,label:pre+t,s:pos(i),e:end(i)});pre="";i++;continue}
+    /* emoji o quadratini (es. ⬜⬜⬜) accanto ai pittogrammi: compaiono così come sono, senza etichetta */
+    if(!core(t)&&GLY.test(t)){out.push({g:1,label:t,s:pos(i),e:end(i)});i++;continue}
     if(!core(t)){pre+=t+" ";i++;continue}
     /* "a __": l'articolo o la preposizione va nello spazio da completare */
     if(stop(core(t))&&i+1<tk.length&&/^_{2,}\W*$/.test(tk[i+1])){out.push({b:1,label:pre+t+" "+tk[i+1],s:pos(i),e:end(i+1)});pre="";i+=2;continue}
@@ -565,6 +571,7 @@ function build(par,off=-1){
   plan(par,off).forEach(it=>{
     const c=el("div","c"),e=el("div","e"),t=el("div","t");t.textContent=it.label;
     if(it.b)c.className="c bl";
+    else if(it.g){c.className="c gl";e.textContent=it.label;c.onclick=ev=>{ev.stopPropagation();jump(it,LASTP!=="touch")}}
     else{
       const pm=markAt(it),lc=!pm&&UL[it.ctx]!==undefined;let v;
       if(pm)v=pm.v;else if(lc)v=UL[it.ctx];else if(it.vh===1&&uget(it.key)===undefined)v=uget("essere")??"svg:è";else v=val(it.key);
@@ -1015,7 +1022,7 @@ $("ig").onclick=srchI;$("iq").onkeydown=e=>{if(e.key==="Enter")srchI()};
 $("gg").onclick=()=>{const q=$("iq").value.trim()||$("kk").value.trim();window.open("https://www.google.com/search?tbm=isch&q="+encodeURIComponent(q),"_blank","noopener")};
 
 /* ---------- modelli ---------- */
-const T={h:"# Nome ______________   Data ______________\n",
+const T={gr:"1. Colora un quadretto per ogni dato.\nMela ⬜⬜⬜⬜⬜⬜\nPera ⬜⬜⬜⬜⬜⬜\nBanana ⬜⬜⬜⬜⬜⬜\n",h:"# Nome ______________   Data ______________\n",
 mc:"1. Domanda?\nA. Risposta uno\nB. Risposta due\nC. Risposta tre\n",
 vf:"V/F: Scrivi qui l'affermazione.\n",
 col:"1. Collega.\n~ Uno = Primo\n~ Due = Secondo\n~ Tre = Terzo\n",
@@ -1068,14 +1075,52 @@ $("sol").onchange=e=>document.body.classList.toggle("sol",e.target.checked);
 $("mcol").onchange=e=>{sv("caa_mc",e.target.checked);render()};
 function setBW(on){on=!!on;document.body.classList.toggle("bw",on);$("bw").checked=on;$("bw2").checked=on;sv("caa_bw",on)}
 $("bw").onchange=e=>setBW(e.target.checked);$("bw2").onchange=e=>setBW(e.target.checked);
-$("nw").onclick=()=>{if(confirm("Cancellare il testo attuale? I simboli scelti restano salvati.")){PM=[];editText(0,$("ta").value.length,"",true)}};
+$("nw").onclick=()=>{if(confirm("Cancellare il testo attuale? I simboli scelti restano salvati.")){PM=[];FH=null;setFN("");editText(0,$("ta").value.length,"",true)}};
 function dl(obj,name){const a=el("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(obj)],{type:"application/json"}));a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
-$("sa").onclick=()=>dl({t:$("ta").value,u:U,l:UL,p:PM,v:2},"verifica-caa.json");
-$("op").onclick=()=>$("fo").click();
-$("fo").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result),t=typeof j.t==="string"?j.t:"";
-  Object.assign(U,j.u||{});Object.assign(UL,j.l||{});sv("caa_u",U);sv("caa_ul",UL);
-  PM=[];editText(0,$("ta").value.length,t,true);
-  PM=(Array.isArray(j.p)?j.p:[]).filter(m=>m&&m.s>=0&&m.e<=t.length&&m.e>m.s&&!/\s/.test(t.slice(m.s,m.e)));render();cnt()}catch(x){alert("File non valido")}};rd.readAsText(f);e.target.value=""};
+/* ---------- salva, salva con nome, apri ----------
+   Con Chrome, Edge e simili si sceglie dove salvare e «Salva» aggiorna lo stesso file.
+   Con gli altri browser (Firefox, Safari) il file viene scaricato nella cartella Download. */
+let FH=null,FN="";
+const docObj=()=>({t:$("ta").value,u:U,l:UL,p:PM,v:2});
+/* nome proposto: la prima riga del testo (di solito il titolo); le righe con gli spazi da compilare (Nome ___ Data ___) si saltano */
+function titleName(){
+  const L=$("ta").value.split("\n").map(x=>x.trim()).filter(Boolean);
+  const raw=L.find(x=>!/_{2,}/.test(x))||L[0]||"";
+  let n=raw.replace(/^(?:#|~|>|\?\?|V\/F:|M:|N\??:|♪)\s*/i,"").replace(/^\d+[.)]\s*/,"").replace(/_+/g," ").replace(/[\\\/:*?"<>|]/g,"-").replace(/\s+/g," ").trim().replace(/^[.\s-]+|[.\s-]+$/g,"");
+  if(n.length>60)n=n.slice(0,60).replace(/\s+\S*$/,"");
+  return n||"verifica-caa"}
+const FT=[{description:"Verifica CAA Studio",accept:{"application/json":[".json"]}}];
+function setFN(n){FN=n||"";const b=$("fnm");b.textContent=FN?"📄 "+FN:"";b.title=FN;b.hidden=!FN}
+async function writeFH(h){const w=await h.createWritable();await w.write(JSON.stringify(docObj()));await w.close()}
+async function saveAs(){
+  if(window.showSaveFilePicker){
+    try{const h=await showSaveFilePicker({suggestedName:FN||titleName()+".json",types:FT});await writeFH(h);FH=h;setFN(h.name);note("Salvato: "+h.name);return}
+    catch(e){if(e&&e.name==="AbortError")return}}
+  let n=prompt("Come vuoi chiamare il file?",(FN||titleName()).replace(/\.json$/i,""));if(n===null)return;
+  n=n.trim().replace(/[\\/:*?"<>|]/g,"-")||"verifica-caa";if(!/\.json$/i.test(n))n+=".json";
+  dl(docObj(),n);FH=null;setFN(n);note("Il file «"+n+"» è stato scaricato (di solito nella cartella Download).")}
+async function saveDoc(){
+  if(FH){try{await writeFH(FH);note("Salvato: "+FN);return}catch(e){note("Non riesco a salvare nel file di prima: scegli dove salvarlo.");await saveAs();return}}
+  if(FN&&!window.showSaveFilePicker){dl(docObj(),FN);note("Il file «"+FN+"» è stato scaricato di nuovo (cartella Download).");return}
+  await saveAs()}
+function loadDoc(txt,name,h){
+  try{const j=JSON.parse(txt),t=typeof j.t==="string"?j.t:"";
+    Object.assign(U,j.u||{});Object.assign(UL,j.l||{});sv("caa_u",U);sv("caa_ul",UL);
+    PM=[];editText(0,$("ta").value.length,t,true);
+    PM=(Array.isArray(j.p)?j.p:[]).filter(m=>m&&m.s>=0&&m.e<=t.length&&m.e>m.s&&!/\s/.test(t.slice(m.s,m.e)));render();cnt();
+    FH=h||null;setFN(name)}catch(x){alert("File non valido")}}
+$("sa").onclick=saveDoc;$("sas").onclick=saveAs;
+$("op").onclick=async()=>{
+  if(window.showOpenFilePicker){
+    try{const[h]=await showOpenFilePicker({types:FT,multiple:false});const f=await h.getFile();loadDoc(await f.text(),h.name,h);return}
+    catch(e){if(e&&e.name==="AbortError")return}}
+  $("fo").click()};
+$("fo").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>loadDoc(rd.result,f.name,null);rd.readAsText(f);e.target.value=""};
+/* Salva PDF: apre la stampa del foglio; il nome proposto è quello del file */
+const TITLE0=document.title;
+$("pdf").onclick=()=>{document.title=titleName();note("Nella finestra che si apre, come stampante scegli «Salva come PDF».");setTimeout(()=>print(),400)};
+window.addEventListener("afterprint",()=>{document.title=TITLE0});
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&!e.altKey&&e.key.toLowerCase()==="s"&&MODE!=="stu"){e.preventDefault();e.shiftKey?saveAs():saveDoc()}});
 $("lg").value=LANG;$("lg").onchange=e=>{LANG=e.target.value;sv("caa_lg",LANG);render();cnt();loadVoices();if(sOpen())drawBoard()};
 document.addEventListener("click",e=>{const d=$("dmenu");if(d.open&&!d.contains(e.target))d.open=false;const ss=$("sset");if(ss.style.display==="flex"&&!ss.contains(e.target)&&e.target!==$("sg"))toggleSet(false)});
 $("ds").onclick=()=>{$("dmenu").open=false;const boards={};["it","en","es","fr","de","pt"].forEach(l=>{try{const b=localStorage.getItem("caa_board_"+l);if(b!==null)boards[l]=b}catch(e){}});dl({u:U,b:getBoard(),boards},"dizionario-caa.json")};
