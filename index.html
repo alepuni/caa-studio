@@ -869,15 +869,138 @@ piangere:HF(32,32,22)+dot(24,30,2.6)+dot(40,30,2.6)+pt("M22 33Q18 44 22 56",CB,4
 lupo:lp("M12 32L10 4L28 18Z",GY)+lp("M52 32L54 4L36 18Z",GY)+lp("M15 26L14 12L23 19Z",CP)+lp("M49 26L50 12L41 19Z",CP)+lp("M32 14C46 14 54 22 56 34L62 38L54 42L58 50L46 48C42 56 36 60 32 60C28 60 22 56 18 48L6 50L10 42L2 38L8 34C10 22 18 14 32 14Z",GY)+lp("M23 40C23 34 41 34 41 40L37 56H27Z","#e5e7eb")+lp("M27 38H37L32 45Z",K)+lp("M16 27L27 31L25 36L15 32Z",CY)+lp("M48 27L37 31L39 36L49 32Z",CY)+dot(24,32,1.6)+dot(40,32,1.6)+pt("M32 45V50",K,2)+pt("M26 54Q32 50 38 54",K,2)
 });
 LT.latte=tx(-4,8,.74,_latte)+lp("M40 26H58L55 58H43Z",LB)+lp("M41.5 36H56.5L55 58H43Z","#fff");
+/* ---- terza serie: parole grammaticali, verbi, numeri, musica, matematica, geografia, geometria ---- */
+const GEAR='<g fill="'+CB+'" stroke="'+K+'" stroke-width="2.5" stroke-linejoin="round">'+CUS.fare.replace('<circle cx="32" cy="32" r="8"/>','<circle cx="32" cy="32" r="8" fill="#fff"/>')+'</g>';
+const BENE=lr(8,30,14,28,CB,3)+lp("M24 32C30 28 32 20 34 12C42 10 44 20 40 26H54C60 26 60 34 56 38C58 42 56 46 54 48C54 52 50 56 46 56H24Z",CS);
+const STAIRS=lp("M4 58V46H18V34H32V22H46V10H60V58Z","#fde68a");
+const NUMC=[CB,CG,CO,CP,CV,CR,CB,CG,CO,CP];
+const NUMS={};"uno due tre quattro cinque sei sette otto nove dieci".split(" ").forEach((w,i)=>{NUMS[w]=lc(32,32,22,NUMC[i])+TXT(32,i===9?42:44,i===9?24:32,"#fff",String(i+1))});
+NUMS.zero=lc(32,32,22,GY)+TXT(32,44,32,"#fff","0");
+const STAFF=[0,1,2,3,4].map(i=>ll(4,18+i*7,60,18+i*7,K,2)).join("");
+const KEYS=[0,1,2,3,4].map(i=>ll(14+i*10,22,14+i*10,52,K,2)).join("")+[0,1,3,4].map(i=>lr(10+i*10+(i>1?0:0),22,8,20,K,1)).join("");
+const CALCB=[0,1,2].map(r=>[0,1,2].map(c=>lr(19+c*10,28+r*9,7,6,CW,1)).join("")).join("");
+const FLAG3=(a,b,c)=>ll(8,6,8,60,K,3.5)+lr(10,12,14,30,a,0)+lr(24,12,16,30,b,0)+lr(40,12,14,30,c,0);
+Object.assign(LT,{
+/* ---- parole grammaticali ---- */
+"sì":lc(32,32,22,CG)+pt("M20 33L29 42L45 22","#fff",6),
+no:lc(32,32,22,CR)+pt("M22 22L42 42M42 22L22 42","#fff",6),
+non:'<circle cx="32" cy="32" r="21" fill="none" stroke="'+CR+'" stroke-width="6"/>'+ll(17,17,47,47,CR,6),
+bene:BENE,
+male:'<g transform="rotate(180 32 32)">'+BENE+'</g>',
+e:lc(14,32,9,CB)+lc(50,32,9,CY)+pt("M26 32H38M32 26V38",CR,4),
+o:lc(12,32,9,CB)+lc(52,32,9,CY)+ll(26,44,38,20,CR,4),
+ma:lc(10,32,8,CB)+lc(54,32,8,CY)+AR(18,32,30,32)+AR(46,32,34,32),
+se:pt("M32 58V36M32 36L14 14M32 36L50 14",CR,4.5)+lc(14,12,5,CB)+lc(50,12,5,CY),
+anche:lc(12,32,8,CB)+lc(32,32,8,CB)+lc(52,32,8,CR),
+"perché":lc(14,20,11,CB)+TXT(14,28,18,"#fff","?")+AR(28,26,40,36)+lc(48,46,11,CG)+TXT(48,54,18,"#fff","!"),
+quando:lc(30,34,20,"#fff")+ll(30,34,30,20,K,3)+ll(30,34,40,38,K,3)+TXT(54,16,22,CR,"?"),
+dove:lp("M30 58S12 40 12 28A18 18 0 0 1 48 28C48 40 30 58 30 58Z",CR)+lc(30,28,6,"#fff")+TXT(54,18,22,CB,"?"),
+chi:P(28,12,1,AD,ST,GY)+TXT(52,24,24,CR,"?"),
+cosa:lr(8,16,44,44,CB,5)+TXT(30,52,38,"#fff","?"),
+quanto:lr(6,40,8,16,CB,1)+lr(18,32,8,24,CB,1)+lr(30,22,8,34,CB,1)+TXT(52,28,24,CR,"?"),
+come:GEAR+TXT(54,16,22,CR,"?"),
+prima:lr(6,16,22,32,CR,3)+lr(38,16,22,32,CW,3)+AR(29,32,37,32),
+dopo:lr(6,16,22,32,CW,3)+lr(38,16,22,32,CR,3)+AR(29,32,37,32),
+infine:ll(52,16,52,50,K,3)+lp("M52 16L62 21L52 26Z",CR)+AR(4,44,46,44),
+adesso:ll(4,44,60,44,K,3)+lc(32,44,7,CR)+AR(32,8,32,34),
+subito:lp("M36 4L14 36H28L24 60L50 26H34Z",CY),
+sempre:pt("M32 32C32 20 16 14 12 26C8 38 24 44 32 32C40 20 56 26 52 38C48 50 32 44 32 32Z",CB,5),
+ancora:pt("M50 36A18 18 0 1 1 44 20",CB,5)+pt("M52 8V22H38",CR,4.5),
+tutto:lc(32,32,22,CB),
+niente:'<circle cx="32" cy="32" r="21" fill="none" stroke="'+K+'" stroke-width="3" stroke-dasharray="4 6"/>',
+molto:lr(6,34,10,22,CB,2)+lr(19,24,10,32,CB,2)+lr(32,14,10,42,CB,2)+lr(45,4,10,52,CB,2),
+poco:lr(8,46,12,10,CB,2)+lr(24,28,12,28,CW,2)+lr(40,10,12,46,CW,2),
+"più":lc(32,32,22,CG)+pt("M32 20V44M20 32H44","#fff",6),
+meno:lc(32,32,22,CR)+pt("M20 32H44","#fff",6),
+"metà":lc(32,32,22,"#fff")+lp("M32 10A22 22 0 0 0 32 54Z",CB)+ll(32,10,32,54,K,2.5),
+questo:lr(26,24,24,24,CY,3)+AR(4,36,22,36),
+quello:lr(48,28,12,12,CY,2)+AR(4,36,42,34),
+qui:lc(32,50,7,CR)+AR(32,4,32,38),
+"là":lc(54,42,5,CR)+AR(4,42,46,42)+GRND,
+/* ---- verbi ---- */
+essere:ll(14,24,50,24,CB,7)+ll(14,40,50,40,CB,7),
+avere:fig(32,10,[[26,30],[38,30]],[[29,56],[35,56]])+lr(26,27,12,9,CY,2),
+fare:GEAR,
+volere:fig(16,14,[[10,36],[32,26]],[[13,58],[19,58]])+lc(44,30,7,CG)+HT(50,12,1.4),
+potere:tx(0,2,.9,BD(1,0,0))+pt("M44 50L50 56L60 44",CG,5),
+dovere:P(18,12,1,AD,ST,CB)+lc(48,26,10,CR)+TXT(48,34,20,"#fff","!")+AR(36,26,29,26),
+sapere:lc(24,42,15,CS)+dot(18,40,2)+dot(30,40,2)+pt("M19 49Q24 52 29 49",K,2)+lr(34,4,28,24,"#fff",10)+pt("M42 17L48 23L56 11",CG,4)+lc(36,31,2.5,"#fff"),
+stare:P(32,8,1,AD,ST,CB)+'<ellipse cx="32" cy="58" rx="16" ry="3.5" fill="none" stroke="'+CR+'" stroke-width="3"/>',
+trovare:lc(26,26,16,LB)+tx(14,14,.38,lp(STAR,CY))+limb(38,38,56,56,CM,5)+pt("M48 8L54 14L60 4",CG,4),
+chiedere:HF(22,36,17)+dot(16,32,2)+dot(28,32,2)+eo(22,44,3,3.5,DK)+lr(38,6,24,22,"#fff",9)+TXT(50,24,20,CR,"?"),
+rispondere:HF(22,36,17)+dot(16,32,2)+dot(28,32,2)+MOUTH("M17 42Q22 49 27 42Z")+lr(38,6,24,22,"#fff",9)+pt("M44 17L49 22L57 11",CG,4),
+studiare:lp("M6 46C16 42 26 44 32 48C38 44 48 42 58 46V62C48 58 38 60 32 64C26 60 16 58 6 62Z","#fff")+ll(32,48,32,64,K,2)+tx(16,-2,.55,LT.idea),
+scegliere:lr(4,20,16,24,CW,3)+lr(24,20,16,24,CR,3)+lr(44,20,16,24,CW,3)+pt("M26 54L31 59L40 48",CG,5),
+cominciare:lc(32,32,22,CG)+lp("M26 20L46 32L26 44Z","#fff"),
+finire:lc(32,32,22,CR)+lr(22,22,20,20,"#fff",2),
+fermare:lp("M20 6H44L58 20V44L44 58H20L6 44V20Z",CR)+tx(14,12,.5,LT.mano),
+mettere:lr(6,46,52,8,CB,1.5)+lr(22,16,20,14,CY,2)+AR(52,8,52,40),
+togliere:lr(8,36,40,22,CB,3)+lr(18,10,18,14,CY,2)+AR(54,42,54,10),
+cambiare:AR(10,22,52,22)+AR(54,42,12,42),
+girare:pt("M48 20A18 18 0 1 0 50 36",CB,5)+lp("M56 12L58 28L42 24Z",CR),
+comprare:lp("M14 22H50L46 58H18Z",CY)+pt("M24 22C24 8 40 8 40 22",K,3.5)+lc(52,12,8,CY)+TXT(52,17,11,K,"€"),
+entrare:tx(10,2,.9,LT.porta)+AR(2,34,22,34),
+uscire:tx(2,2,.9,LT.porta)+AR(36,34,60,34),
+salire:STAIRS+AR(6,30,22,12),
+scendere:STAIRS+AR(22,12,6,30),
+spegnere:lp("M32 6C20 6 14 16 18 28C20 34 24 36 24 42H40C40 36 44 34 46 28C50 16 44 6 32 6Z","#e5e7eb")+lr(24,42,16,8,GY,2)+ll(32,52,32,58,K,2.5),
+pulire:ll(42,4,26,40,CM,4)+lp("M10 42L36 42L40 58H6Z",CY)+ll(16,46,14,56,"#eab308",2)+ll(24,46,23,56,"#eab308",2),
+alzarsi:fig(32,12,[[24,34],[40,34]],[[29,56],[35,56]])+AR(54,52,54,20),
+ricevere:fig(46,14,[[40,36],[27,28]],[[43,58],[49,58]])+lr(8,22,12,10,CY,2)+AR(6,44,24,34),
+rompere:lp("M8 14H26L30 28L24 38L30 52H8Z","#fff")+lp("M56 14H38L34 28L40 38L34 52H56Z","#fff")+pt("M30 28L24 38L30 52",CR,3),
+lavorare:fig(20,12,[[14,34],[32,38]],[[17,56],[23,56]])+tx(28,30,.5,LT.computer),
+grazie:P(28,10,1,[[-9,24],[2,13]],ST,CB,HM)+HT(50,22,1.4),
+/* ---- numeri ---- */
+...NUMS,
+/* ---- musica ---- */
+nota:eo(22,46,9,6.5,CB)+ll(30,46,30,10,K,3)+pt("M30 10Q44 14 40 28",K,3),
+pentagramma:STAFF+eo(36,32,6.5,4.5,CB)+ll(42,32,42,8,K,2.5),
+flauto:lr(4,26,56,10,"#cbd5e1",5)+lc(18,31,2.2,K)+lc(28,31,2.2,K)+lc(38,31,2.2,K)+lc(48,31,2.2,K),
+chitarra:limb(34,34,58,10,CM,5)+eo(24,44,16,14,CO)+lc(24,44,5,K)+ll(20,56,28,56,CM,3),
+pianoforte:lr(4,18,56,36,"#fff",3)+KEYS,
+tamburo:ll(14,4,30,22,CM,3.5)+ll(50,4,34,22,CM,3.5)+lp("M10 26V46C10 54 54 54 54 46V26Z",CB)+eo(32,26,22,7,"#fff"),
+/* ---- matematica ---- */
+moltiplicazione:lc(32,32,22,CB)+pt("M22 22L42 42M42 22L22 42","#fff",6),
+divisione:lc(32,32,22,CO)+pt("M20 32H44","#fff",6)+lc(32,21,3.2,"#fff")+lc(32,43,3.2,"#fff"),
+uguale:lc(32,32,22,CV)+ll(21,26,43,26,"#fff",6)+ll(21,38,43,38,"#fff",6),
+calcolatrice:lr(14,6,36,52,"#374151",5)+lr(19,11,26,12,LB,1)+CALCB,
+numero:lr(6,14,52,36,"#fff",5)+TXT(32,41,22,CB,"123"),
+/* ---- geografia e geometria ---- */
+bussola:lc(32,32,22,"#fff")+lp("M32 10L38 32H26Z",CR)+lp("M32 54L38 32H26Z",CB)+lc(32,32,2.5,K),
+lago:lp("M6 34C6 18 40 14 54 26C62 34 52 52 32 52C14 52 6 46 6 34Z",CB)+pt("M18 34Q24 30 30 34T42 34",CW,2.5),
+isola:lp("M2 46Q10 40 18 46T34 46T50 46T62 46V60H2Z",CB)+lp("M14 46C14 30 30 28 36 36C44 34 50 42 48 46Z","#fde68a")+lp("M26 36L22 20L32 34Z",CG),
+collina:lp("M0 56C10 24 30 20 40 32C48 22 60 30 64 56Z",CG),
+pianura:lr(2,36,60,22,CG,2)+ll(2,36,62,36,K,2.5)+pt("M10 28H22M30 26H44M46 30H58",LB,3),
+confine:ll(6,32,58,32,CR,4)+lr(4,6,22,18,CG,2)+lr(38,40,22,18,CY,2),
+legenda:lr(8,8,48,48,"#fff",4)+lc(18,20,4,CR)+ll(28,20,48,20,GY,3)+lr(14,30,8,8,CB,1)+ll(28,34,48,34,GY,3)+lr(14,42,8,8,CG,1)+ll(28,46,48,46,GY,3),
+punto:lp("M6 40L18 14H58L46 40Z",CW)+lc(32,27,4.5,CR),
+retta:ll(8,50,56,14,K,3)+lp("M4 53L14 50L10 44Z",K)+lp("M60 11L50 14L54 20Z",K),
+segmento:ll(10,40,54,24,K,3)+lc(10,40,5,CR)+lc(54,24,5,CR),
+angolo:pt("M10 54H54M10 54L48 14",K,3.5)+pt("M30 54A20 20 0 0 0 24 40",CR,3.5),
+piano:lp("M4 46L18 14H60L46 46Z",LB)+lc(34,30,4.5,CR),
+/* ---- bandiere ---- */
+bandiera:ll(14,4,14,60,K,3.5)+lp("M14 6H56L48 18L56 30H14Z",CR),
+italia:FLAG3(CG,"#fff",CR),
+francia:FLAG3(CB,"#fff",CR),
+germania:ll(8,6,8,60,K,3.5)+lr(10,12,44,10,"#111827",0)+lr(10,22,44,10,CR,0)+lr(10,32,44,10,CY,0),
+spagna:ll(8,6,8,60,K,3.5)+lr(10,12,44,8,CR,0)+lr(10,20,44,14,CY,0)+lr(10,34,44,8,CR,0),
+inghilterra:ll(8,6,8,60,K,3.5)+lr(10,12,44,30,"#fff",0)+lr(28,12,8,30,CR,0)+lr(10,22,44,10,CR,0),
+/* ---- famiglia, domanda e risposta ---- */
+famiglia:P(14,12,.7,AD,ST,CB,HM)+P(32,12,.7,AD,ST,CP,HW)+P(50,24,.5,AD,ST,CG,HM),
+genitori:P(22,12,.9,AD,ST,CB,HM)+P(42,12,.9,AD,ST,CP,HW),
+domanda:lr(8,8,48,40,"#fff",10)+TXT(32,40,34,CR,"?")+lp("M18 46L16 58L30 48Z","#fff"),
+});
 const LTP={di:"prep di",a:"prep a",da:"prep da",in:"prep in",con:"prep con",su:"prep su",per:"prep per",tra:"prep tra",fra:"prep tra"};
 /* parole che usano un pittogramma già disegnato */
 const LTA={sorridere:"felice",sorriso:"felice",contento:"felice",gioia:"felice",paura:"spaventato",stupito:"sorpreso",dire:"parlare",raccontare:"parlare",urlare:"gridare",camminare:"andare",passeggiare:"andare",tornare:"venire",arrivare:"venire",guardare:"occhio",vedere:"occhio",osservare:"occhio",occhi:"occhio",sentire:"ascoltare",riposare:"dormire",colori:"pastelli",pastello:"pastelli",ora:"orologio",orario:"orologio",foglio:"carta",pc:"computer",compleanno:"torta",auto:"macchina",bici:"bicicletta",madre:"mamma",padre:"papà",bimbo:"bambino",bimba:"bambina",ragazzo:"bambino",ragazza:"bambina",uova:"uovo",piove:"pioggia",piovere:"pioggia",miei:"mio",tuoi:"tuo",suoi:"suo",nostri:"nostro",vostri:"vostro",bambini:"bambino",forbice:"forbici",libri:"libro",mele:"mela",banchi:"banco",monti:"montagna"};
 Object.assign(LTA,{fidanzato:"coppia",fidanzata:"coppia",marito:"coppia",moglie:"coppia",sposo:"coppia",sposa:"coppia",sposi:"coppia",fidanzati:"coppia",innamorato:"coppia",innamorata:"coppia",ragazzi:"bambini",ragazze:"bambine",utilizzare:"usare",adoperare:"usare",dottoressa:"dottore",medico:"dottore",maestro:"professore",maestra:"professoressa",insegnante:"professore",amica:"amico",aeroplano:"aereo",nave:"barca",bus:"autobus",estate:"sole",inverno:"neve",primavera:"fiore",autunno:"foglia",fiamma:"fuoco",pericolo:"attenzione",attento:"attenzione",euro:"soldi",denaro:"soldi",telefonare:"telefono",cellulare:"telefono",tv:"televisione",televisore:"televisione",tazzina:"tazza","caffè":"tazza","tè":"tazza",amore:"cuore",amare:"cuore",bacio:"baciare",tartarughe:"tartaruga",hamburger:"panino",succhi:"succo",spaghetti:"pasta",maccheroni:"pasta",bistecca:"carne",verdura:"carota",stomaco:"pancia",capelli:"testa",viso:"testa",faccia:"testa",mattino:"mattina",serata:"sera",affamato:"fame",affamata:"fame",assetato:"sete",assetata:"sete",braccia:"braccio",regali:"regalo",foglie:"foglia",ciao:"salutare",salve:"salutare",nuoto:"nuotare",pericolosa:"attenzione",orsi:"orso",aerei:"aereo",api:"ape",scimmie:"scimmia"});
+Object.assign(LTA,{mia:"mio",mie:"mio",tua:"tuo",tue:"tuo",sua:"suo",sue:"suo",allora:"dopo",quindi:"dopo",poi:"dopo",oppure:"o",ed:"e","però":"ma",mai:"niente",nulla:"niente",nessuno:"niente",tanto:"molto",tanti:"molto",tante:"molto",troppo:"molto",pochi:"poco",poche:"poco",tutti:"tutto",tutte:"tutto","lì":"là",ecco:"qui",ok:"bene",bravo:"bene",brava:"bene",colazione:"tazza",pranzo:"piatto",cena:"piatto",gioco:"palla",giochi:"palla",giocattolo:"palla",sport:"palla",calcio:"palla",ricreazione:"palla",intervallo:"palla",compiti:"quaderno",esercizio:"quaderno",esercizi:"quaderno",pagella:"carta",frase:"carta",frasi:"carta",testo:"carta",parola:"italiano",parole:"italiano",lettera:"italiano",lettere:"italiano",alfabeto:"italiano",lezione:"professore",insegnare:"professore",spiegare:"professore",mondo:"geografia",terra:"geografia",pianeta:"geografia",mappa:"geografia",racconto:"storia",favola:"storia",disegno:"disegnare",capire:"idea",accendere:"idea",imparare:"studiare",piace:"cuore",piacere:"cuore",viaggiare:"valigia",viaggio:"valigia",partire:"andare",somma:"più",addizione:"più",sottrazione:"meno",risultato:"uguale",calcolare:"calcolatrice",canzone:"musica",suonare:"chitarra",strumento:"chitarra",spartito:"pentagramma",risposta:"rispondere",francese:"francia",tedesco:"germania",spagnolo:"spagna",inglese:"inghilterra",inglesi:"inghilterra",bandiere:"bandiera",nord:"bussola",sud:"bussola",est:"bussola",ovest:"bussola",punti:"punto",rette:"retta",piani:"piano",angoli:"angolo",segmenti:"segmento",fiumi:"fiume",laghi:"lago",isole:"isola",colline:"collina",pianure:"pianura",stato:"italia"});
+Object.assign(LTP,{del:"prep di",dello:"prep di",della:"prep di",dei:"prep di",degli:"prep di",delle:"prep di",al:"prep a",allo:"prep a",alla:"prep a",ai:"prep a",agli:"prep a",alle:"prep a",dal:"prep da",dallo:"prep da",dalla:"prep da",dai:"prep da",dagli:"prep da",dalle:"prep da",nel:"prep in",nello:"prep in",nella:"prep in",nei:"prep in",negli:"prep in",nelle:"prep in",sul:"prep su",sullo:"prep su",sulla:"prep su",sui:"prep su",sugli:"prep su",sulle:"prep su"});
 const LTE={en:{apple:"mela",bread:"pane",water:"acqua",milk:"latte",house:"casa",home:"casa",book:"libro",pencil:"matita",eat:"mangiare",drink:"bere",go:"andare",come:"venire",give:"dare",read:"leggere",above:"sopra",under:"sotto",below:"sotto",inside:"dentro",outside:"fuori",happy:"felice",sad:"triste",angry:"arrabbiato",tired:"stanco",write:"scrivere",draw:"disegnare",play:"giocare",run:"correre",jump:"saltare",sleep:"dormire",dance:"ballare",help:"aiutare",think:"pensare",look:"occhio",see:"occhio",listen:"ascoltare",open:"aprire",close:"chiudere",wash:"lavare",sit:"sedere",laugh:"ridere",sing:"cantare",speak:"parlare",talk:"parlare",school:"scuola",backpack:"zaino",notebook:"quaderno",pen:"penna",eraser:"gomma",scissors:"forbici",glue:"colla",ruler:"righello",desk:"banco",chair:"sedia",clock:"orologio",computer:"computer",door:"porta",window:"finestra",table:"tavolo",bed:"letto",ball:"palla",car:"macchina",bicycle:"bicicletta",bike:"bicicletta",key:"chiave",hat:"cappello",shoe:"scarpa",shirt:"maglia",tree:"albero",flower:"fiore",sun:"sole",moon:"luna",star:"stella",cloud:"nuvola",rain:"pioggia",sea:"mare",mountain:"montagna",road:"strada",dog:"cane",cat:"gatto",bird:"uccello",fish:"pesce",horse:"cavallo",cow:"mucca",pig:"maiale",sheep:"pecora",rabbit:"coniglio",lion:"leone",elephant:"elefante",banana:"banana",orange:"arancia",grapes:"uva",pizza:"pizza","ice cream":"gelato",cookie:"biscotto",cheese:"formaggio",egg:"uovo",cake:"torta",nose:"naso",mouth:"bocca",hand:"mano",foot:"piede",heart:"cuore",head:"testa",eye:"occhio",ear:"orecchio",red:"rosso",blue:"blu",yellow:"giallo",green:"verde",black:"nero",white:"bianco",pink:"rosa",purple:"viola",brown:"marrone",grey:"grigio",gray:"grigio",big:"grande",small:"piccolo",little:"piccolo",boy:"bambino",girl:"bambina",man:"uomo",woman:"donna",mother:"mamma",mom:"mamma",father:"papà",dad:"papà",grandfather:"nonno",grandmother:"nonna",I:"io",you:"tu",he:"lui",she:"lei",we:"noi",they:"loro"}};
 function ltk(b){
   if(LANG==="it"){
     const ex=[];for(const s of["hiamo","iamo","amo","emo","imo"])if(b.length>s.length+2&&b.endsWith(s)){const st=b.slice(0,-s.length);for(const t of["are","ere","ire"])ex.push(st+t)}/* noi: mangiamo, giochiamo */
-    for(const c of[b,...cands(b),...ex])for(const g of[c,c.replace(/e$/,"a"),c.replace(/[aie]$/,"o"),c.replace(/[aie]$/,"a"),c.replace(/[aie]$/,"e")]){if(ho(LT,g)&&!/^prep /.test(g))return g;if(ho(LTA,g))return LTA[g]}return""}
+    for(const c of[b,...cands(b),...ex])for(const g of(c.length<4?[c]:[c,c.replace(/e$/,"a"),c.replace(/[aie]$/,"o"),c.replace(/[aie]$/,"a"),c.replace(/[aie]$/,"e")])){if(ho(LT,g)&&!/^prep /.test(g))return g;if(ho(LTA,g))return LTA[g]}return""}
   if(LANG==="en"){for(const c of[b,...cands(b)])if(ho(LTE.en,c))return LTE.en[c]}
   return""}
 const AL={ed:"e",oppure:"o","perchè":"perché","però":"ma",no:"non",vero:"sì",falso:"non",sono:"è",era:"è",mai:"niente",nessuno:"niente",nulla:"niente",troppo:"molto",tanti:"molto",tante:"molto",tanto:"molto",pochi:"poco",poche:"poco",tutti:"tutto",tutte:"tutto",tutta:"tutto",dopo:"poi",quindi:"poi",allora:"poi","poiché":"perché",solito:"sempre",abitualmente:"sempre",indicare:"quello",essere:"è"};
@@ -994,8 +1117,9 @@ function build(par,off=-1){
     else if(it.g){c.className="c gl";e.textContent=it.label;c.onclick=ev=>{ev.stopPropagation();jump(it,LASTP!=="touch")}}
     else{
       const pm=markAt(it),lc=!pm&&UL[it.ctx]!==undefined;let v;
-      if(pm)v=pm.v;else if(lc)v=UL[it.ctx];else if(it.vh===1&&uget(it.key)===undefined)v=uget("essere")??"svg:è";else v=val(it.key);
-      if(v===""&&!it.multi&&stop(it.key)){const x=cx(it.key);if(x)v="svg:"+x}/* "uno" da solo = numero 1 */
+      if(pm)v=pm.v;else if(lc)v=UL[it.ctx];else if(it.vh===1&&uget(it.key)===undefined)v=uget("essere")??(STY==="lt"?"lt:essere":"svg:è");else v=val(it.key);
+      if(v===""&&!it.multi&&stop(it.key)){const x=cx(it.key);if(x)v="svg:"+x}
+      if(STY==="lt"&&typeof v==="string"&&v.startsWith("svg:")&&ho(LT,v.slice(4)))v="lt:"+v.slice(4);/* "uno" da solo = numero 1 */
       it.v=v;e.innerHTML=sym(v);
       if(v===""||v==="?")c.classList.add("miss");if(pm||lc)c.classList.add("loc");
       c.onclick=ev=>boxClick(ev,it);c.oncontextmenu=ev=>{ev.preventDefault();ed(it)};
@@ -1879,11 +2003,12 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-12b";
+const VER="2026-11-13a";
 const NEWS=[
-{v:"2026-11-12b",h:"Nuovo stile simboli «CAA Studio» (prova)",t:[
+{v:"2026-11-13a",h:"Nuovo stile simboli «CAA Studio» (prova)",t:[
 "In alto, accanto alla lingua, c'è il menu «Stile simboli»: ARASAAC oppure CAA Studio (prova).",
 "CAA Studio è un set di pittogrammi originali, a colori pieni e contorni puliti. Il rosso evidenzia gli elementi chiave e le frecce rosse indicano i movimenti. Le parole non coperte restano ARASAAC.",
+"Più di 400 pittogrammi: anche preposizioni articolate (del, nella, sul…), parole grammaticali, verbi, numeri, musica, matematica, geografia e geometria.",
 "Più di 270 pittogrammi: verbi, tempo e meteo, stati e bisogni, luoghi, mezzi di trasporto, materie, personaggi delle fiabe, oggetti, animali, cibi, colori e parti del corpo.",
 "Ci sono anche le preposizioni (di, a, da, in, con, su, per, tra, fra), i pronomi personali, gli aggettivi possessivi, i volti per mangiare, bere, ridere, parlare e cantare, e tanti oggetti scolastici, animali, cibi e parti del corpo.",
 "Nella finestra «Cambia simbolo», in «Simboli di sistema», trovi i pittogrammi CAA Studio e puoi darli a qualsiasi parola."]},
