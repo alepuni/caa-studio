@@ -1395,6 +1395,7 @@ ciliegie:"ciliegia",prugne:"prugna",susina:"prugna",susine:"prugna",datteri:"dat
 olive:"oliva",spicchi:"spicchio",vasetti:"vasetto",scatole:"scatola",mordi:"mordere",mordo:"mordere",morde:"mordere"
 });
 
+Object.assign(LTA,{"uva passa":"uvetta","pan di spagna":"torta","hot dog":"panino","mela cotogna":"mela","crema pasticcera":"budino","latte condensato":"latte","salsa di pomodoro":"ragù","pane nero":"pane","olive nere":"oliva","olive verdi":"oliva","gomma da masticare":"caramella","uovo di cioccolato":"cioccolato","torta al cioccolato":"torta","torta alla panna":"torta","carne di agnello":"costata","pesce spada":"pesce","cavoletto di bruxelles":"cavoletto","semi di zucca":"seme","olive in scatola":"oliva","spicchio d'aglio":"aglio","spicchi d'aglio":"aglio"});
 function ltk(b){
   if(LANG==="it"){
     const ex=[];for(const s of["hiamo","iamo","amo","emo","imo"])if(b.length>s.length+2&&b.endsWith(s)){const st=b.slice(0,-s.length);for(const t of["are","ere","ire"])ex.push(st+t)}/* noi: mangiamo, giochiamo */
@@ -1483,6 +1484,8 @@ function seiVerb(tk,i){
   if(!pr||/[.!?:;,]$/.test(pr))return /^(anni|mesi|giorni|ore|volte|euro|metri|chili|minuti|persone)$/.test(n)?0:1;
   if(n&&(stop(n)||part(n)))return 1;
   return 0}
+/* espressioni di più parole che hanno un loro simbolo (stile CAA Studio): «pesce azzurro», «frutta secca»… */
+const phr=k=>STY==="lt"&&LANG==="it"&&k.includes(" ")&&(ho(LT,k)||ho(LTA,k));
 const MW=8,GLY=/[\p{Extended_Pictographic}□■▢▣☐◯○●◻◼]/u;let ITEMS=[];
 function plan(par,off){
   const tm=[...par.matchAll(/\S+/g)],tk=tm.map(x=>x[0]),out=[];let i=0,pre="";
@@ -1496,9 +1499,9 @@ function plan(par,off){
     /* "a __": l'articolo o la preposizione va nello spazio da completare */
     if(stop(core(t))&&i+1<tk.length&&/^_{2,}\W*$/.test(tk[i+1])){out.push({b:1,label:pre+t+" "+tk[i+1],s:pos(i),e:end(i+1)});pre="";i+=2;continue}
     let n=0,key="",k0=i,f=i;
-    while(f<tk.length-1&&stop(core(tk[f]))&&core(tk[f+1]))f++;
+    while(f<tk.length-1&&stop(core(tk[f]))&&!(ARTOPT&&LANG==="it"&&ho(LTART,core(tk[f])))&&core(tk[f+1]))f++;
     for(const st of(f>i?[i,f]:[i])){
-      for(let m=Math.min(MW,tk.length-st);m>1;m--){const ws=tk.slice(st,st+m);if(ws.some(x=>!core(x)))continue;const k=ws.map(core).join(" ");if(uget(k)!==undefined){n=st+m-i;key=k;k0=st;break}}
+      for(let m=Math.min(MW,tk.length-st);m>1;m--){const ws=tk.slice(st,st+m);if(ws.some(x=>!core(x)))continue;const k=ws.map(core).join(" ");if(uget(k)!==undefined||phr(k)){n=st+m-i;key=k;k0=st;break}}
       if(n)break}
     let j;
     if(n)j=i+n-1;else{j=span(tk,i);n=j-i+1;key=core(tk[j]);k0=j}
@@ -2406,8 +2409,11 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-15b";
+const VER="2026-11-15c";
 const NEWS=[
+{v:"2026-11-15c",h:"Espressioni di più parole in un solo riquadro",t:[
+"Con lo stile CAA Studio, alcune espressioni ora restano in un solo riquadro con un solo simbolo: pesce azzurro, frutta secca, zucchero filato, uva passa, pan di Spagna, hot dog, olive nere, salsa di pomodoro, cavoletto di Bruxelles, crema pasticcera e altre.",
+"Per unire altre parole resta valido il pulsante «🔗 Unisci» (o «Unisci con la parola dopo» nella finestra «Cambia simbolo»)."]},
 {v:"2026-11-15b",h:"Più di 120 nuovi simboli del cibo (stile CAA Studio)",t:[
 "Frutta: ciliegia, albicocca, ananas, avocado, cocco, fico, kiwi, lampone, mora, mandarino, mango, melagrana, melone, mirtillo, pompelmo, lime, prugna, caco, dattero.",
 "Verdura e legumi: aglio, asparago, barbabietola, broccolo, cavolfiore, cavolo, cavoletto, cetriolo, cetriolino, cipolla, fagiolo, fagiolino, fungo, lattuga, melanzana, peperone, peperoncino, pisello, porro, rapa, ravanello, spinaci, zucca, zucchina, mais, ceci, lenticchie, radicchio, erbe aromatiche.",
