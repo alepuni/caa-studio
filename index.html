@@ -1225,6 +1225,176 @@ const LTART={il:"art il",lo:"art il",la:"art la",i:"art i",gli:"art i",le:"art l
 let ARTOPT=ld("caa_art",false);
 const LTE={en:{apple:"mela",bread:"pane",water:"acqua",milk:"latte",house:"casa",home:"casa",book:"libro",pencil:"matita",eat:"mangiare",drink:"bere",go:"andare",come:"venire",give:"dare",read:"leggere",above:"sopra",under:"sotto",below:"sotto",inside:"dentro",outside:"fuori",happy:"felice",sad:"triste",angry:"arrabbiato",tired:"stanco",write:"scrivere",draw:"disegnare",play:"giocare",run:"correre",jump:"saltare",sleep:"dormire",dance:"ballare",help:"aiutare",think:"pensare",look:"occhio",see:"occhio",listen:"ascoltare",open:"aprire",close:"chiudere",wash:"lavare",sit:"sedere",laugh:"ridere",sing:"cantare",speak:"parlare",talk:"parlare",school:"scuola",backpack:"zaino",notebook:"quaderno",pen:"penna",eraser:"gomma",scissors:"forbici",glue:"colla",ruler:"righello",desk:"banco",chair:"sedia",clock:"orologio",computer:"computer",door:"porta",window:"finestra",table:"tavolo",bed:"letto",ball:"palla",car:"macchina",bicycle:"bicicletta",bike:"bicicletta",key:"chiave",hat:"cappello",shoe:"scarpa",shirt:"maglia",tree:"albero",flower:"fiore",sun:"sole",moon:"luna",star:"stella",cloud:"nuvola",rain:"pioggia",sea:"mare",mountain:"montagna",road:"strada",dog:"cane",cat:"gatto",bird:"uccello",fish:"pesce",horse:"cavallo",cow:"mucca",pig:"maiale",sheep:"pecora",rabbit:"coniglio",lion:"leone",elephant:"elefante",banana:"banana",orange:"arancia",grapes:"uva",pizza:"pizza","ice cream":"gelato",cookie:"biscotto",cheese:"formaggio",egg:"uovo",cake:"torta",nose:"naso",mouth:"bocca",hand:"mano",foot:"piede",heart:"cuore",head:"testa",eye:"occhio",ear:"orecchio",red:"rosso",blue:"blu",yellow:"giallo",green:"verde",black:"nero",white:"bianco",pink:"rosa",purple:"viola",brown:"marrone",grey:"grigio",gray:"grigio",big:"grande",small:"piccolo",little:"piccolo",boy:"bambino",girl:"bambina",man:"uomo",woman:"donna",mother:"mamma",mom:"mamma",father:"papà",dad:"papà",grandfather:"nonno",grandmother:"nonna",I:"io",you:"tu",he:"lui",she:"lei",we:"noi",they:"loro"}};
 Object.assign(LTE.en,{every:"ogni",each:"ogni",fork:"forchetta",spoon:"cucchiaio",knife:"coltello",plate:"piatto",bottle:"bottiglia",pot:"pentola",butter:"burro",sugar:"zucchero",salt:"sale",oil:"olio",honey:"miele",soup:"zuppa",salad:"insalata",chicken:"pollo",potato:"patata",candy:"caramella",fruit:"frutta",food:"cibo",drink:"bevanda",yogurt:"yogurt",chew:"masticare"});
+/* ---- cibo: seconda serie (dalla lista ARASAAC «cibo») ---- */
+const ZLF=(x,y,rot,s,c)=>'<g transform="translate('+x+' '+y+') rotate('+rot+') scale('+s+')"><path d="M0 0C4 -7 14 -7 18 0C14 7 4 7 0 0Z" fill="'+(c||CG)+'" stroke="'+K+'" stroke-width="2.2"/></g>';
+const ZDT=(a,r,c)=>a.map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(r||1.8)+'" fill="'+(c||K)+'"/>').join("");
+const ZRAD=(cx,cy,r0,r1,n,c,w,off)=>{let s="";for(let i=0;i<n;i++){const a=(off||0)+i*6.2832/n;s+=ll((cx+r0*Math.cos(a)).toFixed(1),(cy+r0*Math.sin(a)).toFixed(1),(cx+r1*Math.cos(a)).toFixed(1),(cy+r1*Math.sin(a)).toFixed(1),c,w||1.6)}return s};
+const ZSLICE=(cx,cy,R,o,i,sg,n)=>lc(cx,cy,R,o)+'<circle cx="'+cx+'" cy="'+cy+'" r="'+(R-3.5)+'" fill="'+i+'"/>'+ZRAD(cx,cy,3,R-5,n,sg,1.6);
+const ZFISH=(c1,c2)=>lp("M50 32L62 20V44Z",c2)+eo(30,32,22,12,c1)+pt("M42 22C46 28 46 36 42 42",K,1.8)+dot(16,29,2.2)+pt("M24 36C28 38 34 38 38 36","#fff",1.6);
+const ZBTL=(c,cap)=>lp("M26 18H38V24C42 28 44 32 44 38V54Q44 58 40 58H24Q20 58 20 54V38C20 32 22 28 26 24Z",c)+lr(26,8,12,10,cap,2)+lr(22,38,20,12,"#fff",2);
+const ZJAR=(c,l)=>lr(14,22,36,34,c,7)+lr(12,12,40,10,l||"#d1d5db",3)+lr(20,32,24,16,"#fff",2);
+const ZSOUP=c=>pt("M22 20C18 14 26 12 22 4",GY,3)+pt("M32 20C28 14 36 12 32 4",GY,3)+pt("M42 20C38 14 46 12 42 4",GY,3)+lp("M6 28H58C58 46 48 58 32 58C16 58 6 46 6 28Z",CB)+eo(32,28,26,6,c);
+const ZSP="M32 32m-3 0a3 3 0 1 1 6 0a7 7 0 1 1 -14 0a11 11 0 1 1 22 0a15 15 0 1 1 -30 0a19 19 0 1 1 38 0";
+const ZSPIR=(c,w)=>pt(ZSP,K,w+2.4)+pt(ZSP,c,w);
+const ZCL=c=>[[24,30],[38,30],[17,41],[31,41],[45,41],[24,52],[38,52]].map(p=>lc(p[0],p[1],7,c)).join("")+ZLF(30,24,-70,.9,CG);
+const ZRING=(n,r,cx,cy)=>Array.from({length:n},(_,i)=>[(cx+r*Math.cos(i*6.2832/n)).toFixed(1),(cy+r*Math.sin(i*6.2832/n)).toFixed(1)]);
+const ZBUD=(a,b)=>lp("M16 54L12 28C12 20 52 20 52 28L48 54Z",a)+lp("M12 28C12 20 52 20 52 28C44 34 20 34 12 28Z",b)+lr(8,54,48,5,CW,2);
+const ZNUT={
+ man:lp("M32 8C46 18 50 40 32 58C14 40 18 18 32 8Z","#d6a76a")+pt("M32 14C30 28 30 44 32 54","#a16207",2),
+ noc:lp("M32 12C46 12 54 22 52 36C50 50 40 56 32 56C24 56 14 50 12 36C10 22 18 12 32 12Z","#c08a4e")+pt("M32 14C27 22 37 30 32 38C29 44 33 50 32 56","#78350f",2.2)+pt("M20 22C24 26 24 32 20 36M44 22C40 26 40 32 44 36M22 44C26 46 28 50 28 54M42 44C38 46 36 50 36 54","#78350f",1.8),
+ noi:lc(30,38,15,"#b45309")+lp("M14 34C14 20 46 20 46 34Z","#78350f")+pt("M18 30H42","#d6a76a",1.5)};
+const ZNEW={
+"ciliegia":pt("M24 46C26 32 32 20 40 10",GN,2.5)+pt("M42 48C42 34 42 20 40 10",GN,2.5)+lc(24,48,9,CR)+lc(42,50,9,CR)+ZLF(40,10,-30,1,CG)+ZDT([[21,45],[39,47]],1.6,"#fff"),
+"albicocca":lc(32,36,19,"#fdba74")+pt("M32 19C27 28 27 42 32 54",CO,2.4)+pt("M32 18V12",CM,3)+ZLF(32,14,-25,1,CG),
+"ananas":lp("M32 24C48 24 50 40 48 50C46 58 18 58 16 50C14 40 16 24 32 24Z","#fbbf24")+pt("M20 30L44 54M16 40L36 58M28 26L48 46M44 30L20 54M48 40L28 58M36 26L16 46","#d97706",1.6)+lp("M32 26L20 8L28 14L32 2L36 14L44 8Z",CG),
+"avocado":lp("M32 6C22 6 16 22 16 38C16 50 24 58 32 58C40 58 48 50 48 38C48 22 42 6 32 6Z","#4d7c0f")+lp("M32 12C25 12 21 25 21 38C21 47 26 53 32 53C38 53 43 47 43 38C43 25 39 12 32 12Z","#bef264")+lc(32,40,8,CM),
+"cocco":lp("M12 30A20 22 0 0 0 52 30Z","#78350f")+eo(32,30,20,8,"#fff")+eo(32,31,12,4,"#d1d5db"),
+"fico":lp("M32 8C30 8 30 12 30 16C22 20 12 30 16 44C20 56 44 56 48 44C52 30 42 20 34 16C34 12 34 8 32 8Z","#7c3aed")+pt("M32 22V50","#a78bfa",2)+pt("M24 28C22 38 24 46 26 50","#a78bfa",2)+pt("M40 28C42 38 40 46 38 50","#a78bfa",2),
+"kiwi":ZSLICE(32,32,22,"#78350f","#84cc16","#d9f99d",16)+lc(32,32,6,"#f7fee7")+ZDT(ZRING(10,11,32,32),1.5),
+"lampone":ZCL("#e11d48"),
+"mora":ZCL("#4c1d95"),
+"mandarino":lc(28,38,18,CO)+pt("M28 20V14",CM,3)+ZLF(28,16,-30,1,CG)+lp("M46 34C54 34 56 52 46 54C42 52 40 40 46 34Z","#fdba74"),
+"mango":lp("M14 38C12 22 28 10 44 14C54 18 54 36 44 48C34 60 16 54 14 38Z","#fb923c")+pt("M20 30C22 22 30 16 38 16","#fde68a",3)+ZLF(44,14,-40,1,CG),
+"melagrana":lc(32,36,19,"#be123c")+lp("M25 18L27 10L32 15L37 10L39 18Z","#9f1239")+ZDT([[26,34],[34,30],[38,40],[28,44]],2.4,"#fda4af"),
+"melone":lp("M6 22H58C58 42 46 58 32 58C18 58 6 42 6 22Z","#86efac")+lp("M10 24H54C54 40 44 54 32 54C20 54 10 40 10 24Z","#fb923c")+ZDT([[22,32],[32,34],[42,32],[27,41],[37,41]],1.8,"#fef3c7"),
+"mirtillo":lc(22,38,12,"#4f46e5")+lc(42,42,12,"#4f46e5")+pt("M17 34L22 38L27 34M37 38L42 42L47 38",K,2)+ZLF(32,20,-40,.9,CG),
+"pompelmo":ZSLICE(32,32,22,"#fde68a","#fb7185","#fecdd3",10),
+"lime":ZSLICE(32,32,22,"#4d7c0f","#bef264","#ecfccb",8),
+"prugna":lc(32,36,19,"#6d28d9")+pt("M32 18C28 28 28 44 32 54","#4c1d95",2.2)+pt("M32 18V12",CM,3)+ZLF(32,14,-25,1,CG)+pt("M20 30C21 26 24 23 27 22","#c4b5fd",3),
+"caco":lc(32,38,19,"#fb923c")+lp("M20 22C24 16 40 16 44 22C40 28 24 28 20 22Z",CG)+pt("M32 20V12",CM,3),
+"dattero":'<g transform="rotate(-25 32 32)">'+eo(26,32,10,22,"#7c2d12")+pt("M22 18C21 28 21 36 22 46","#a16207",1.8)+'</g>'+'<g transform="rotate(25 32 32)">'+eo(40,34,10,22,"#92400e")+pt("M36 20C35 30 35 38 36 48","#b45309",1.8)+'</g>',
+"aglio":lp("M32 8C34 18 44 20 48 32C52 44 42 56 32 56C22 56 12 44 16 32C20 20 30 18 32 8Z","#f8fafc")+pt("M32 20C24 32 24 46 32 56M32 20C40 32 40 46 32 56","#cbd5e1",1.8),
+"asparago":[[16,"#65a30d"],[28,"#84cc16"],[40,"#65a30d"]].map(a=>lp("M"+a[0]+" 58V24C"+a[0]+" 14 "+(a[0]+4)+" 10 "+(a[0]+6)+" 8C"+(a[0]+8)+" 10 "+(a[0]+12)+" 14 "+(a[0]+12)+" 24V58Z",a[1])).join(""),
+"barbabietola":lp("M32 22C46 22 54 32 50 44C46 56 36 58 32 62C28 58 18 56 14 44C10 32 18 22 32 22Z","#9d174d")+lp("M32 22C28 12 24 8 20 4C24 14 28 18 32 22Z",CG)+lp("M32 22C36 12 40 8 44 4C40 14 36 18 32 22Z",CG),
+"broccolo":lp("M28 38H40L42 58H26Z","#86efac")+lc(22,28,10,"#16a34a")+lc(34,20,11,"#22c55e")+lc(46,28,10,"#16a34a")+lc(34,32,9,"#22c55e"),
+"cavolfiore":lp("M10 38C10 52 24 58 32 58C40 58 54 52 54 38Z","#4ade80")+lc(20,32,10,"#f5f5f4")+lc(32,24,12,"#fafaf9")+lc(44,32,10,"#f5f5f4")+lc(32,36,9,"#fafaf9"),
+"cavolo":lc(32,34,22,"#4ade80")+pt("M32 12V56","#15803d",2)+pt("M32 12C20 24 20 44 32 56","#15803d",2)+pt("M32 12C44 24 44 44 32 56","#15803d",2),
+"cavoletto":lc(20,40,10,CG)+lc(42,40,10,CG)+lc(31,24,10,"#4ade80")+pt("M15 40C18 36 24 36 25 42M37 40C40 36 46 36 47 42M26 24C29 20 35 20 36 26","#15803d",1.8),
+"cetriolo":'<g transform="rotate(-30 32 32)">'+eo(32,32,27,10,"#22c55e")+ZDT([[14,30],[24,35],[34,29],[44,35],[50,30]],1.4,"#bbf7d0")+'</g>',
+"cetriolino":'<g transform="rotate(-20 32 32)">'+eo(30,22,17,6.5,"#65a30d")+eo(34,40,17,6.5,"#84cc16")+'</g>',
+"cipolla":lp("M32 8C34 16 46 20 50 34C54 48 42 58 32 58C22 58 10 48 14 34C18 20 30 16 32 8Z","#c084fc")+pt("M32 14C22 26 22 46 32 58M32 14C42 26 42 46 32 58","#7e22ce",1.8),
+"fagiolo":'<g transform="rotate(-25 32 32)">'+eo(26,26,16,9,"#b91c1c")+eo(38,40,16,9,"#9f1239")+'</g>'+dot(18,36,1.6,"#fff"),
+"fagiolino":pt("M12 50C22 44 38 24 54 12",K,10)+pt("M12 50C22 44 38 24 54 12","#4ade80",7)+ZDT([[24,42],[34,32],[44,22]],1.8,"#15803d"),
+"fungo":lp("M24 34H40L38 56H26Z","#fef3c7")+lp("M8 34C8 14 56 14 56 34Z","#dc2626")+ZDT([[20,28],[32,22],[44,28],[30,30]],3,"#fff"),
+"lattuga":lp("M32 58C10 52 6 28 20 14C28 8 36 8 44 14C58 28 54 52 32 58Z","#86efac")+pt("M32 56V16M32 40L20 28M32 34L44 24M32 46L22 40M32 46L42 40","#15803d",1.8),
+"melanzana":lp("M30 14C42 12 54 24 50 40C46 56 28 60 18 50C10 42 16 26 30 14Z","#6d28d9")+lp("M30 14L22 6L34 8L42 6L40 16Z",CG)+pt("M26 28C24 34 26 42 30 46","#a78bfa",3),
+"peperone":lp("M32 14C44 8 54 18 52 34C50 50 42 58 32 58C22 58 14 50 12 34C10 18 20 8 32 14Z",CR)+pt("M32 14V6",GN,3.5)+pt("M20 26C18 34 20 42 24 48","#fda4af",3),
+"peperoncino":lp("M12 14C40 8 58 26 54 54C50 52 46 44 44 38C38 28 26 22 12 22Z",CR)+lp("M12 14L6 8L12 6L18 10Z",CG),
+"pisello":lp("M6 30C16 20 48 20 58 30C48 44 16 44 6 30Z","#65a30d")+[[17,32],[26,34],[36,34],[46,32]].map(p=>lc(p[0],p[1],5,"#bef264")).join(""),
+"porro":lp("M26 6C22 14 24 28 28 36H36C40 28 42 14 38 6C34 10 30 10 26 6Z","#22c55e")+lr(28,36,8,22,"#f8fafc",2)+pt("M28 58L24 62M32 58V62M36 58L40 62","#a8a29e",1.8),
+"rapa":lp("M12 24H52C52 40 40 56 32 60C24 56 12 40 12 24Z","#f8fafc")+lp("M12 24H52C52 30 48 34 44 36H20C16 34 12 30 12 24Z","#c084fc")+lp("M22 24L18 8L28 18Z",CG)+lp("M42 24L46 8L36 18Z",CG)+lp("M32 24V4L36 24Z",CG),
+"ravanello":lp("M32 56L28 62L32 60L36 62Z","#e11d48")+lc(32,38,17,"#e11d48")+lp("M32 22L24 6L32 14L40 6Z",CG)+pt("M22 34C22 30 24 28 26 26","#fda4af",3),
+"spinaci":lp("M24 56C8 50 8 22 22 10C32 18 34 40 24 56Z","#15803d")+lp("M42 58C26 52 28 26 42 14C52 22 54 44 42 58Z","#16a34a")+pt("M22 14V50M42 18V54","#86efac",1.6),
+"zucca":eo(32,38,24,18,"#f97316")+pt("M32 20C22 30 22 46 32 56M32 20C42 30 42 46 32 56M16 26C12 36 14 46 20 52M48 26C52 36 50 46 44 52","#c2410c",1.8)+lp("M28 20L30 8L36 8L36 20Z",CM),
+"zucchina":'<g transform="rotate(-30 32 32)">'+eo(32,32,27,10,"#15803d")+pt("M10 32H54M16 27H48M16 37H48","#86efac",1.4)+lr(2,29,8,6,"#65a30d",2)+'</g>',
+"mais":'<g transform="rotate(20 32 32)">'+lp("M32 6C42 8 46 30 42 48C38 56 26 56 22 48C18 30 22 8 32 6Z","#facc15")+ZDT([[27,16],[37,16],[26,25],[32,25],[38,25],[26,34],[32,34],[38,34],[27,43],[37,43]],2.1,"#d97706")+lp("M22 52C14 44 10 28 18 16C20 30 24 42 30 54Z",CG)+lp("M42 52C50 44 54 28 46 16C44 30 40 42 34 54Z",CG)+'</g>',
+"ceci":[[22,26],[42,26],[32,42]].map(p=>lp("M"+(p[0]-10)+" "+(p[1]+1)+"C"+(p[0]-10)+" "+(p[1]-8)+" "+p[0]+" "+(p[1]-14)+" "+p[0]+" "+(p[1]-14)+"C"+p[0]+" "+(p[1]-14)+" "+(p[0]+10)+" "+(p[1]-8)+" "+(p[0]+10)+" "+(p[1]+1)+"C"+(p[0]+10)+" "+(p[1]+8)+" "+(p[0]+5)+" "+(p[1]+12)+" "+p[0]+" "+(p[1]+12)+"C"+(p[0]-5)+" "+(p[1]+12)+" "+(p[0]-10)+" "+(p[1]+8)+" "+(p[0]-10)+" "+(p[1]+1)+"Z","#e9c46a")).join(""),
+"lenticchia":ZDT([[16,20],[30,16],[44,22],[22,32],[36,30],[50,34],[14,44],[28,46],[42,44],[54,50],[20,56],[36,56]],5.5,"#b45309")+ZDT([[16,20],[30,16],[44,22],[22,32],[36,30],[50,34],[14,44],[28,46],[42,44],[54,50],[20,56],[36,56]],5.5,"none"),
+"radicchio":lc(32,34,21,"#9f1239")+pt("M32 13V55M32 20C22 28 22 42 32 52M32 20C42 28 42 42 32 52","#fda4af",2),
+"erbe":pt("M32 58V24",GN,3)+ZLF(32,44,-40,1.2,"#4ade80")+ZLF(32,36,-140,1.2,CG)+ZLF(32,28,-40,1.1,CG)+ZLF(32,22,-140,1,"#4ade80")+ZLF(32,16,-80,.9,CG),
+"mandorla":ZNUT.man,
+"nocciola":ZNUT.noi,
+"noce":ZNUT.noc,
+"pistacchio":eo(32,34,16,20,"#d6c7a1")+eo(32,36,9,14,"#84cc16")+pt("M32 14V22",K,2),
+"arachide":lp("M22 10C34 6 40 14 36 22C32 28 34 32 40 36C48 44 40 58 30 54C22 50 26 44 24 38C22 32 14 28 14 20C14 14 18 12 22 10Z","#e0b97a")+ZDT([[24,18],[30,16],[26,26],[32,44],[36,50],[30,38]],1.2,"#a16207"),
+"castagna":lp("M32 10C44 16 52 34 46 48C40 58 24 58 18 48C12 34 20 16 32 10Z","#7c2d12")+lp("M24 22C28 16 36 16 40 22C36 26 28 26 24 22Z","#d6a76a"),
+"anacardo":lp("M14 30C20 14 46 12 52 28C54 36 46 40 42 34C38 28 30 28 26 36C22 44 12 42 14 30Z","#fde68a"),
+"pinoli":'<g transform="rotate(-30 32 32)">'+eo(20,22,5,12,"#fef3c7")+eo(32,34,5,12,"#fef3c7")+eo(44,44,5,12,"#fef3c7")+eo(26,46,5,12,"#fef3c7")+'</g>',
+"ghianda":lp("M16 30C16 44 24 56 32 58C40 56 48 44 48 30Z","#b45309")+lp("M12 30C12 14 52 14 52 30Z","#78350f")+pt("M32 14V8",K,3)+ZDT([[22,24],[32,20],[42,24],[28,26],[38,26]],1.2,"#d6a76a"),
+"seme":'<g transform="rotate(-25 32 32)">'+eo(22,24,6,13,"#78350f")+eo(38,32,6,13,"#78350f")+eo(24,44,6,13,"#78350f")+pt("M22 14V34M38 22V42M24 34V54","#d6a76a",1.5)+'</g>',
+"uvetta":[[20,28],[40,24],[30,44]].map(p=>eo(p[0],p[1],11,9,"#4c1d95")).join("")+pt("M14 26C18 24 22 30 26 28M34 22C38 20 42 26 46 24M24 42C28 40 32 46 36 44","#a78bfa",1.5),
+"frutta secca":tx(-2,10,.55,ZNUT.noc)+tx(26,12,.55,ZNUT.man)+tx(10,32,.6,ZNUT.noi)+tx(32,32,.55,lp("M22 10C34 6 40 14 36 22C32 28 34 32 40 36C48 44 40 58 30 54C22 50 26 44 24 38C22 32 14 28 14 20C14 14 18 12 22 10Z","#e0b97a")),
+"prosciutto":lp("M8 30C8 16 34 12 46 22C54 28 50 46 40 50C34 58 22 58 16 50C10 46 8 38 8 30Z","#fda4af")+pt("M14 24C22 16 36 16 44 24","#fff",2.4)+ll(48,38,60,50,K,8)+ll(48,38,60,50,"#fff",5)+lc(61,52,3.5,"#fff"),
+"salame":'<g transform="rotate(-20 32 32)">'+lr(6,24,52,16,"#9f1239",8)+ZDT([[16,29],[24,35],[32,29],[40,35],[48,29]],1.8,"#fecdd3")+ll(6,32,2,32,K,2)+ll(58,32,62,32,K,2)+'</g>',
+"salsiccia":pt("M12 46C14 22 46 22 52 42",K,17)+pt("M12 46C14 22 46 22 52 42","#b91c1c",13)+pt("M13 38L21 40M44 30L48 38","#fff",2)+pt("M12 46L6 50M52 42L58 46",K,2.5),
+"mortadella":lc(32,32,22,"#fda4af")+lc(32,32,18,"#fecdd3")+ZDT([[22,26],[34,22],[42,32],[28,36],[22,42],[38,42],[32,30]],2.4,"#fff"),
+"pancetta":lp("M6 14C14 8 24 20 32 14C40 8 50 20 58 14V30C50 36 40 24 32 30C24 36 14 24 6 30Z","#fb7185")+pt("M6 22C14 16 24 28 32 22C40 16 50 28 58 22","#fff",2.4)+lp("M6 36C14 30 24 42 32 36C40 30 50 42 58 36V52C50 58 40 46 32 52C24 58 14 46 6 52Z","#fda4af")+pt("M6 44C14 38 24 50 32 44C40 38 50 50 58 44","#fff",2.4),
+"costata":lp("M8 28C8 14 30 10 44 16C56 22 58 40 44 50C34 58 14 52 8 40Z","#fb7185")+lp("M26 24C34 22 40 28 38 36C36 44 28 46 22 40Z","#fff")+pt("M12 30C14 22 22 18 30 18","#fecdd3",2.4),
+"tonno":lp("M8 26V50C8 58 56 58 56 50V26Z",CB)+eo(32,26,24,8,"#e5e7eb")+eo(32,26,18,5,"#fda4af")+lp("M22 40C28 34 38 34 42 40C38 46 28 46 22 40Z","#e5e7eb")+lp("M42 40L50 35V45Z","#e5e7eb"),
+"pesce azzurro":ZFISH("#60a5fa","#3b82f6"),
+"salmone":ZFISH("#fb7185","#f43f5e"),
+"calamaro":lp("M32 4L46 30H18Z","#fda4af")+[[20,32],[26,36],[32,38],[38,36],[44,32]].map(p=>pt("M"+p[0]+" 30C"+(p[0]-4)+" 38 "+(p[0]+4)+" 44 "+p[0]+" 56","#fb7185",3.5)).join("")+dot(26,28,2)+dot(38,28,2),
+"cozza":lp("M10 44C10 20 30 8 54 14C58 30 50 52 30 54C20 54 12 50 10 44Z","#1e293b")+pt("M16 42C18 28 30 20 46 20M20 46C24 34 34 28 50 26","#64748b",2),
+"gambero":pt("M14 18C32 8 54 22 50 42C48 50 40 52 34 48",K,11)+pt("M14 18C32 8 54 22 50 42C48 50 40 52 34 48","#fb923c",8)+pt("M20 14L12 8M16 18L8 16",K,2.2)+dot(20,19,2)+pt("M28 12C28 20 28 22 30 26M38 12C40 20 40 24 42 28","#c2410c",1.8),
+"vongola":lp("M8 44C8 24 20 12 32 12C44 12 56 24 56 44Z","#fde68a")+[1,2,3,4,5,6,7].map(i=>{const a=Math.PI+i*Math.PI/8;return ll((32+6*Math.cos(a)).toFixed(1),(44+6*Math.sin(a)).toFixed(1),(32+28*Math.cos(a)).toFixed(1),(44+28*Math.sin(a)).toFixed(1),"#d97706",1.8)}).join("")+ll(8,44,56,44,K,2.5),
+"caviale":lr(16,22,32,32,"#1f2937",6)+lr(14,14,36,9,"#fbbf24",2)+lr(20,32,24,14,"#fff",2)+ZDT([[26,39],[32,37],[38,39],[29,42],[35,42]],2.2,"#1f2937"),
+"ciambella":lc(32,32,24,"#d6a76a")+lc(32,32,21,"#f9a8d4")+lc(32,32,8,"#fff")+ll(18,22,22,25,CY,2.4)+ll(40,16,44,19,CB,2.4)+ll(46,34,50,32,CG,2.4)+ll(22,46,26,44,CR,2.4)+ll(38,48,42,50,CY,2.4)+ll(14,36,18,38,CB,2.4),
+"cioccolatino":lp("M20 32L5 21V43Z","#d6a76a")+lp("M44 32L59 21V43Z","#d6a76a")+lc(32,32,14,"#92400e")+pt("M24 24L34 42","#d6a76a",3)+pt("M32 20L42 36","#d6a76a",3),
+"lecca-lecca":ll(32,40,32,60,CW,4.5)+ll(32,40,32,60,K,1.6)+lc(32,24,17,CP)+pt("M32 24m-3 0a3 3 0 1 1 6 0a7 7 0 1 1 -14 0a11 11 0 1 1 22 0","#fff",2.6),
+"budino":ZBUD("#fbbf24","#92400e"),
+"gelatina":ZBUD("#f43f5e","#fda4af"),
+"muffin":lp("M14 34L18 58H46L50 34Z","#fb923c")+pt("M24 36L25 56M32 36V56M40 36L39 56","#c2410c",1.6)+lp("M10 34C8 14 56 14 54 34Z","#d6a76a")+ZDT([[22,26],[32,22],[42,26],[30,30]],2.4,"#78350f"),
+"waffle":lr(8,10,48,48,"#fbbf24",6)+pt("M8 26H56M8 42H56M24 10V58M40 10V58","#d97706",2.4),
+"wafer":lr(8,16,48,8,"#e9b872",2)+lr(8,24,48,6,"#92400e",1)+lr(8,30,48,8,"#e9b872",2)+lr(8,38,48,6,"#92400e",1)+lr(8,44,48,8,"#e9b872",2),
+"croissant":lp("M6 42C10 22 24 12 32 12C40 12 54 22 58 42C52 38 48 32 44 36C40 30 24 30 20 36C16 32 12 38 6 42Z","#f59e0b")+pt("M24 16L26 32M32 12V30M40 16L38 32","#b45309",2),
+"pancake":eo(32,46,24,7,"#d97706")+eo(32,40,24,7,"#fbbf24")+eo(32,34,24,7,"#d97706")+eo(32,27,24,7,"#fbbf24")+lr(24,20,16,7,CY,2)+pt("M18 28C18 34 20 36 20 38M44 28C44 34 46 38 46 40","#92400e",2.4),
+"panettone":lp("M14 54V28C14 10 50 10 50 28V54Z","#fbbf24")+lr(12,46,40,12,CR,2)+ZDT([[24,24],[32,18],[40,24],[28,34],[38,34]],2.2,"#7c2d12"),
+"ghiacciolo":lr(18,6,28,38,"#38bdf8",10)+lr(28,44,8,16,"#d6a76a",3)+pt("M24 14V30","#bae6fd",3),
+"meringa":lp("M14 56C14 46 22 44 24 38C20 34 24 26 30 24C30 18 34 8 38 14C42 16 40 22 40 26C46 30 46 36 44 40C50 46 50 56 50 56Z","#fff7ed"),
+"torrone":lr(6,22,52,22,"#fff7ed",4)+ZDT([[16,30],[28,36],[40,29],[50,35],[22,38],[46,26]],3,"#b45309"),
+"popcorn":lp("M16 32L20 58H44L48 32Z",CR)+pt("M26 34L27 58M38 34L37 58",CW,3)+[[22,28],[32,24],[42,28],[27,20],[37,20]].map(p=>lc(p[0],p[1],7,"#fff7ed")).join(""),
+"pretzel":pt("M32 52C14 52 8 30 22 22C30 18 36 26 32 32C28 26 34 18 42 22C56 30 50 52 32 52Z",K,9.6)+pt("M32 52C14 52 8 30 22 22C30 18 36 26 32 32C28 26 34 18 42 22C56 30 50 52 32 52Z","#b45309",7)+ZDT([[18,42],[46,42],[32,46],[24,26],[40,26]],1.2,"#fff"),
+"cracker":lr(10,10,44,44,"#e9c46a",4)+ZDT([[20,20],[32,20],[44,20],[20,32],[32,32],[44,32],[20,44],[32,44],[44,44]],2.2),
+"grissino":'<g transform="rotate(-35 32 32)">'+lr(2,16,60,7,"#d6a76a",3)+lr(2,28,60,7,"#e9c46a",3)+lr(2,40,60,7,"#d6a76a",3)+'</g>',
+"focaccia":lr(6,14,52,36,"#fbbf24",8)+ZDT([[16,24],[28,22],[40,26],[50,22],[20,36],[34,34],[46,38],[26,44],[40,44]],2.2,"#d97706")+ZLF(14,42,-20,.5,CG)+ZLF(36,26,10,.5,CG),
+"pancarré":lp("M12 30C6 14 22 6 32 10C42 6 58 14 52 30V56H12Z","#fde68a")+pt("M18 30C14 20 24 14 32 16C40 14 50 20 46 30V50H18Z","#fffbeb",2.6),
+"toast":lp("M10 30C6 16 22 10 30 14C38 10 54 16 50 30V46H10Z","#e9b872")+lr(14,34,36,6,"#fda4af",2)+lr(14,40,36,5,"#fde047",2)+lp("M20 28C16 20 26 16 32 18C38 16 48 20 44 28V32H20Z","#fbbf24"),
+"ravioli":lr(10,10,44,44,"#fde68a",4)+pt("M16 16H48V48H16Z","#d97706",1.6)+lc(32,32,8,"#f59e0b"),
+"tagliatelle":ZSPIR("#fde68a",5),
+"ketchup":ZBTL(CR,"#fef3c7"),
+"mostarda":ZBTL("#facc15","#92400e"),
+"aceto":ZBTL("#b91c1c","#1f2937"),
+"ragù":ZSOUP("#dc2626"),
+"pepe":lp("M24 26H40L38 58H26Z","#92400e")+lp("M24 26C24 12 40 12 40 26Z",GY)+dot(32,18,1.8)+ZDT([[20,60],[28,62],[36,61],[44,60]],1.6),
+"cannella":'<g transform="rotate(-30 32 32)">'+lr(8,22,46,10,"#b45309",5)+lr(14,34,40,9,"#92400e",4)+lc(54,27,5,"#92400e")+lc(54,38,4.5,"#78350f")+'</g>',
+"vaniglia":pt("M10 50C18 30 38 14 56 12",K,8)+pt("M10 50C18 30 38 14 56 12","#3f2d20",5)+pt("M14 56C26 40 44 26 58 24",K,8)+pt("M14 56C26 40 44 26 58 24","#57403a",5),
+"zenzero":lp("M8 38C8 30 16 30 18 26C20 18 28 20 30 24C34 20 42 22 42 28C48 26 54 30 54 36C54 44 48 48 42 48C38 54 26 54 22 48C14 48 8 44 8 38Z","#e9b872")+pt("M18 40H28M34 38H46","#a16207",1.8),
+"zafferano":[[20,34],[32,30],[44,34]].map(p=>lp("M"+p[0]+" 58C"+(p[0]-6)+" 44 "+(p[0]-4)+" 34 "+p[0]+" 30C"+(p[0]+4)+" 34 "+(p[0]+6)+" 44 "+p[0]+" 58Z","#a78bfa")).join("")+pt("M26 30L24 14M32 28V10M38 30L40 14",CR,2.6),
+"farina":lp("M14 16H50L54 58H10Z","#fff")+lr(14,12,36,6,"#d1d5db",1)+pt("M32 52V32",CM,2)+[[27,32],[37,32],[26,38],[38,38],[28,44],[36,44]].map(p=>eo(p[0],p[1],3.5,2.2,"#fbbf24")).join("")+eo(32,28,3.5,4,"#fbbf24"),
+"lievito":lr(10,24,44,26,"#fef9c3",4)+pt("M10 34H54M10 42H54","#eab308",1.6)+ZDT([[20,29],[44,29]],1.6),
+"cacao":'<g transform="rotate(-20 32 32)">'+eo(32,32,13,25,"#b45309")+pt("M32 8V56M24 12C20 28 20 38 24 52M40 12C44 28 44 38 40 52","#78350f",2)+'</g>',
+"spiga":pt("M32 62V20",CM,3)+[[22,28],[42,28],[22,38],[42,38],[22,48],[42,48]].map(p=>eo(p[0],p[1],5,8,"#fbbf24")).join("")+eo(32,18,5,9,"#fbbf24")+ll(32,12,32,2,"#d97706",2),
+"mozzarella":lc(32,36,21,"#fff")+pt("M18 30C20 24 24 20 30 18","#e5e7eb",3)+ZLF(32,16,-50,.8,CG),
+"panna":lp("M14 52C8 52 8 42 16 42C12 36 20 30 26 32C26 26 34 18 40 24C46 22 52 30 48 36C56 36 56 52 48 52Z","#fff")+lc(32,16,5,CR)+lr(8,52,48,5,CW,2),
+"tuorlo":lc(32,34,20,"#facc15")+pt("M20 28C22 22 28 18 34 18","#fef08a",3.5),
+"albume":lp("M10 34C8 20 22 10 36 14C52 12 58 28 52 40C46 52 28 56 18 50C12 46 10 40 10 34Z","#fff")+pt("M18 24C22 18 28 16 34 18","#e5e7eb",3),
+"liquirizia":ZSPIR("#1f2937",6),
+"zucchero filato":ll(32,38,32,62,CW,4.5)+ll(32,38,32,62,K,1.6)+lc(20,30,10,"#f9a8d4")+lc(32,24,12,"#fbcfe8")+lc(44,30,10,"#f9a8d4")+lc(32,34,10,"#f9a8d4"),
+"patatine":lp("M14 32L18 58H46L50 32Z",CR)+pt("M20 32V12M26 32V8M32 32V14M38 32V6M44 32V12",K,6)+pt("M20 32V12M26 32V8M32 32V14M38 32V6M44 32V12","#fde047",3.4),
+"snack":lp("M14 10H50L52 14V54L50 58H14L12 54V14Z","#f59e0b")+pt("M14 14H50M14 54H50","#b45309",2)+lc(32,34,11,"#fff")+ZDT([[28,31],[36,31],[32,38]],2,"#f59e0b"),
+"oliva":eo(22,38,10,15,"#65a30d")+lc(22,44,3.5,CR)+eo(42,34,10,15,"#1f2937")+pt("M28 14C34 10 44 10 52 14C44 20 34 20 28 14Z",GN,2.4)+ll(32,14,34,24,GN,2),
+"tartufo":lc(32,34,19,"#44403c")+ZDT([[22,28],[34,22],[42,32],[26,40],[36,42],[30,32],[44,42]],2.2,"#a8a29e"),
+"vasetto":lr(14,20,36,38,"#e0f2fe",6)+lr(12,12,40,9,GY,2)+lr(14,34,36,24,"#fde68a",6),
+"scatola":lp("M8 26L18 14H56L46 26Z","#e9b872")+lr(8,26,38,30,"#d6a76a",2)+lp("M46 26L56 14V44L46 56Z","#b9833d")+ll(8,36,46,36,"#92400e",3),
+"spicchio":lp("M10 28C14 52 50 52 54 28Z","#fb923c")+pt("M16 34C20 44 44 44 48 34","#fed7aa",2.4)+pt("M32 30V46","#fed7aa",2),
+"mordere":lc(32,38,20,CR)+'<circle cx="52" cy="22" r="12" fill="#fff"/>'+pt("M32 20V12",CM,3)+ZLF(32,14,-30,.9,CG)
+};
+Object.assign(LT,ZNEW);
+Object.assign(LTA,{
+spinacio:"spinaci",spinace:"spinaci",bietola:"spinaci",rucola:"lattuga",indivia:"lattuga",
+fichi:"fico",funghi:"fungo",champignon:"fungo",pistacchi:"pistacchio",biscottini:"biscotto",cookie:"biscotto",oreo:"biscotto",
+ceci:"ceci",lenticchie:"lenticchia",lenticchi:"lenticchia",lupini:"ceci",legume:"pisello",legumi:"pisello",soia:"pisello",piselli:"pisello",borlotti:"fagiolo",
+cetrioli:"cetriolo",peperoni:"peperone",peperoncini:"peperoncino",broccoli:"broccolo",cavoli:"cavolo",cavoletti:"cavoletto",cavolfiori:"cavolfiore",
+basilico:"erbe",prezzemolo:"erbe",rosmarino:"erbe",origano:"erbe",menta:"erbe",timo:"erbe",alloro:"erbe",salvia:"erbe",coriandolo:"erbe",lavanda:"erbe",
+mandorle:"mandorla",nocciole:"nocciola",noci:"noce",castagne:"castagna",anacardi:"anacardo",arachidi:"arachide",semi:"seme",sesamo:"seme",chia:"seme",girasole:"seme",
+tacchino:"pollo",coscia:"pollo",petto:"pollo",agnello:"costata",agnellino:"costata",costine:"costata",bistecche:"costata",lombata:"costata",filetto:"costata",vitello:"costata",stinco:"costata",
+bacon:"pancetta",salamino:"salame",soppressata:"salame",chorizo:"salame",
+sardina:"pesce azzurro",sardine:"pesce azzurro",sarda:"pesce azzurro",acciughe:"pesce azzurro",trota:"pesce",orata:"pesce",sogliola:"pesce",platessa:"pesce",rombo:"pesce",spigola:"pesce",merluzzo:"pesce",perino:"pesce",scatoletta:"tonno",
+gamberi:"gambero",crostacei:"gambero",crostaceo:"gambero",calamari:"calamaro",cozze:"cozza",vongole:"vongola",
+donut:"ciambella",ciambellina:"ciambella",ciambellone:"ciambella",cioccolatini:"cioccolatino",lecca:"lecca-lecca",pandoro:"panettone",
+crepe:"pancake",crèpe:"pancake",pancakes:"pancake",cono:"gelato",coppetta:"gelato",pagnotta:"pane",pan:"pane",pancarrè:"pancarré",tramezzino:"toast",
+dolce:"torta",dolci:"torta",dolcetto:"torta",dolcetti:"torta",dessert:"torta",brownie:"torta",
+formaggino:"formaggio",emmenthal:"formaggio",brie:"formaggio",casar:"formaggio",latticino:"formaggio",lattosio:"latte",
+margarina:"burro",salsa:"ragù",bolognese:"ragù",curry:"pepe",paprika:"pepe",spezie:"pepe",
+frumento:"spiga",grano:"spiga",avena:"spiga",orzo:"spiga",miglio:"spiga",cereali:"spiga",integrale:"spiga",
+ciliegino:"pomodoro",cotogna:"mela",cotognata:"mela",
+crema:"budino",giuncata:"budino",chips:"patatine",nachos:"patatine",patatine:"patatine",
+mou:"caramella",caramello:"caramella",gommosa:"caramella",gommose:"caramella",
+chiara:"albume",uvetta:"uvetta",passa:"uvetta",mollica:"pane",impasto:"lievito",cetriolini:"cetriolino",ravanelli:"ravanello",porri:"porro",
+ciliegie:"ciliegia",prugne:"prugna",susina:"prugna",susine:"prugna",datteri:"dattero",mirtilli:"mirtillo",lamponi:"lampone",more:"mora",
+olive:"oliva",spicchi:"spicchio",vasetti:"vasetto",scatole:"scatola",mordi:"mordere",mordo:"mordere",morde:"mordere"
+});
+
 function ltk(b){
   if(LANG==="it"){
     const ex=[];for(const s of["hiamo","iamo","amo","emo","imo"])if(b.length>s.length+2&&b.endsWith(s)){const st=b.slice(0,-s.length);for(const t of["are","ere","ire"])ex.push(st+t)}/* noi: mangiamo, giochiamo */
@@ -2236,8 +2406,16 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-15";
+const VER="2026-11-15b";
 const NEWS=[
+{v:"2026-11-15b",h:"Più di 120 nuovi simboli del cibo (stile CAA Studio)",t:[
+"Frutta: ciliegia, albicocca, ananas, avocado, cocco, fico, kiwi, lampone, mora, mandarino, mango, melagrana, melone, mirtillo, pompelmo, lime, prugna, caco, dattero.",
+"Verdura e legumi: aglio, asparago, barbabietola, broccolo, cavolfiore, cavolo, cavoletto, cetriolo, cetriolino, cipolla, fagiolo, fagiolino, fungo, lattuga, melanzana, peperone, peperoncino, pisello, porro, rapa, ravanello, spinaci, zucca, zucchina, mais, ceci, lenticchie, radicchio, erbe aromatiche.",
+"Frutta secca e semi: mandorla, nocciola, noce, pistacchio, arachide, castagna, anacardo, pinoli, ghianda, semi, uvetta, frutta secca.",
+"Carne e pesce: prosciutto, salame, salsiccia, mortadella, pancetta, costata (anche agnello, costine), tonno, salmone, pesce azzurro (sardina, acciughe), calamaro, cozza, gambero, vongola, caviale.",
+"Dolci e pane: ciambella, cioccolatino, lecca-lecca, budino, gelatina, muffin, waffle, wafer, croissant, pancake, panettone, ghiacciolo, meringa, torrone, popcorn, pretzel, cracker, grissino, focaccia, pancarré, toast, ravioli, tagliatelle, zucchero filato, liquirizia.",
+"Salse, spezie e altro: ketchup, mostarda, aceto, ragù, pepe, cannella, vaniglia, zenzero, zafferano, farina, lievito, cacao, spiga, mozzarella, panna, tuorlo, albume, patatine, snack, oliva, tartufo, vasetto, scatola, spicchio, mordere.",
+"Molte parole simili usano lo stesso simbolo (per esempio tacchino come pollo, formaggino come formaggio). Con doppio clic su un riquadro puoi sempre cambiarlo."]},
 {v:"2026-11-15",h:"Articoli leggibili in bianco e nero, «ogni» e nuovi simboli del cibo",t:[
 "Gli articoli (il, lo, la, i, gli, le, un, uno, una) hanno ora dentro il riquadro il simbolo ♂ (maschile) o ♀ (femminile), scuro: si distingue anche stampando in bianco e nero o con «Pittogrammi in bianco e nero». Restano blu/rosa, la freccia rossa per il determinativo e i tre riquadri per il plurale.",
 "Nuovo pittogramma «ogni» (anche ognuno, ciascuno): tre cerchi, ognuno indicato da una freccia. C'è sia in stile CAA Studio sia tra i simboli di sistema; vale anche per every, each, cada, chaque, jeder.",
