@@ -1529,6 +1529,15 @@ bocce:"bocce",boccia:"bocce","gioco boccia":"bocce",
 "cartellino":"cartellino giallo","tabellone segnapunti":"punteggio","palla basca":"pallavolo"
 });
 
+/* ---- simbolo, esempio, riquadro ---- */
+const ZSTAR=(x,y,r,c)=>lp("M"+Array.from({length:10},(_,i)=>{const a=(-90+36*i)*Math.PI/180,q=i%2?r*.45:r;return (x+q*Math.cos(a)).toFixed(1)+" "+(y+q*Math.sin(a)).toFixed(1)}).join("L")+"Z",c);
+Object.assign(LT,{
+"simbolo":lc(18,20,12,CR)+lr(34,8,24,24,CB,4)+lp("M32 60L16 36H48Z",CY)+ZSTAR(50,48,10,"#fb923c"),
+"esempio":lr(3,18,24,24,"#fff",5)+ZSTAR(15,30,9,CY)+AR(29,30,38,30)+'<rect x="40" y="18" width="22" height="24" rx="5" fill="#fff" stroke="'+K+'" stroke-width="2.5" stroke-dasharray="4 3"/>'+pt("M44 31L49 36L58 25",CG,3),
+"riquadro":lr(6,6,52,52,"#fff",9)+lc(32,24,10,CY)+pt("M20 40L28 32L34 38L40 30L46 40Z",CG,0)+ll(18,48,46,48,K,4)
+});
+Object.assign(LTA,{pittogramma:"simbolo",pittogrammi:"simbolo",icona:"simbolo","ad esempio":"esempio","per esempio":"esempio",esempi:"esempio",casella:"riquadro",caselle:"riquadro",cella:"riquadro"});
+
 function ltk(b){
   if(LANG==="it"){
     const ex=[];for(const s of["hiamo","iamo","amo","emo","imo"])if(b.length>s.length+2&&b.endsWith(s)){const st=b.slice(0,-s.length);for(const t of["are","ere","ire"])ex.push(st+t)}/* noi: mangiamo, giochiamo */
@@ -2542,8 +2551,10 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-15d";
+const VER="2026-11-16";
 const NEWS=[
+{v:"2026-11-16",h:"Nuovi simboli: simbolo, esempio, riquadro",t:[
+"Simbolo (anche pittogramma, icona): forme diverse insieme. Esempio (anche «ad esempio», «per esempio»): un modello con la freccia verso il riquadro da completare. Riquadro (anche casella, cella): un riquadro con un disegno e una riga di testo."]},
 {v:"2026-11-15d",h:"Nuovi simboli dello sport (stile CAA Studio)",t:[
 "Sport: pallacanestro, pallavolo, tennis, rugby, baseball, golf, hockey, bowling, ping pong, biliardo, boxe, karate e judo, scherma, nuoto, sci, snowboard, surf, skateboard, pattini a rotelle e da ghiaccio, arco, bersaglio, yoga, scacchi, atletica, ginnastica, arrampicata, paracadute, canoa, badminton, frisbee, boomerang, bocce.",
 "Persone: atleta, giocatore e giocatrice, calciatore e calciatrice, allenatore e allenatrice, arbitro e arbitra, vincitore, squadra.",
