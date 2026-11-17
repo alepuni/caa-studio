@@ -2280,18 +2280,18 @@ async function loadPdfLibs(){
   if(!(window.jspdf&&window.jspdf.jsPDF))await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")}
 const blobURL=b=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=()=>ko(r.error);r.readAsDataURL(b)});
 async function inlineImages(root){
-  const cache={};
-  for(const im of[...root.querySelectorAll("img")]){
-    const u=im.currentSrc||im.src;if(!/^https?:/i.test(u))continue;
-    if(!cache[u]){const r=await fetch(u,{mode:"cors"});if(!r.ok)throw new Error("Immagine non scaricabile");cache[u]=await blobURL(await r.blob())}
-    im.src=cache[u];try{await im.decode()}catch(e){}}}
+  const ps=[...root.querySelectorAll("img")].map(im=>[im,im.currentSrc||im.src]).filter(p=>/^https?:/i.test(p[1])),cache={},urls=[...new Set(ps.map(p=>p[1]))];
+  /* scarica tutti i pittogrammi diversi in parallelo (8 alla volta); uno che manca non blocca il PDF */
+  for(let i=0;i<urls.length;i+=8)await Promise.all(urls.slice(i,i+8).map(async u=>{try{const r=await fetch(u,{mode:"cors"});if(r.ok)cache[u]=await blobURL(await r.blob())}catch(e){}}));
+  if(urls.length&&!Object.keys(cache).length)throw new Error("Immagini non scaricabili");
+  await Promise.all(ps.map(async([im,u])=>{if(cache[u]){im.src=cache[u];try{await im.decode()}catch(e){}}}))}
 function printFallback(){document.title=titleName();setTimeout(()=>print(),700)}
 async function savePDF(){
   const btn=$("pdf");if(btn.disabled)return;btn.disabled=true;stopPlay();
   const m=$("m"),par=m.parentNode,nxt=m.nextSibling,oldPW=PRINTW;let host=null,fail=false;
   try{
     note("Preparo il PDF…");await loadPdfLibs();
-    PRINTW=700;render();
+    PRINTW=700;if(hasMus())render();/* come per la stampa: si ridisegna solo se ci sono pentagrammi */
     host=el("div");host.id="pdfhost";host.style.cssText="position:fixed;left:-10000px;top:0;width:700px;background:#fff;color:#1f2430";
     const ft=document.querySelector(".paper footer");
     document.body.append(host);host.append(m);if(ft)host.append(ft.cloneNode(true));
@@ -2299,8 +2299,17 @@ async function savePDF(){
     if(document.fonts&&document.fonts.ready)await document.fonts.ready;
     const W=700,PH=Math.floor(273/186*W),H=host.scrollHeight,top0=host.getBoundingClientRect().top;
     const rel=n=>Math.round(n.getBoundingClientRect().top-top0),relB=n=>Math.round(n.getBoundingClientRect().bottom-top0);
-    const atoms=[...m.children,...m.querySelectorAll(".q>*"),...host.querySelectorAll("footer")].filter(n=>!n.classList.contains("pb"));
-    const bots=[...new Set(atoms.map(relB))].sort((a,b)=>a-b),tops=[...new Set(atoms.map(rel))].sort((a,b)=>a-b);
+    /* Punti dove si può andare a pagina nuova: SOLO tra un blocco e l'altro (come nella stampa).
+       Un esercizio (domanda + risposte) non si spezza mai; si entra dentro un blocco solo se da solo è più alto di una pagina.
+       Titoli (# ...) e domande restano attaccati a ciò che segue. */
+    const atoms=[],noAfter=new Set();
+    const add=(n,dp)=>{
+      if(n.classList.contains("pb"))return;
+      if(n.tagName==="H3"||n.classList.contains("qh"))noAfter.add(n);
+      if(dp<2&&n.getBoundingClientRect().height>PH&&n.children.length)[...n.children].forEach(c=>add(c,dp+1));
+      else atoms.push(n)};
+    [...m.children].forEach(c=>add(c,0));host.querySelectorAll("footer").forEach(f=>atoms.push(f));
+    const bots=[...new Set(atoms.filter(n=>!noAfter.has(n)).map(relB))].sort((a,b)=>a-b),tops=[...new Set(atoms.map(rel))].sort((a,b)=>a-b);
     const pbs=[...m.querySelectorAll(".pb")].map(rel).sort((a,b)=>a-b);
     const pages=[];let y0=0;
     while(y0<H-4){
@@ -2313,15 +2322,24 @@ async function savePDF(){
       const nx=tops.find(t=>t>=end-1&&t<end+90);y0=nx!==undefined?nx:end}
     if(!pages.length)pages.push([0,Math.max(H,10)]);
     const pdf=new window.jspdf.jsPDF({unit:"mm",format:"a4",orientation:"p",compress:true});
-    for(let i=0;i<pages.length;i++){
-      const[a,b]=pages[i],h=Math.max(10,b-a);note("Creo il PDF… pagina "+(i+1)+" di "+pages.length);
+    /* velocità: html2canvas ricopia tutto il foglio a ogni foto, quindi si fotografano più pagine insieme (fino a 4) e poi si ritagliano */
+    const GH=4*PH;
+    for(let i=0;i<pages.length;){
+      let j=i;while(j+1<pages.length&&pages[j+1][1]-pages[i][0]<=GH)j++;
+      const A=pages[i][0],B=Math.max(pages[j][1],A+10);
+      note("Creo il PDF… pagine "+(i+1)+(j>i?"–"+(j+1):"")+" di "+pages.length);
       await new Promise(r=>setTimeout(r,30));
-      const cv=await window.html2canvas(host,{scale:2,x:0,y:a,width:W,height:h,backgroundColor:"#fff",useCORS:true,logging:false,scrollX:0,scrollY:0,windowWidth:Math.max(innerWidth,W+20),
+      const cv=await window.html2canvas(host,{scale:2,x:0,y:A,width:W,height:B-A,backgroundColor:"#fff",useCORS:true,logging:false,scrollX:0,scrollY:0,windowWidth:Math.max(innerWidth,W+20),
         onclone:d=>{const hh=d.getElementById("pdfhost");[...d.body.children].forEach(c=>{if(c!==hh)c.style.display="none"});
           d.body.style.cssText="display:block;height:auto;overflow:visible;margin:0;background:#fff";d.documentElement.style.height="auto";
           hh.style.position="absolute";hh.style.left="0";hh.style.top="0"}});
-      if(i)pdf.addPage();
-      pdf.addImage(cv.toDataURL("image/jpeg",.95),"JPEG",12,12,186,h*186/W,undefined,"FAST")}
+      const sc=cv.width/W;
+      for(let k=i;k<=j;k++){
+        const[a,b]=pages[k],h=Math.max(10,b-a),pc=el("canvas"),sy=Math.max(0,Math.round((a-A)*sc)),sh=Math.max(1,Math.min(cv.height-sy,Math.round(h*sc)));
+        pc.width=cv.width;pc.height=sh;const cx=pc.getContext("2d");cx.fillStyle="#fff";cx.fillRect(0,0,pc.width,sh);cx.drawImage(cv,0,sy,cv.width,sh,0,0,cv.width,sh);
+        if(k)pdf.addPage();
+        pdf.addImage(pc.toDataURL("image/jpeg",.95),"JPEG",12,12,186,sh/sc*186/W,undefined,"FAST");pc.width=pc.height=0}
+      cv.width=cv.height=0;i=j+1}
     const nm=(titleName()||"verifica-caa").replace(/\.(json|pdf)$/i,"").replace(/[\\\/:*?"<>|]+/g,"-");
     /* non usare pdf.save(): jsPDF userebbe la funzione saveAs() del programma, che salva il .json */
     {const bl=pdf.output("blob"),a=el("a");a.href=URL.createObjectURL(bl);a.download=nm+".pdf";document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
@@ -2329,10 +2347,12 @@ async function savePDF(){
   }catch(e){console.error(e);fail=true}
   finally{
     if(host){par.insertBefore(m,nxt);host.remove()}
-    PRINTW=oldPW;render();btn.disabled=false}
+    PRINTW=oldPW;if(hasMus())render();else fitLabels(m);btn.disabled=false}
   if(fail){note("Non sono riuscito a creare il PDF direttamente (serve internet). Apro la finestra di stampa: scegli «Salva come PDF».");printFallback()}
 }
 $("pdf").onclick=savePDF;
+/* le librerie del PDF si scaricano appena ci si avvicina al pulsante, così al clic sono già pronte */
+["pointerenter","focus","touchstart"].forEach(v=>$("pdf").addEventListener(v,()=>{loadPdfLibs().catch(()=>{})},{once:true,passive:true}));
 window.addEventListener("afterprint",()=>{document.title=TITLE0});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&!e.altKey&&e.key.toLowerCase()==="s"&&MODE!=="stu"){e.preventDefault();e.shiftKey?saveAs():saveDoc()}});
 $("art").checked=ARTOPT;$("art").onchange=e=>{ARTOPT=e.target.checked;sv("caa_art",ARTOPT);render();if(sOpen())drawBoard()};
@@ -2551,8 +2571,12 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-16";
+const VER="2026-11-17";
 const NEWS=[
+{v:"2026-11-17",h:"Salva PDF: esercizi interi e più veloce",t:[
+"Con «Salva PDF» gli esercizi non si spezzano più tra una pagina e l'altra: domanda e risposte (e i collegamenti) restano sempre insieme, come nella stampa. Un titolo non resta mai da solo in fondo alla pagina.",
+"Il PDF si crea molto più in fretta: i pittogrammi si scaricano tutti insieme, il foglio non viene ridisegnato inutilmente e le pagine si fotografano a gruppi. Le librerie si preparano già quando si passa sul pulsante.",
+"Serve sempre internet. Se qualcosa non va, si apre la finestra di stampa: scegli «Salva come PDF»."]},
 {v:"2026-11-16",h:"Nuovi simboli: simbolo, esempio, riquadro",t:[
 "Simbolo (anche pittogramma, icona): forme diverse insieme. Esempio (anche «ad esempio», «per esempio»): un modello con la freccia verso il riquadro da completare. Riquadro (anche casella, cella): un riquadro con un disegno e una riga di testo."]},
 {v:"2026-11-15d",h:"Nuovi simboli dello sport (stile CAA Studio)",t:[
