@@ -103,6 +103,10 @@ footer{margin-top:24px;font-size:.7rem;color:var(--mut);border-top:1px solid #cc
 body.bw .e{filter:grayscale(1) contrast(1.3)}
 .t{font-size:calc(15px*var(--s));font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:3px;overflow-wrap:normal;word-break:normal;white-space:normal}
 body.nu .t{text-transform:none}
+/* segni di punteggiatura ben visibili: grandi, in grassetto e rossi */
+.pu{font-size:1.8em;font-weight:900;color:#c53030;line-height:.6;padding:0 .06em;text-transform:none;letter-spacing:0}
+body.nopu .pu{font-size:inherit;font-weight:inherit;color:inherit;line-height:inherit;padding:0}
+.c.pt{min-width:calc(34px*var(--s));justify-content:center;border-style:solid;cursor:default}.c.pt .e{display:none}.c.pt .t{margin:0}
 .c.hl{outline:4px solid #f59e0b;outline-offset:2px;background:#fff4cc}
 .c.gl{border:none;background:transparent;padding:0 1px;min-width:0;max-width:none;align-self:center;justify-content:center}
 .c.gl .e{font-size:calc(38px*var(--s));min-width:0;min-height:0;color:var(--fg);letter-spacing:.06em}
@@ -314,6 +318,7 @@ h3,.qh{break-after:avoid;page-break-after:avoid}
 <label><input id="up" type="checkbox" checked> MAIUSCOLO</label>
 <label title="Mostra i risultati dei calcoli, i nomi delle note e i nomi delle linee nascosti"><input id="sol" type="checkbox"> Mostra risultati</label>
 <label><input id="mcol" type="checkbox" checked> Note colorate</label>
+<label title="Punto, virgola, punto di domanda ecc. sotto i simboli diventano grandi e rossi"><input id="pu" type="checkbox" checked> Punteggiatura evidenziata</label>
 <label title="Mostra i pittogrammi in bianco e nero (utile per stampare con meno inchiostro)"><input id="bw" type="checkbox"> Pittogrammi in bianco e nero</label>
 <span id="st"></span>
 </div>
@@ -1630,14 +1635,16 @@ function seiVerb(tk,i){
 const phr=k=>STY==="lt"&&LANG==="it"&&k.includes(" ")&&(ho(LT,k)||ho(LTA,k));
 const MW=8,GLY=/[\p{Extended_Pictographic}□■▢▣☐◯○●◻◼]/u;let ITEMS=[];
 function plan(par,off){
-  const tm=[...par.matchAll(/\S+/g)],tk=tm.map(x=>x[0]),out=[];let i=0,pre="";
+  const tm=[...par.matchAll(/\S+/g)],tk=tm.map(x=>x[0]),out=[];let i=0,pre="",ps=-1;
   const pos=a=>off>=0?off+tm[a].index:-1,end=b=>off>=0?off+tm[b].index+tm[b][0].length:-1;
   while(i<tk.length){
     const t=tk[i];
     if(/^_{2,}\W*$/.test(t)){out.push({b:1,label:pre+t,s:pos(i),e:end(i)});pre="";i++;continue}
     /* emoji o quadratini (es. ⬜⬜⬜) accanto ai pittogrammi: compaiono così come sono, senza etichetta */
     if(!core(t)&&GLY.test(t)){out.push({g:1,label:t,s:pos(i),e:end(i)});i++;continue}
-    if(!core(t)){pre+=t+" ";i++;continue}
+    /* segno di chiusura staccato (es. "stai ?"): si attacca alla parola prima, non sparisce */
+    if(!core(t)&&!pre&&out.length&&!out[out.length-1].g&&/^[.,;:!?…)\]»”’]+$/.test(t)){out[out.length-1].label+=t;i++;continue}
+    if(!core(t)){if(!pre)ps=i;pre+=t+" ";i++;continue}
     /* "a __": l'articolo o la preposizione va nello spazio da completare */
     if(stop(core(t))&&i+1<tk.length&&/^_{2,}\W*$/.test(tk[i+1])){out.push({b:1,label:pre+t+" "+tk[i+1],s:pos(i),e:end(i+1)});pre="";i+=2;continue}
     let n=0,key="",k0=i,f=i;
@@ -1652,13 +1659,25 @@ function plan(par,off){
     if(key==="uno"&&n===1){const nx=i+1<tk.length?core(tk[i+1]):"";it.nm=!nx||/[.,!?;:]$/.test(tk[i])||/^(\d+|uno|due|tre|quattro|cinque|sei|sette|otto|nove|dieci|e)$/.test(nx)}
     out.push(it);pre="";i+=n;
   }
+  const q0=pre.replace(/\s+/g,"");
+  if(q0){const l=out[out.length-1];if(l&&!l.g)l.label+=q0;else out.push({pt:1,label:q0,s:pos(ps),e:end(tk.length-1)})}
   out.forEach((x,q)=>{x.prev=out[q-1];x.next=out[q+1]});
   return out}
+/* etichetta sotto il simbolo: i segni di punteggiatura (. , ; : ! ? ( ) « » ecc.) sono in un elemento a parte, così si vedono bene */
+const PUN="[^\\p{L}\\p{N}_\\s'’]",PLR=new RegExp("^("+PUN+"+)?(.*?)("+PUN+"+)?$","su");
+function setLabel(t,s){
+  t.textContent="";
+  s.split(/(\s+)/).forEach(p=>{
+    if(!p)return;
+    const m=/\s/.test(p)?null:p.match(PLR);
+    if(!m){t.append(document.createTextNode(p));return}
+    [m[1],m[2],m[3]].forEach((x,i)=>{if(!x)return;if(i===1)t.append(document.createTextNode(x));else{const u=el("span","pu");u.textContent=x;t.append(u)}})})}
 function build(par,off=-1){
   const row=el("div","p");
   plan(par,off).forEach(it=>{
-    const c=el("div","c"),e=el("div","e"),t=el("div","t");t.textContent=it.label;
+    const c=el("div","c"),e=el("div","e"),t=el("div","t");setLabel(t,it.label);
     if(it.b)c.className="c bl";
+    else if(it.pt){c.className="c pt";c.onclick=ev=>{ev.stopPropagation();jump(it,LASTP!=="touch")}}
     else if(it.g){c.className="c gl";e.textContent=it.label;c.onclick=ev=>{ev.stopPropagation();jump(it,LASTP!=="touch")}}
     else{
       const pm=markAt(it),lc=!pm&&UL[it.ctx]!==undefined;let v;
@@ -2228,6 +2247,7 @@ $("up").onchange=e=>{document.body.classList.toggle("nu",!e.target.checked);sv("
 $("sol").onchange=e=>document.body.classList.toggle("sol",e.target.checked);
 $("mcol").onchange=e=>{sv("caa_mc",e.target.checked);render()};
 function setBW(on){on=!!on;document.body.classList.toggle("bw",on);$("bw").checked=on;$("bw2").checked=on;sv("caa_bw",on)}
+$("pu").onchange=e=>{document.body.classList.toggle("nopu",!e.target.checked);sv("caa_pu",e.target.checked);render();if(sOpen())drawBoard()};
 $("bw").onchange=e=>setBW(e.target.checked);$("bw2").onchange=e=>setBW(e.target.checked);
 $("nw").onclick=()=>{if(confirm("Cancellare il testo attuale? I simboli scelti restano salvati.")){PM=[];FH=null;setFN("");editText(0,$("ta").value.length,"",true)}};
 function dl(obj,name){const a=el("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(obj)],{type:"application/json"}));a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
@@ -2565,14 +2585,19 @@ document.addEventListener("beforeinput",e=>{
 
 /* ---------- avvio ---------- */
 ZS=+ld("caa_zs",1)||1;ZSC=+ld("caa_zsc",.8)||.8;setZB(ld("caa_zb",1));applySplit();
+$("pu").checked=ld("caa_pu",true);document.body.classList.toggle("nopu",!$("pu").checked);
 $("up").checked=ld("caa_up",true);document.body.classList.toggle("nu",!$("up").checked);
 $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
 {const t0=ld("caa_t","");$("ta").value=typeof t0==="string"&&t0?t0:"Benvenuto in CAA Studio!\nCancella questo testo e inizia a scrivere.";prevT=$("ta").value;
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-17";
+const VER="2026-11-19";
 const NEWS=[
+{v:"2026-11-19",h:"Punteggiatura ben visibile",t:[
+"I segni di punteggiatura (punto, virgola, due punti, punto e virgola, punto di domanda, punto esclamativo, parentesi, virgolette) ora si vedono bene: sotto i simboli sono più grandi, in grassetto e rossi. Vale anche per la stampa e per «Salva PDF».",
+"Nella barra sopra il foglio c'è la nuova casella «Punteggiatura evidenziata»: se la togli, i segni tornano come prima.",
+"Un segno staccato dalla parola (per esempio «Come stai ?») ora si unisce alla parola prima e non sparisce più, nemmeno a fine riga. Una riga fatta solo di punteggiatura mostra un piccolo riquadro con il segno."]},
 {v:"2026-11-17",h:"Salva PDF: esercizi interi e più veloce",t:[
 "Con «Salva PDF» gli esercizi non si spezzano più tra una pagina e l'altra: domanda e risposte (e i collegamenti) restano sempre insieme, come nella stampa. Un titolo non resta mai da solo in fondo alla pagina.",
 "Il PDF si crea molto più in fretta: i pittogrammi si scaricano tutti insieme, il foglio non viene ridisegnato inutilmente e le pagine si fotografano a gruppi. Le librerie si preparano già quando si passa sul pulsante.",
