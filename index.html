@@ -100,6 +100,11 @@ footer{margin-top:24px;font-size:.7rem;color:var(--mut);border-top:1px solid #cc
 .c.bl{min-width:calc(110px*var(--s));min-height:calc(90px*var(--s));border-style:dashed;cursor:default}
 .e{font-size:calc(40px*var(--s));line-height:1.15;min-width:calc(56px*var(--s));min-height:calc(60px*var(--s));display:flex;align-items:center;justify-content:center;color:#aaa}
 .e svg{width:calc(70px*var(--s));height:calc(70px*var(--s))}
+.w{display:inline-flex;align-items:stretch;gap:calc(2px*var(--s));max-width:100%}
+.w .pu,.p>.pu{font-size:calc(44px*var(--s));font-weight:700;color:var(--fg);line-height:1;padding:0;align-self:flex-end;white-space:nowrap}
+.w .pu.pl{align-self:flex-start}
+.p>.pu{align-self:flex-end;margin-left:calc(-4px*var(--s))}
+.e svg{color:#111}
 .e img{width:calc(78px*var(--s));height:calc(78px*var(--s));object-fit:contain}
 body.bw .e{filter:grayscale(1) contrast(1.3)}
 .t{font-size:calc(15px*var(--s));font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:3px;overflow-wrap:normal;word-break:normal;white-space:normal}
@@ -263,6 +268,7 @@ html,body{display:block;height:auto;overflow:visible;background:#fff}
 .c{display:inline-flex;vertical-align:top;margin:0 calc(8px*var(--s)) calc(8px*var(--s)) 0;break-inside:avoid;page-break-inside:avoid}
 .qh .p,.o .p,.mt .p,.sq .p,.li .p{display:flex}
 .qh .c,.o .c,.mt .c,.sq .c,.li .c{margin:0}
+.w{display:inline-flex;vertical-align:top;margin:0 calc(8px*var(--s)) calc(8px*var(--s)) 0;break-inside:avoid;page-break-inside:avoid}.w .c{margin:0}.qh .w,.o .w,.mt .w,.sq .w,.li .w{margin:0}.p>.pu{display:inline-block;vertical-align:bottom}
 .pb{break-before:page}
 .shw,.sheet,.paper,#m{display:block!important;overflow:visible!important;height:auto!important;max-height:none!important}
 .q,.mw,.mus{break-inside:avoid;page-break-inside:avoid}
@@ -412,7 +418,7 @@ h3,.qh{break-after:avoid;page-break-after:avoid}
 /* ======================================================================
    CAA Studio - per la didattica inclusiva - a cura del Prof. Marchitto
    ====================================================================== */
-const IMG=i=>"https://static.arasaac.org/pictograms/"+i+"/"+i+"_300.png";
+const IMG=(i,c)=>"https://static.arasaac.org/pictograms/"+i+"/"+i+(document.body.classList.contains("bw")&&!c?"_nocolor":"")+"_300.png";
 const $=id=>document.getElementById(id),el=(t,c)=>{const e=document.createElement(t);if(c)e.className=c;return e};
 const ld=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v===null||v===undefined?d:v}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
@@ -467,7 +473,7 @@ async function look(w){
 }
 
 /* ---------- simboli disegnati: solo parole grammaticali (e, ma, che, non...) e numeri ---------- */
-const S=x=>'<svg viewBox="0 0 64 64" fill="none" stroke="#2b6cb0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">'+x+'</svg>';
+const S=x=>'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">'+x.replace(/#2b6cb0/g,"currentColor")+'</svg>';
 const NT=n=>'<text x="32" y="46" font-size="'+(n.length>2?26:n.length>1?34:46)+'" text-anchor="middle" stroke="none" fill="#2b6cb0" font-weight="700">'+n+'</text>';
 const FC='<circle cx="32" cy="32" r="22"/>';
 const CUS={
@@ -1600,7 +1606,7 @@ function sym(v){
   if(v.startsWith("lt:")){const c=ho(LT,v.slice(3))?LT[v.slice(3)]:"";return c?SL(c):"?"}
   if(v.startsWith("svg:")){const c=CUS[v.slice(4)];return c?S(c):"?"}
   if(v.startsWith("num:"))return S(NT(esc(v.slice(4))));
-  if(/^\d+$/.test(v))return'<img alt="" src="'+IMG(v)+'">';
+  if(/^\d+$/.test(v))return'<img alt="" src="'+IMG(v)+'" onerror="this.onerror=null;this.src=\''+IMG(v,1)+'\'">';
   if(/^data:image\/[a-z0-9+.-]+;base64,[a-z0-9+\/=]+$/i.test(v))return'<img alt="" src="'+v+'">';
   return esc(v)}
 
@@ -1682,10 +1688,13 @@ function setLabel(t,s){
     const m=/\s/.test(p)?null:p.match(PLR);
     if(!m){t.append(document.createTextNode(p));return}
     [m[1],m[2],m[3]].forEach((x,i)=>{if(!x)return;if(i===1)t.append(document.createTextNode(x));else{const u=el("span","pu");u.textContent=x;t.append(u)}})})}
+const PXL=/^[\s"“”«»(\[¿¡]+/,PXT=/[\s.,;:!?…"“”«»)\]]+$/;
+function PX(l){let a="",z="",m;if(m=l.match(PXL)){a=m[0];l=l.slice(a.length)}if(m=l.match(PXT)){z=m[0];l=l.slice(0,l.length-z.length)}return{a:a.replace(/\s+/g,""),z:z.replace(/\s+/g,""),m:l}}
 function build(par,off=-1){
   const row=el("div","p");
   plan(par,off).forEach(it=>{
-    const c=el("div","c"),e=el("div","e"),t=el("div","t");setLabel(t,it.label);
+    if(it.pt){const q=el("span","pu pp");q.textContent=it.label.replace(/\s+/g,"");row.append(q);return}
+    const c=el("div","c"),e=el("div","e"),t=el("div","t"),px=it.g?{a:"",z:"",m:it.label}:PX(it.label);setLabel(t,px.m);
     if(it.b)c.className="c bl";
     else if(it.pt){c.className="c pt";c.onclick=ev=>{ev.stopPropagation();jump(it,LASTP!=="touch")}}
     else if(it.g){c.className="c gl";e.textContent=it.label;c.onclick=ev=>{ev.stopPropagation();jump(it,LASTP!=="touch")}}
@@ -1700,7 +1709,8 @@ function build(par,off=-1){
       c.onclick=ev=>boxClick(ev,it);c.oncontextmenu=ev=>{ev.preventDefault();ed(it)};
     }
     if(it.s>=0){c.dataset.s=it.s;c.dataset.e=it.e;ITEMS.push(it)}
-    it.el=c;c.append(e,t);row.append(c);
+    it.el=c;c.append(e,t);
+    if(px.a||px.z){const w=el("div","w");if(px.a){const q=el("span","pu pl");q.textContent=px.a;w.append(q)}w.append(c);if(px.z){const q=el("span","pu");q.textContent=px.z;w.append(q)}row.append(w)}else row.append(c);
   });
   return row}
 
@@ -2086,7 +2096,7 @@ async function srch(){
   try{
     let j=await api("search/"+encodeURIComponent(t));if(!j.length)j=await api("bestsearch/"+encodeURIComponent(t));netState(true);
     r.innerHTML="";if(!j.length){r.textContent="Nessun risultato: prova con un'altra parola.";return}
-    j.slice(0,30).forEach(p=>{const id=p._id||p.id,b=el("button");b.innerHTML='<img alt="" src="'+IMG(id)+'">';b.onclick=()=>pick(String(id));r.append(b)});
+    j.slice(0,30).forEach(p=>{const id=p._id||p.id,b=el("button");b.innerHTML='<img alt="" src="'+IMG(id,1)+'">';b.onclick=()=>pick(String(id));r.append(b)});
   }catch(e){netState(false);r.textContent="ARASAAC non raggiungibile: serve internet."}}
 const cnt=()=>{$("st").textContent="Simboli scelti da te: "+Object.keys(U).filter(k=>U[k]!=="auto").length};
 const done=()=>{sv("caa_u",U);closeOv();render();cnt();if(sOpen())drawBoard()};
@@ -2279,9 +2289,9 @@ $("z2").oninput=e=>{setZB(e.target.value);clearTimeout(setZB.h);setZB.h=setTimeo
 $("up").onchange=e=>{document.body.classList.toggle("nu",!e.target.checked);sv("caa_up",e.target.checked);render()};
 $("sol").onchange=e=>document.body.classList.toggle("sol",e.target.checked);
 $("mcol").onchange=e=>{sv("caa_mc",e.target.checked);render()};
-function setBW(on){on=!!on;document.body.classList.toggle("bw",on);$("bw").checked=on;$("bw2").checked=on;sv("caa_bw",on)}
+function setBW(on){on=!!on;document.body.classList.toggle("bw",on);$("bw").checked=on;$("bw2").checked=on;sv("caa_bn",on)}
 $("pu").onchange=e=>{document.body.classList.toggle("nopu",!e.target.checked);sv("caa_pu",e.target.checked);render();if(sOpen())drawBoard()};
-$("bw").onchange=e=>setBW(e.target.checked);$("bw2").onchange=e=>setBW(e.target.checked);
+const bwc=e=>{setBW(e.target.checked);render();if(sOpen())drawBoard()};$("bw").onchange=bwc;$("bw2").onchange=bwc;
 $("nw").onclick=()=>{if(confirm("Cancellare il testo attuale? I simboli scelti restano salvati.")){PM=[];FH=null;setFN("");editText(0,$("ta").value.length,"",true)}};
 function dl(obj,name){const a=el("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(obj)],{type:"application/json"}));a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 /* ---------- salva, salva con nome, apri ----------
@@ -2620,7 +2630,7 @@ document.addEventListener("beforeinput",e=>{
 ZS=+ld("caa_zs",1)||1;ZSC=+ld("caa_zsc",.8)||.8;setZB(ld("caa_zb",1));applySplit();
 $("pu").checked=ld("caa_pu",true);document.body.classList.toggle("nopu",!$("pu").checked);
 $("up").checked=ld("caa_up",true);document.body.classList.toggle("nu",!$("up").checked);
-$("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
+$("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bn",true));setTab(TAB);
 {const t0=ld("caa_t","");$("ta").value=typeof t0==="string"&&t0?t0:"Benvenuto in CAA Studio!\nCancella questo testo e inizia a scrivere.";prevT=$("ta").value;
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
