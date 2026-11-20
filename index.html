@@ -132,6 +132,10 @@ h3{margin:0 0 14px;font-size:1.05rem;font-weight:700}
 .bank .p{margin:0}
 .ln{border-bottom:2px solid #555;height:2.2rem}
 .sq{display:flex;align-items:center;gap:12px;margin:8px 0}.sq .p{margin:0}
+/* stampa e PDF: tutti i riquadri hanno la stessa altezza e lo stesso allineamento (la larghezza resta quella della parola) */
+body.uni #m .c{justify-content:flex-start}
+body.uni #m .c .e{height:calc(80px*var(--s));min-height:0}
+body.uni #m .c .t{min-height:calc(38px*var(--s))}
 .li{display:flex;align-items:center;gap:12px;margin:8px 0}.li .p{margin:0}
 .bu{flex:none;width:calc(22px*var(--s));text-align:center;font-size:calc(30px*var(--s));font-weight:800;line-height:1;color:var(--line)}
 
@@ -2333,7 +2337,7 @@ async function savePDF(){
   const m=$("m"),par=m.parentNode,nxt=m.nextSibling,oldPW=PRINTW;let host=null,fail=false;
   try{
     note("Preparo il PDF…");await loadPdfLibs();
-    PRINTW=700;if(hasMus())render();/* come per la stampa: si ridisegna solo se ci sono pentagrammi */
+    PRINTW=700;document.body.classList.add("uni");if(hasMus())render();/* come per la stampa: si ridisegna solo se ci sono pentagrammi */
     host=el("div");host.id="pdfhost";host.style.cssText="position:fixed;left:-10000px;top:0;width:700px;background:#fff;color:#1f2430";
     const ft=document.querySelector(".paper footer");
     document.body.append(host);host.append(m);if(ft)host.append(ft.cloneNode(true));
@@ -2389,7 +2393,7 @@ async function savePDF(){
   }catch(e){console.error(e);fail=true}
   finally{
     if(host){par.insertBefore(m,nxt);host.remove()}
-    PRINTW=oldPW;if(hasMus())render();else fitLabels(m);btn.disabled=false}
+    PRINTW=oldPW;document.body.classList.remove("uni");if(hasMus())render();else fitLabels(m);btn.disabled=false}
   if(fail){note("Non sono riuscito a creare il PDF direttamente (serve internet). Apro la finestra di stampa: scegli «Salva come PDF».");printFallback()}
 }
 $("pdf").onclick=savePDF;
@@ -2591,8 +2595,8 @@ let RF=0;function reflow(force){clearTimeout(RF);RF=setTimeout(()=>{const w=$("m
 })();
 if(window.ResizeObserver){new ResizeObserver(()=>reflow()).observe($("sheet"));new ResizeObserver(()=>syncTa()).observe($("ta"))}
 const hasMus=()=>/^\s*(N\??:|♪)/im.test($("ta").value);
-window.addEventListener("beforeprint",()=>{PRINTW=700;if(hasMus())render()});
-window.addEventListener("afterprint",()=>{PRINTW=0;if(hasMus())render()});
+window.addEventListener("beforeprint",()=>{PRINTW=700;document.body.classList.add("uni");if(hasMus())render()});
+window.addEventListener("afterprint",()=>{PRINTW=0;document.body.classList.remove("uni");if(hasMus())render()});
 $("more").onclick=()=>{const o=document.body.classList.toggle("more");$("more").setAttribute("aria-expanded",o)};
 if(document.fullscreenEnabled){$("fs").hidden=false;$("fs").onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}}
 
@@ -2614,8 +2618,11 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-20d";
+const VER="2026-11-20e";
 const NEWS=[
+{v:"2026-11-20e",h:"Stampa e PDF: riquadri allineati",t:[
+"Quando stampi o salvi il PDF, tutti i riquadri dei pittogrammi hanno la stessa altezza e sono allineati in alto, così le righe sono ordinate. La larghezza resta quella della parola e le parole non vengono rimpicciolite.",
+"Sullo schermo i riquadri restano come prima."]},
 {v:"2026-11-20d",h:"Elenchi puntati",t:[
 "Ora puoi fare un elenco come in Word: scrivi un trattino, uno spazio e la frase (per esempio «- Mela»). Nel foglio compare un puntino e, accanto, la frase con i pittogrammi. Vanno bene anche «*» e «•».",
 "Premendo Invio l'elenco continua da solo con un nuovo punto; premendo Invio su un punto vuoto l'elenco finisce. Con due spazi davanti si fa un elenco dentro l'elenco.",
