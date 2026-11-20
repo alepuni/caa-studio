@@ -113,6 +113,7 @@ body.nopu .pu{font-size:inherit;font-weight:inherit;color:inherit;line-height:in
 .c.gl .t{display:none}
 .c.loc{border-color:#7c3aed}
 h3{margin:0 0 14px;font-size:1.05rem;font-weight:700}
+.sp{height:calc(28px*var(--s))}
 .qh{display:flex;align-items:center;gap:12px;margin:0 0 8px}
 .qh .p,.o .p{margin:0}
 .n{font-size:1.5rem;font-weight:800;background:var(--line);color:#fff;border-radius:50%;min-width:2.3rem;height:2.3rem;display:flex;align-items:center;justify-content:center}
@@ -303,7 +304,7 @@ h3,.qh{break-after:avoid;page-break-after:avoid}
 <div class="taw"><div id="tab" aria-hidden="true"></div><textarea id="ta" spellcheck="false" aria-label="Testo del foglio"></textarea></div>
 <details><summary>Come si scrive</summary>
 <p><b>Clic</b> su un riquadro: vai alla parola nel testo. <b>Doppio clic</b> (o tasto destro): cambia il simbolo. <b>Maiusc + clic</b> su un altro riquadro: scegli più parole, poi <b>🔗 Unisci</b>.</p>
-<p>Una riga = una frase con i simboli.<br><b>1. Domanda?</b> e sotto <b>A. / B. / C.</b> risposte<br><b>V/F: frase</b> vero o falso<br><b>S/N: frase</b> sì o no<br><b>~ Sinistra = Destra</b> collegamento<br><b>Parole: a, b, c</b> elenco di parole<br><b>__</b> spazio da completare<br><b>Mela ⬜⬜⬜⬜</b> emoji o quadratini accanto alle parole (per i grafici): restano così come li scrivi, senza etichetta<br><b>&gt; frase</b> da mettere in ordine<br><b>?? domanda</b> risposta aperta<br><b># titolo</b> testo senza simboli<br><b>---</b> pagina nuova</p>
+<p>Una riga = una frase con i simboli.<br><b>1. Domanda?</b> e sotto <b>A. / B. / C.</b> risposte<br><b>V/F: frase</b> vero o falso<br><b>S/N: frase</b> sì o no<br><b>~ Sinistra = Destra</b> collegamento<br><b>Parole: a, b, c</b> elenco di parole<br><b>__</b> spazio da completare<br><b>Mela ⬜⬜⬜⬜</b> emoji o quadratini accanto alle parole (per i grafici): restano così come li scrivi, senza etichetta<br><b>&gt; frase</b> da mettere in ordine<br><b>?? domanda</b> risposta aperta<br><b># titolo</b> testo senza simboli<br><b>---</b> pagina nuova<br><b>riga vuota</b> = spazio vuoto anche nel foglio, per separare un argomento dall’altro</p>
 <p><b>M: 12 + 5</b> calcolo visivo fino a 100 (+ − x :). Aggiungi <b>| stelle</b> o un’emoji per cambiare gli oggetti, <b>= 17</b> per mostrare il risultato.</p>
 <p><b>N: do re mi | sol:2 sol:2</b> pentagramma. Durate: <b>:4</b> semibreve, <b>:2</b> minima, <b>:1</b> semiminima (se non scrivi niente), <b>:1/2</b> croma, <b>:1/4</b> semicroma, <b>:3</b> o <b>:1.5</b> col punto. <b>p</b> pausa, <b>|</b> battuta, <b>||</b> fine, <b>4/4</b> misura, <b>do5</b> ottava sopra, <b>fa#</b> diesis, <b>sib</b> bemolle, <b>t=100</b> velocità. <b>N?:</b> nasconde i nomi delle note.</p>
 <p><b>Tabella:</b> una riga per ogni riga della tabella, con le colonne separate da <b>|</b>, per esempio <b>| Animale | Cosa mangia |</b>. Una riga <b>|---|---|</b> sotto la prima la rende la riga dei titoli. Le celle vuote restano da compilare. Più comodo: <b>▦ Tabella…</b> apre una griglia dove scrivi nelle celle e aggiungi o togli righe e colonne. Per cambiare una tabella già fatta, doppio clic su di essa (o sul pulsante ✎).</p>
@@ -1962,7 +1963,7 @@ function geo(src,hide,s,e){
 function render(){
   const m=$("m"),ta=$("ta"),all=ta.value,cw=m.clientWidth;if(cw>50)SHW=cw;
   m.innerHTML="";ITEMS=[];sv("caa_t",all);sv("caa_pm",PM);
-  let cur=null,k=0,M=[],ls=0,TB=[],TH=0,TBR=null;
+  let cur=null,k=0,M=[],ls=0,bl=0,TB=[],TH=0,TBR=null;
   const flush=()=>{if(M.length){match(M,cur||m);M=[]}};
   const flushT=()=>{if(TB.length){(cur||m).append(tabl(TB,TH,TBR));TB=[];TH=0;TBR=null}};
   const tabRow=(raw,L0)=>{
@@ -1973,10 +1974,12 @@ function render(){
   const head=(txt,off)=>{const b=el("section","q"),hd=el("div","qh"),n=el("span","n");n.textContent=++k;hd.append(n,build(txt,off));b.append(hd);m.append(b);cur=b;return b};
   for(const raw of all.split("\n")){
     const L0=ls;ls+=raw.length+1;
-    const line=raw.trim();if(!line){flushT();continue}let mm;
+    const line=raw.trim();if(!line){flushT();bl++;continue}let mm;
     const at=(s,from=0)=>{const i=raw.indexOf(s,from);return i<0?-1:L0+i};
     if(!/^~/.test(line))flush();
     if(!/^\|/.test(line))flushT();
+    if(bl&&line!=="---"&&!/^~/.test(line)&&m.children.length){for(let z=0;z<bl;z++)(cur||m).append(el("div","sp"))}
+    bl=0;
     if(/^\|/.test(line)){tabRow(raw,L0)}
     else if(line==="---"){m.append(el("div","pb"));cur=null}
     else if(mm=line.match(/^M:\s*(.+)/i)){(cur||m).append(math(mm[1]))}
@@ -2592,8 +2595,11 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-19";
+const VER="2026-11-20";
 const NEWS=[
+{v:"2026-11-20",h:"Righe vuote = spazio nel foglio",t:[
+"Se nel testo lasci una riga vuota (vai a capo e lasci uno spazio), anche nel foglio con i pittogrammi resta uno spazio vuoto. Serve per separare un argomento dall'altro. Più righe vuote fanno uno spazio più grande.",
+"Lo spazio si vede anche nella stampa e in «Salva PDF»."]},
 {v:"2026-11-19",h:"Punteggiatura ben visibile",t:[
 "I segni di punteggiatura (punto, virgola, due punti, punto e virgola, punto di domanda, punto esclamativo, parentesi, virgolette) ora si vedono bene: sotto i simboli sono più grandi, in grassetto e rossi. Vale anche per la stampa e per «Salva PDF».",
 "Nella barra sopra il foglio c'è la nuova casella «Punteggiatura evidenziata»: se la togli, i segni tornano come prima.",
