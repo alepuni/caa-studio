@@ -67,7 +67,8 @@ body.m-comb #hdl{display:flex}
 .tabs button{border:none;border-radius:0;padding:5px 10px;font-size:.8rem}
 .tabs button+button{border-left:1px solid #c9d6e8}
 .tabs button.on{background:var(--line);color:#fff}
-#mg{margin-left:auto;font-size:.8rem;padding:5px 9px}
+#pbk{margin-left:auto;font-size:.8rem;padding:5px 9px}
+#mg{font-size:.8rem;padding:5px 9px}
 #tpt{display:none;font-size:.8rem;padding:5px 9px}
 .tp{display:flex;flex-wrap:wrap;gap:6px}
 .tp button{font-size:.8rem;padding:4px 8px}
@@ -293,7 +294,7 @@ h3,.qh{break-after:avoid;page-break-after:avoid}
 <div class="edbar">
 <button id="tpt" type="button" aria-expanded="false">Modelli ▾</button>
 <div class="tabs" role="tablist"><button data-g="ex" class="on">Esercizi</button><button data-g="ma">Matematica</button><button data-g="mu">Musica</button><button data-g="ge">Geometria</button></div>
-<button id="mg" type="button" title="Unisci in un solo simbolo le parole selezionate">🔗 Unisci</button>
+<button id="pbk" type="button" title="Inserisci un’interruzione di pagina: da qui in poi il foglio continua nella pagina successiva">📄 Pagina nuova</button><button id="mg" type="button" title="Unisci in un solo simbolo le parole selezionate">🔗 Unisci</button>
 </div>
 <div class="tp" id="tp">
 <button data-g="ex" data-t="h">Intestazione</button><button data-g="ex" data-t="mc">Scelta multipla</button><button data-g="ex" data-t="vf">Vero/Falso</button><button data-g="ex" data-t="sn">Sì/No</button><button data-g="ex" data-t="col">Collegamento</button><button data-g="ex" data-t="cmp">Completa</button><button data-g="ex" data-t="ord">Ordina</button><button data-g="ex" data-t="open">Risposta aperta</button><button data-g="ex" id="tbopen">▦ Tabella…</button>
@@ -2099,6 +2100,12 @@ function mergeRange(s,e){
 $("mp").onclick=()=>{if(cu&&okNb(cu.prev)){const a=cu.prev.s,b=cu.e;closeOv();mergeRange(a,b)}};
 $("mn").onclick=()=>{if(cu&&okNb(cu.next)){const a=cu.s,b=cu.next.e;closeOv();mergeRange(a,b)}};
 $("spl").onclick=()=>{if(cu&&cu.multi){udel(cu.key);done();note("Parole separate: ognuna ha di nuovo il suo simbolo.")}};
+$("pbk").onclick=()=>{const ta=$("ta"),t=ta.value,c=ta.selectionStart||0,ls=t.lastIndexOf("\n",c-1)+1;let le=t.indexOf("\n",c);if(le<0)le=t.length;
+  const cur=t.slice(ls,le).trim();
+  if(!cur)editText(ls,le,"---"+(le<t.length?"":"\n"));
+  else if(c<=ls)editText(ls,ls,"---\n");
+  else editText(le,le,"\n---\n");
+  note("Interruzione di pagina inserita: la riga --- manda il foglio alla pagina successiva (si vede in stampa e in PDF).")};
 $("mg").onclick=()=>{const ta=$("ta");let s,e;if(PIN&&PIN.e>PIN.s){s=PIN.s;e=PIN.e}else{s=ta.selectionStart;e=ta.selectionEnd}
   if(!(e>s)){note("Seleziona nel testo due o più parole (oppure clic su un riquadro e Maiusc + clic su un altro), poi premi Unisci.");return}mergeRange(s,e)};
 $("go").onclick=srch;$("sq").onkeydown=e=>{if(e.key==="Enter")srch()};
@@ -2595,8 +2602,11 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-20";
+const VER="2026-11-20b";
 const NEWS=[
+{v:"2026-11-20b",h:"Pulsante «Pagina nuova»",t:[
+"Sopra il testo c'è il nuovo pulsante «Pagina nuova», come l'interruzione di pagina di Word: mette nel testo la riga --- nel punto in cui hai il cursore, e da lì in poi il foglio continua nella pagina successiva (in stampa e in «Salva PDF»).",
+"Per toglierla basta cancellare la riga ---."]},
 {v:"2026-11-20",h:"Righe vuote = spazio nel foglio",t:[
 "Se nel testo lasci una riga vuota (vai a capo e lasci uno spazio), anche nel foglio con i pittogrammi resta uno spazio vuoto. Serve per separare un argomento dall'altro. Più righe vuote fanno uno spazio più grande.",
 "Lo spazio si vede anche nella stampa e in «Salva PDF»."]},
