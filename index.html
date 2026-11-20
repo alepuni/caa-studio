@@ -422,7 +422,9 @@ function udel(k){if(LANG!=="it"&&typeof U[k]==="string"&&U[k].startsWith("data:"
 function note(t){const n=$("toast");n.textContent=t;n.classList.add("on");clearTimeout(note.h);note.h=setTimeout(()=>n.classList.remove("on"),4200)}
 
 /* ---------- lingua: parole vuote, verbi ---------- */
-const SS={};Object.entries({it:"il lo la i gli le l un uno una di a da in con su per tra fra del dello della dei degli delle al allo alla ai agli alle dal dallo dalla dai dagli dalle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle si ci ne mi ti vi",en:"the a an my your his our their",es:"el la los las un una unos unas de del al",fr:"le la les l un une des du de d",de:"der die das den dem des ein eine einen einem einer",pt:"o a os as um uma de do da dos das"}).forEach(([k,v])=>SS[k]=new Set(v.split(" ")));
+const SS={};Object.entries({it:"il lo la i gli le l un uno una di a da in con su per tra fra del dello della dei degli delle al allo alla ai agli alle dal dallo dalla dai dagli dalle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle dell all dall nell sull si ci ne mi ti vi",en:"the a an my your his our their",es:"el la los las un una unos unas de del al",fr:"le la les l un une des du de d",de:"der die das den dem des ein eine einen einem einer",pt:"o a os as um uma de do da dos das"}).forEach(([k,v])=>SS[k]=new Set(v.split(" ")));
+const PA=new Set("del dello della dei degli delle dell al allo alla ai agli alle all dal dallo dalla dai dagli dalle dall nel nello nella nei negli nelle nell sul sullo sulla sui sugli sulle sull".split(" "));
+const isPA=w=>LANG==="it"&&PA.has(w);
 const stop=w=>!!(SS[LANG]&&SS[LANG].has(w));
 const CORS={"∈":"appartiene","∉":"non appartiene"};
 const core=t=>{const r=t.replace(/’/g,"'").replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu,"").toLowerCase().replace(/\s+/g," ");return r||CORS[t.replace(/[.,;:!?]+$/,"")]||""};
@@ -1180,7 +1182,7 @@ const LTP={di:"prep di",a:"prep a",da:"prep da",in:"prep in",con:"prep con",su:"
 const LTA={sorridere:"felice",sorriso:"felice",contento:"felice",gioia:"felice",paura:"spaventato",stupito:"sorpreso",dire:"parlare",raccontare:"parlare",urlare:"gridare",camminare:"andare",passeggiare:"andare",tornare:"venire",arrivare:"venire",guardare:"occhio",vedere:"occhio",osservare:"occhio",occhi:"occhio",sentire:"ascoltare",riposare:"dormire",colori:"pastelli",pastello:"pastelli",ora:"orologio",orario:"orologio",foglio:"carta",pc:"computer",compleanno:"torta",auto:"macchina",bici:"bicicletta",madre:"mamma",padre:"papà",bimbo:"bambino",bimba:"bambina",ragazzo:"bambino",ragazza:"bambina",uova:"uovo",piove:"pioggia",piovere:"pioggia",miei:"mio",tuoi:"tuo",suoi:"suo",nostri:"nostro",vostri:"vostro",bambini:"bambino",forbice:"forbici",libri:"libro",mele:"mela",banchi:"banco",monti:"montagna"};
 Object.assign(LTA,{fidanzato:"coppia",fidanzata:"coppia",marito:"coppia",moglie:"coppia",sposo:"coppia",sposa:"coppia",sposi:"coppia",fidanzati:"coppia",innamorato:"coppia",innamorata:"coppia",ragazzi:"bambini",ragazze:"bambine",utilizzare:"usare",adoperare:"usare",dottoressa:"dottore",medico:"dottore",maestro:"professore",maestra:"professoressa",insegnante:"professore",amica:"amico",aeroplano:"aereo",nave:"barca",bus:"autobus",estate:"sole",inverno:"neve",primavera:"fiore",autunno:"foglia",fiamma:"fuoco",pericolo:"attenzione",attento:"attenzione",euro:"soldi",denaro:"soldi",telefonare:"telefono",cellulare:"telefono",tv:"televisione",televisore:"televisione",tazzina:"tazza","caffè":"tazza","tè":"tazza",amore:"cuore",amare:"cuore",bacio:"baciare",tartarughe:"tartaruga",hamburger:"panino",succhi:"succo",spaghetti:"pasta",maccheroni:"pasta",bistecca:"carne",verdura:"carota",stomaco:"pancia",capelli:"testa",viso:"testa",faccia:"testa",mattino:"mattina",serata:"sera",affamato:"fame",affamata:"fame",assetato:"sete",assetata:"sete",braccia:"braccio",regali:"regalo",foglie:"foglia",ciao:"salutare",salve:"salutare",nuoto:"nuotare",pericolosa:"attenzione",orsi:"orso",aerei:"aereo",api:"ape",scimmie:"scimmia"});
 Object.assign(LTA,{mia:"mio",mie:"mio",tua:"tuo",tue:"tuo",sua:"suo",sue:"suo",allora:"dopo",quindi:"dopo",poi:"dopo",oppure:"o",ed:"e","però":"ma",mai:"niente",nulla:"niente",nessuno:"niente",tanto:"molto",tanti:"molto",tante:"molto",troppo:"molto",pochi:"poco",poche:"poco",tutti:"tutto",tutte:"tutto","lì":"là",ecco:"qui",ok:"bene",bravo:"bene",brava:"bene",colazione:"tazza",gioco:"palla",giochi:"palla",giocattolo:"palla",sport:"palla",calcio:"palla",ricreazione:"palla",intervallo:"palla",compiti:"quaderno",esercizio:"quaderno",esercizi:"quaderno",pagella:"carta",frase:"carta",frasi:"carta",testo:"carta",parola:"italiano",parole:"italiano",lettera:"italiano",lettere:"italiano",alfabeto:"italiano",lezione:"professore",insegnare:"professore",spiegare:"professore",mondo:"geografia",terra:"geografia",pianeta:"geografia",racconto:"storia",favola:"storia",disegno:"disegnare",capire:"idea",accendere:"idea",imparare:"studiare",piace:"cuore",piacere:"cuore",viaggiare:"valigia",viaggio:"valigia",partire:"andare",somma:"più",addizione:"più",sottrazione:"meno",risultato:"uguale",calcolare:"calcolatrice",canzone:"musica",suonare:"chitarra",strumento:"chitarra",spartito:"pentagramma",risposta:"rispondere",francese:"francia",tedesco:"germania",spagnolo:"spagna",inglese:"inghilterra",inglesi:"inghilterra",bandiere:"bandiera",punti:"punto",rette:"retta",piani:"piano",angoli:"angolo",segmenti:"segmento",fiumi:"fiume",laghi:"lago",isole:"isola",colline:"collina",pianure:"pianura",stato:"italia"});
-Object.assign(LTP,{del:"prep di",dello:"prep di",della:"prep di",dei:"prep di",degli:"prep di",delle:"prep di",al:"prep a",allo:"prep a",alla:"prep a",ai:"prep a",agli:"prep a",alle:"prep a",dal:"prep da",dallo:"prep da",dalla:"prep da",dai:"prep da",dagli:"prep da",dalle:"prep da",nel:"prep in",nello:"prep in",nella:"prep in",nei:"prep in",negli:"prep in",nelle:"prep in",sul:"prep su",sullo:"prep su",sulla:"prep su",sui:"prep su",sugli:"prep su",sulle:"prep su"});
+Object.assign(LTP,{del:"prep di",dello:"prep di",della:"prep di",dei:"prep di",degli:"prep di",delle:"prep di",al:"prep a",allo:"prep a",alla:"prep a",ai:"prep a",agli:"prep a",alle:"prep a",dal:"prep da",dallo:"prep da",dalla:"prep da",dai:"prep da",dagli:"prep da",dalle:"prep da",nel:"prep in",nello:"prep in",nella:"prep in",nei:"prep in",negli:"prep in",nelle:"prep in",sul:"prep su",sullo:"prep su",sulla:"prep su",sui:"prep su",sugli:"prep su",sulle:"prep su",dell:"prep di",all:"prep a",dall:"prep da",nell:"prep in",sull:"prep su"});
 Object.assign(LTA,{tastiera:"pianoforte",cena:"pranzo",mappamondo:"geografia",cartina:"mappa",britannico:"inghilterra",britannici:"inghilterra",foresta:"bosco",lepre:"coniglio",dragone:"drago",civetta:"gufo",villaggi:"villaggio",posta:"busta",messaggio:"busta",mandare:"spedire",inviare:"spedire",rimanere:"restare",scalare:"arrampicare",fuggire:"scappare",nascondersi:"nascondere",odorare:"annusare",sogno:"sognare",svegliare:"sveglia",svegliarsi:"sveglia",aggiustare:"riparare",asciugamano:"asciugare",vestirsi:"vestire",litigio:"litigare",salvagente:"salvare",proteggere:"scudo",difendere:"scudo",lottare:"combattere",guerra:"combattere",vittoria:"vincere",coppa:"vincere",premio:"vincere",sconfitta:"perdere",vivere:"abitare",sperare:"desiderare",desiderio:"desiderare",conoscere:"sapere",decidere:"scegliere",preferire:"scegliere",scoprire:"trovare",mostri:"mostro",magia:"bacchetta",amicizia:"amico",ordine:"ordinare",edificio:"città"});
 /* quarta serie: aggiunge solo i simboli che mancano e le parole non ancora coperte */
 Object.keys(LT5).forEach(k=>{if(!ho(LT,k)&&!ho(LTA,k))LT[k]=LT5[k]});
@@ -1610,7 +1612,7 @@ function lightOk(tk,k){let m=k;while(m<tk.length-1&&stop(core(tk[m]))&&core(tk[m
 function span(tk,i){
   let j=i;
   while(j<tk.length-1&&core(tk[j+1])){
-    const w=core(tk[j]),nx=core(tk[j+1]);let go=stop(w)&&!(STY==="lt"&&LANG==="it"&&ho(LTP,w))&&!(ARTOPT&&LANG==="it"&&ho(LTART,w));
+    const w=core(tk[j]),nx=core(tk[j+1]);let go=stop(w)&&!isPA(w)&&!(STY==="lt"&&LANG==="it"&&ho(LTP,w))&&!(ARTOPT&&LANG==="it"&&ho(LTART,w));
     if(!go&&LANG==="it"){
       if(part(nx)){
         if(isAv(w))go=true;
@@ -1650,7 +1652,7 @@ function plan(par,off){
     /* "a __": l'articolo o la preposizione va nello spazio da completare */
     if(stop(core(t))&&i+1<tk.length&&/^_{2,}\W*$/.test(tk[i+1])){out.push({b:1,label:pre+t+" "+tk[i+1],s:pos(i),e:end(i+1)});pre="";i+=2;continue}
     let n=0,key="",k0=i,f=i;
-    while(f<tk.length-1&&stop(core(tk[f]))&&!(ARTOPT&&LANG==="it"&&ho(LTART,core(tk[f])))&&core(tk[f+1]))f++;
+    while(f<tk.length-1&&stop(core(tk[f]))&&!isPA(core(tk[f]))&&!(ARTOPT&&LANG==="it"&&ho(LTART,core(tk[f])))&&core(tk[f+1]))f++;
     for(const st of(f>i?[i,f]:[i])){
       for(let m=Math.min(MW,tk.length-st);m>1;m--){const ws=tk.slice(st,st+m);if(ws.some(x=>!core(x)))continue;const k=ws.map(core).join(" ");if(uget(k)!==undefined||phr(k)){n=st+m-i;key=k;k0=st;break}}
       if(n)break}
@@ -2089,10 +2091,10 @@ function mergeRange(s,e){
   const tk=tokensIn(s,e);
   if(!tk){note("Si possono unire solo parole della stessa riga.");return}
   if(tk.some(x=>!core(x.w))){note("Togli il segno di punteggiatura che sta da solo tra le parole, poi riprova.");return}
-  const ws=tk.map(x=>core(x.w));while(ws.length>1&&stop(ws[0]))ws.shift();
+  const ws=tk.map(x=>core(x.w));let dr=0;while(ws.length>1&&stop(ws[0])){ws.shift();dr++}
   if(ws.length<2){note("Scegli almeno due parole da unire.");return}
   if(ws.length>MW){note("Si possono unire al massimo "+MW+" parole.");return}
-  const key=ws.join(" "),a=tk[0].s,b=tk[tk.length-1].e,its=ITEMS.filter(x=>x.s<b&&x.e>a);
+  const key=ws.join(" "),a=tk[dr].s,b=tk[tk.length-1].e,its=ITEMS.filter(x=>x.s<b&&x.e>a);
   let v="";for(let i=its.length-1;i>=0&&!v;i--){const x=its[i].v;if(x!==undefined&&x!==""&&x!=="?"&&x!=="…")v=x}
   uset(key,v||"?");sv("caa_u",U);PIN=null;drawMark();render();cnt();
   const it=ITEMS.find(x=>x.s<=a&&x.e>=b&&x.key===key)||ITEMS.find(x=>x.key===key);
@@ -2602,8 +2604,11 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bw",false));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-20b";
+const VER="2026-11-20c";
 const NEWS=[
+{v:"2026-11-20c",h:"Preposizioni articolate sempre separate",t:[
+"Le preposizioni articolate (del, nella, sul, nell' ecc.) restano sempre in un riquadro a parte e non si uniscono più alla parola dopo, nemmeno quando unisci parole come «aula Mattarella» in un solo simbolo.",
+"Anche «nell'», «dell'», «all'», «dall'» e «sull'» (con lo spazio) ora si comportano come nello/nella: stesso riquadro e stesso simbolo di sistema."]},
 {v:"2026-11-20b",h:"Pulsante «Pagina nuova»",t:[
 "Sopra il testo c'è il nuovo pulsante «Pagina nuova», come l'interruzione di pagina di Word: mette nel testo la riga --- nel punto in cui hai il cursore, e da lì in poi il foglio continua nella pagina successiva (in stampa e in «Salva PDF»).",
 "Per toglierla basta cancellare la riga ---."]},
