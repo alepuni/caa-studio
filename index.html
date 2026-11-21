@@ -233,6 +233,38 @@ body.m-comb #stabs .tab{font-size:.92rem;padding:5px 10px}
 .rw{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 .pri{background:var(--line);color:#fff;font-weight:700}
 
+/* finestra cambia simbolo */
+#bx{display:flex;flex-direction:column;padding:0;overflow:hidden;width:min(660px,96vw);max-height:94vh;max-height:94dvh}
+.bxh{flex:none;display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--line);color:#fff}
+.bxh .dprev{width:68px;height:68px;background:#fff;border-color:#fff}
+.bxh .dprev img,.bxh .dprev svg{width:58px;height:58px}
+.bxt{flex:1;min-width:0}.bxt small{display:block;opacity:.9;font-size:.72rem}.bxt b{display:block;font-size:1.25rem;overflow-wrap:anywhere}
+.bxh .x{background:#fff;flex:none}
+.bxb{flex:1;min-height:0;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.scope{display:flex;flex-direction:column;gap:6px;border:1px solid #c9d6e8;background:#f4f8fd;border-radius:10px;padding:8px 11px;font-size:.84rem}
+.sct{font-weight:700;font-size:.78rem;color:var(--mut)}
+.scope label{display:flex;align-items:flex-start;gap:7px;margin:0}
+.sech{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:700;font-size:.85rem;margin-top:2px}
+.shb{display:flex;gap:6px}.shb button{font-size:.76rem;padding:3px 9px}
+details.sec{border:2px solid #c9d6e8;border-radius:12px;background:#fff;overflow:hidden;flex:none}
+details.sec[open]{border-color:var(--line)}
+details.sec>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 12px;user-select:none}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:"▾";margin-left:auto;color:var(--line);font-size:1.1rem;transition:transform .15s}
+details.sec[open]>summary::after{transform:rotate(180deg)}
+details.sec[open]>summary{background:#e8f0fa}
+.si{font-size:1.3rem;line-height:1}.st{font-weight:700;font-size:1rem}.sh{font-size:.76rem;color:var(--mut)}
+.sb{display:flex;flex-direction:column;gap:8px;padding:10px 12px 12px}
+.sb label{font-size:.8rem;color:var(--mut);margin:0}
+.sb .mrg{margin-top:0}
+#sq{font-size:1.05rem;padding:9px 12px}#go{padding:9px 18px}
+#rs,#ri{max-height:260px;overflow:auto;margin-top:0}
+#sy{max-height:260px;margin-top:0}
+.pz{margin-top:0}
+#eg{margin-top:0}
+.ft{flex:none;display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid #c9d6e8;background:#f8fafc}
+@media(prefers-reduced-motion:reduce){details.sec>summary::after{transition:none}}
+
 /* editor delle note */
 .mdlg{width:min(920px,97vw)}
 .mstaff{overflow-x:auto;overflow-y:hidden;border:2px solid #c9d6e8;border-radius:12px;background:#fbfdff;cursor:crosshair;touch-action:manipulation;margin-top:4px}
@@ -373,32 +405,31 @@ h3,.qh{break-after:avoid;page-break-after:avoid}
 </div></div>
 
 <div id="ov" class="ovl"><div class="dlg" id="bx" role="dialog" aria-modal="true" aria-labelledby="bxh">
-<div class="dh"><div class="dprev" id="dpv"></div><b id="bxh">Cambia simbolo</b><button id="cl" class="x" title="Chiudi">✕</button></div>
+<div class="bxh"><div class="dprev" id="dpv"></div><div class="bxt"><small>Simbolo per la parola</small><b id="bxh">Cambia simbolo</b></div><button id="cl" class="x" title="Chiudi">✕</button></div>
+<div class="bxb">
 <p id="dmsg" class="dmsg" hidden></p>
-<label>Parola nel testo (puoi correggerla qui)</label><div class="fl"><input type="text" id="wd"><button id="cw">Cambia parola</button></div>
+<div class="scope"><span class="sct">Dove vale la tua scelta</span>
+<label class="ck"><input type="checkbox" id="al" checked> Anche le altre forme (es. fare, farò, faceva)</label>
+<label class="ck" id="lol"><input type="checkbox" id="lo"> Solo questo riquadro (non le altre volte che la parola compare, es. YOU = voi)</label></div>
+<div class="sech"><span>Come scegliere il simbolo</span><span class="shb"><button id="xo" type="button">Apri tutto</button><button id="xc" type="button">Chiudi tutto</button></span></div>
+<details class="sec" data-k="s" open><summary><span class="si">🔍</span><span class="st">Cerca in ARASAAC</span><span class="sh">pittogrammi</span></summary>
+<div class="sb"><div class="fl"><input type="text" id="sq" placeholder="Scrivi una parola…" aria-label="Cerca in ARASAAC"><button id="go" class="pri">Cerca</button></div><div id="rs"></div></div></details>
+<details class="sec" data-k="p"><summary><span class="si">🧩</span><span class="st">Simboli di CAA Studio</span><span class="sh">casa, mangiare, è, più…</span></summary>
+<div class="sb"><div class="fl"><input type="text" id="syq" placeholder="Cerca tra i simboli del programma" aria-label="Cerca tra i simboli del programma"><button id="syc" type="button" title="Mostra tutti i simboli">Tutti</button></div><p id="syn" class="hint" hidden>Nessun simbolo con questa parola: prova con un'altra, oppure premi «Tutti».</p><div id="sy"></div></div></details>
+<details class="sec" data-k="w2"><summary><span class="si">🌐</span><span class="st">Foto da internet</span><span class="sh">Wikimedia, Google Immagini</span></summary>
+<div class="sb"><div class="fl"><input type="text" id="iq" placeholder="es. fisarmonica" aria-label="Cerca una foto"><button id="ig" class="pri">Cerca</button></div><button id="gg" type="button" title="Apre Google Immagini in una nuova scheda">🔎 Apri Google Immagini</button><div id="ri"></div>
+<div class="pz" id="pz" tabindex="0">Da Google Immagini: tasto destro sull&rsquo;immagine, <b>Copia immagine</b>, poi torna qui e premi <b>Ctrl+V</b> (su Mac: Cmd+V). Oppure trascina qui l&rsquo;immagine o un file.<br><small>Le foto trovate in questa finestra arrivano da Wikimedia Commons: controlla la licenza se pubblichi il foglio.</small></div></div></details>
+<details class="sec" data-k="i"><summary><span class="si">🖼</span><span class="st">Immagine dal computer</span><span class="sh">una tua foto o un disegno</span></summary>
+<div class="sb"><input type="file" id="fi" accept="image/*"></div></details>
+<details class="sec" data-k="e"><summary><span class="si">😊</span><span class="st">Emoji</span><span class="sh">scegli o incolla</span></summary>
+<div class="sb"><input type="text" id="es" placeholder="Cerca: sorriso, casa, libro…" aria-label="Cerca emoji"><div id="eg"></div>
+<label for="em">Oppure incolla un’emoji</label><div class="fl"><input type="text" id="em"><button id="sv">Usa emoji</button></div></div></details>
+<details class="sec" data-k="t"><summary><span class="si">✏️</span><span class="st">Parola e unione</span><span class="sh">correggi, unisci, separa</span></summary>
+<div class="sb"><label for="wd">Parola nel testo (puoi correggerla qui)</label><div class="fl"><input type="text" id="wd"><button id="cw">Cambia parola</button></div>
 <div class="mrg"><button id="mp" title="Un solo simbolo per questa parola e quella prima">⇤ Unisci con la parola prima</button><button id="mn" title="Un solo simbolo per questa parola e quella dopo">Unisci con la parola dopo ⇥</button><button id="spl" title="Torna a un simbolo per ogni parola">✂ Separa le parole</button></div>
-<label>Parole da coprire con questo simbolo</label><input type="text" id="kk">
-<label class="ck"><input type="checkbox" id="al" checked> Vale anche per le altre forme (es. fare, farò, faceva)</label>
-<label class="ck" id="lol"><input type="checkbox" id="lo"> Solo qui: cambia solo questo riquadro, non le altre volte che la parola compare (es. YOU = voi)</label>
-<label>Cerca in ARASAAC</label><div class="fl"><input type="text" id="sq"><button id="go">Cerca</button></div>
-<div id="rs"></div>
-<label>Simboli di sistema e pittogrammi CAA Studio: scrivi una parola per cercarli (es. casa, mangiare, è, più…)</label><div class="fl"><input type="text" id="syq" placeholder="cerca tra i simboli del programma"><button id="syc" type="button" title="Mostra tutti i simboli">Tutti</button></div><p id="syn" class="hint" hidden>Nessun simbolo del programma con questa parola: prova con un'altra parola, oppure premi «Tutti».</p><div id="sy"></div>
-<label>Cerca una foto o un&rsquo;immagine su internet</label><div class="fl"><input type="text" id="iq" placeholder="es. fisarmonica"><button id="ig">Cerca</button><button id="gg" type="button" title="Apre Google Immagini in una nuova scheda">🔎 Google Immagini</button></div>
-<div id="ri"></div>
-<div class="pz" id="pz" tabindex="0">Da Google Immagini: tasto destro sull&rsquo;immagine, <b>Copia immagine</b>, poi torna qui e premi <b>Ctrl+V</b> (su Mac: Cmd+V). Oppure trascina qui l&rsquo;immagine o un file.<br><small>Le foto trovate in questa finestra arrivano da Wikimedia Commons: controlla la licenza se pubblichi il foglio.</small></div>
-<label>Emoji: scrivi una parola (es. sorriso) o scegli dall&rsquo;elenco</label><input type="text" id="es" placeholder="sorriso, casa, libro...">
-<div id="eg"></div>
-<label>Oppure incolla un&rsquo;emoji</label><div class="fl"><input type="text" id="em"><button id="sv">Usa emoji incollata</button></div>
-<label>Oppure un&rsquo;immagine dal computer</label><input type="file" id="fi" accept="image/*">
-<div class="rw"><button id="rm">Ripristina automatico</button><button id="jt">Vai al testo</button></div>
-</div></div>
-
-<div id="tov" class="ovl"><div class="dlg mdlg" role="dialog" aria-modal="true" aria-labelledby="tvh">
-<div class="dh"><b id="tvh">Tabella</b><button id="tx" class="x" title="Chiudi">✕</button></div>
-<div class="mrow"><button id="tra">＋ Riga</button><button id="trd">− Riga</button><button id="tca">＋ Colonna</button><button id="tcd">− Colonna</button><label><input type="checkbox" id="th" checked> La prima riga contiene i titoli</label></div>
-<div id="tgrid"></div>
-<p class="hint">Scrivi nelle celle: le parole avranno il loro simbolo, una cella vuota resta da compilare. Le righe e le colonne si aggiungono dopo quella dove stai scrivendo, e i pulsanti − tolgono quella. Con Tab passi alla cella dopo, con Invio a quella sotto.</p>
-<div class="rw"><button id="tok" class="pri">Inserisci nel foglio</button><button id="tcn">Annulla</button></div>
+<label for="kk">Parole da coprire con questo simbolo</label><input type="text" id="kk"></div></details>
+</div>
+<div class="ft"><button id="rm">↺ Ripristina automatico</button><button id="jt">Vai al testo</button></div>
 </div></div>
 
 <div id="mov" class="ovl"><div class="dlg mdlg" role="dialog" aria-modal="true" aria-labelledby="mvh">
@@ -2089,7 +2120,7 @@ function ed(it,o={}){
   $("mp").hidden=$("mn").hidden=!loc;$("mp").disabled=!okNb(it.prev);$("mn").disabled=!okNb(it.next);
   $("spl").hidden=!(loc&&it.multi&&uget(it.key)!==undefined);
   $("dmsg").hidden=!o.msg;$("dmsg").textContent=o.msg||"";
-  $("ov").style.display="flex";$("es").value="";eg();sy();$("syq").value=it.multi?it.key:base(it.key);sf();srch()}
+  $("ov").style.display="flex";$("es").value="";$("eg").innerHTML="";restoreSecs();$("bx").querySelector(".bxb").scrollTop=0;sy();$("syq").value=it.multi?it.key:base(it.key);sf();srch()}
 const closeOv=()=>{$("ov").style.display="none"};
 async function srch(){
   const r=$("rs"),t=$("sq").value.trim();if(!t){r.textContent="";return}r.textContent="Cerco…";
@@ -2141,6 +2172,11 @@ $("rm").onclick=()=>{
   if(cu&&UL[cu.ctx]!==undefined){delete UL[cu.ctx];sv("caa_ul",UL);done();return}
   const k=core($("kk").value);udel(k);if($("al").checked&&lem(k))udel(lem(k));done()};
 $("cl").onclick=closeOv;
+/* sezioni apri/chiudi della finestra simboli (si ricorda la scelta) */
+const SECS=()=>document.querySelectorAll("#bx details.sec");
+function restoreSecs(){const st=ld("caa_secs",{s:1});SECS().forEach(d=>{d.open=!!st[d.dataset.k]});if($("bx").querySelector('details[data-k="e"]').open&&!$("eg").firstChild)eg()}
+SECS().forEach(d=>d.addEventListener("toggle",()=>{const st=ld("caa_secs",{s:1});st[d.dataset.k]=d.open?1:0;sv("caa_secs",st);if(d.dataset.k==="e"&&d.open&&!$("eg").firstChild)eg()}));
+$("xo").onclick=()=>SECS().forEach(d=>d.open=true);$("xc").onclick=()=>SECS().forEach(d=>d.open=false);
 $("jt").onclick=()=>{if(cu){closeOv();jump(cu,LASTP!=="touch")}};
 $("cw").onclick=()=>{if(!cu||cu.s<0)return;const w=$("wd").value;closeOv();editText(cu.s,cu.e,w)};
 $("fi").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{
