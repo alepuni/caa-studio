@@ -2679,8 +2679,11 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bn",true));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-20f";
+const VER="2026-11-21";
 const NEWS=[
+{v:"2026-11-21",h:"Finestra «Cambia simbolo» più ordinata",t:[
+"La finestra per cambiare un simbolo ora è divisa in sezioni che si aprono e si chiudono toccando il titolo: Cerca in ARASAAC, Simboli di CAA Studio, Foto da internet, Immagine dal computer, Emoji, Parola e unione. Si parte con la ricerca ARASAAC già aperta, e il programma ricorda le sezioni che lasci aperte.",
+"In alto ci sono l'anteprima del simbolo e le due scelte «Anche le altre forme» e «Solo questo riquadro». I pulsanti «Apri tutto» e «Chiudi tutto» aprono o chiudono tutte le sezioni; «Ripristina automatico» e «Vai al testo» restano sempre in fondo."]},
 {v:"2026-11-20f",h:"Cerca anche tra i pittogrammi CAA Studio",t:[
 "Nella finestra «Cambia simbolo» c'è ora una casella di ricerca anche per i simboli di sistema e i pittogrammi CAA Studio: scrivi una parola (anche una parola vicina, per esempio «sorriso» per felice) e vedi solo i simboli che le corrispondono. La casella si riempie da sola con la parola del riquadro; il pulsante «Tutti» li mostra tutti.",
 "La ricerca in ARASAAC funziona come prima."]},
