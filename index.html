@@ -253,7 +253,7 @@ details.sec>summary::-webkit-details-marker{display:none}
 details.sec>summary::after{content:"▾";margin-left:auto;color:var(--line);font-size:1.1rem;transition:transform .15s}
 details.sec[open]>summary::after{transform:rotate(180deg)}
 details.sec[open]>summary{background:#e8f0fa}
-.si{font-size:1.3rem;line-height:1}.st{font-weight:700;font-size:1rem}.sh{font-size:.76rem;color:var(--mut)}
+.si{font-size:1.3rem;line-height:1}.st{font-weight:700;font-size:1rem}.sec .sh{font-size:.76rem;color:var(--mut)}
 .sb{display:flex;flex-direction:column;gap:8px;padding:10px 12px 12px}
 .sb label{font-size:.8rem;color:var(--mut);margin:0}
 .sb .mrg{margin-top:0}
@@ -430,6 +430,14 @@ h3,.qh{break-after:avoid;page-break-after:avoid}
 <label for="kk">Parole da coprire con questo simbolo</label><input type="text" id="kk"></div></details>
 </div>
 <div class="ft"><button id="rm">↺ Ripristina automatico</button><button id="jt">Vai al testo</button></div>
+</div></div>
+
+<div id="tov" class="ovl"><div class="dlg mdlg" role="dialog" aria-modal="true" aria-labelledby="tvh">
+<div class="dh"><b id="tvh">Tabella</b><button id="tx" class="x" title="Chiudi">✕</button></div>
+<div class="mrow"><button id="tra">＋ Riga</button><button id="trd">− Riga</button><button id="tca">＋ Colonna</button><button id="tcd">− Colonna</button><label><input type="checkbox" id="th" checked> La prima riga contiene i titoli</label></div>
+<div id="tgrid"></div>
+<p class="hint">Scrivi nelle celle: le parole avranno il loro simbolo, una cella vuota resta da compilare. Le righe e le colonne si aggiungono dopo quella dove stai scrivendo, e i pulsanti − tolgono quella. Con Tab passi alla cella dopo, con Invio a quella sotto.</p>
+<div class="rw"><button id="tok" class="pri">Inserisci nel foglio</button><button id="tcn">Annulla</button></div>
 </div></div>
 
 <div id="mov" class="ovl"><div class="dlg mdlg" role="dialog" aria-modal="true" aria-labelledby="mvh">
