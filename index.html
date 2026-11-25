@@ -328,7 +328,7 @@ h3,.qh{break-after:avoid;page-break-after:avoid}
 <span id="net" hidden>⚠ ARASAAC non raggiungibile: serve internet</span>
 <label class="lang"><span>Lingua simboli</span> <select id="lg" title="Lingua simboli"><option value="it">Italiano</option><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="pt">Português</option></select></label>
 <label class="lang"><span>Stile simboli</span> <select id="sty" title="Stile simboli"><option value="ar">ARASAAC</option><option value="lt">CAA Studio (prova)</option></select></label>
-<label class="lang art" title="Prova: mostra gli articoli (il, lo, la, i, gli, le, un, uno, una) con un simbolo, in un riquadro separato"><input type="checkbox" id="art"> <span>Articoli</span></label>
+<label class="lang art" title="Prova: mostra gli articoli (il, lo, la, i, gli, le, un, uno, una; in inglese the, a, an) con un simbolo, in un riquadro separato"><input type="checkbox" id="art"> <span>Articoli</span></label>
 <button id="fs" title="Schermo intero" hidden>⛶</button>
 <button id="more" title="Altri comandi" aria-expanded="false">⋯</button>
 </header>
@@ -1251,6 +1251,8 @@ const ADEF=(c,g)=>ITM(18,26,28,c)+GEN(g,32,40,12,3.2)+'<rect x="13" y="21" width
 const ADEFP=(c,g)=>ITM(2,30,18,c)+ITM(23,30,18,c)+ITM(44,30,18,c)+GEN(g,11,39,7.5,2.4)+GEN(g,32,39,7.5,2.4)+GEN(g,53,39,7.5,2.4)+pt("M3 26V20H61V26",CR,3)+AR(32,3,32,19);
 const AIND=(c,g)=>lr(1,30,15,15,CW,3)+lr(48,30,15,15,CW,3)+ITM(19,22,26,c)+GEN(g,32,35,11,3);
 const CBL="#8dbdfb",CPL="#f7a8d2";/* tinte più chiare: il simbolo scuro ♂/♀ si legge meglio anche in bianco e nero */
+const CNE="#cbd5e0";
+Object.assign(LT,{"art the":ITM(18,26,28,CNE)+'<rect x="13" y="21" width="38" height="38" rx="9" fill="none" stroke="'+CR+'" stroke-width="3"/>'+AR(32,1,32,17),"art a":lr(1,30,15,15,CW,3)+lr(48,30,15,15,CW,3)+ITM(19,22,26,CNE)});
 Object.assign(LT,{"art il":ADEF(CBL,"m"),"art la":ADEF(CPL,"f"),"art i":ADEFP(CBL,"m"),"art le":ADEFP(CPL,"f"),"art un":AIND(CBL,"m"),"art una":AIND(CPL,"f")});
 /* ---- «ogni» e nuovi simboli dell'alimentazione ---- */
 Object.assign(LT,{
@@ -1283,6 +1285,9 @@ Object.assign(LTA,{ognuno:"ogni",ognuna:"ogni",ciascuno:"ogni",ciascuna:"ogni",c
 CUS["ogni"]='<circle cx="14" cy="46" r="7"/><circle cx="32" cy="46" r="7"/><circle cx="50" cy="46" r="7"/><path d="M14 6V28m-5-6l5 6 5-6M32 6V28m-5-6l5 6 5-6M50 6V28m-5-6l5 6 5-6"/>';
 const LTART={il:"art il",lo:"art il",la:"art la",i:"art i",gli:"art i",le:"art le",un:"art un",uno:"art un",una:"art una"};
 let ARTOPT=ld("caa_art",false);
+const LTARTE={the:"art the",a:"art a",an:"art a"};
+const artMap=()=>LANG==="it"?LTART:LANG==="en"?LTARTE:null;
+const isArt=w=>!!(ARTOPT&&artMap()&&ho(artMap(),w));
 const LTE={en:{apple:"mela",bread:"pane",water:"acqua",milk:"latte",house:"casa",home:"casa",book:"libro",pencil:"matita",eat:"mangiare",drink:"bere",go:"andare",come:"venire",give:"dare",read:"leggere",above:"sopra",under:"sotto",below:"sotto",inside:"dentro",outside:"fuori",happy:"felice",sad:"triste",angry:"arrabbiato",tired:"stanco",write:"scrivere",draw:"disegnare",play:"giocare",run:"correre",jump:"saltare",sleep:"dormire",dance:"ballare",help:"aiutare",think:"pensare",look:"occhio",see:"occhio",listen:"ascoltare",open:"aprire",close:"chiudere",wash:"lavare",sit:"sedere",laugh:"ridere",sing:"cantare",speak:"parlare",talk:"parlare",school:"scuola",backpack:"zaino",notebook:"quaderno",pen:"penna",eraser:"gomma",scissors:"forbici",glue:"colla",ruler:"righello",desk:"banco",chair:"sedia",clock:"orologio",computer:"computer",door:"porta",window:"finestra",table:"tavolo",bed:"letto",ball:"palla",car:"macchina",bicycle:"bicicletta",bike:"bicicletta",key:"chiave",hat:"cappello",shoe:"scarpa",shirt:"maglia",tree:"albero",flower:"fiore",sun:"sole",moon:"luna",star:"stella",cloud:"nuvola",rain:"pioggia",sea:"mare",mountain:"montagna",road:"strada",dog:"cane",cat:"gatto",bird:"uccello",fish:"pesce",horse:"cavallo",cow:"mucca",pig:"maiale",sheep:"pecora",rabbit:"coniglio",lion:"leone",elephant:"elefante",banana:"banana",orange:"arancia",grapes:"uva",pizza:"pizza","ice cream":"gelato",cookie:"biscotto",cheese:"formaggio",egg:"uovo",cake:"torta",nose:"naso",mouth:"bocca",hand:"mano",foot:"piede",heart:"cuore",head:"testa",eye:"occhio",ear:"orecchio",red:"rosso",blue:"blu",yellow:"giallo",green:"verde",black:"nero",white:"bianco",pink:"rosa",purple:"viola",brown:"marrone",grey:"grigio",gray:"grigio",big:"grande",small:"piccolo",little:"piccolo",boy:"bambino",girl:"bambina",man:"uomo",woman:"donna",mother:"mamma",mom:"mamma",father:"papà",dad:"papà",grandfather:"nonno",grandmother:"nonna",I:"io",you:"tu",he:"lui",she:"lei",we:"noi",they:"loro"}};
 Object.assign(LTE.en,{every:"ogni",each:"ogni",fork:"forchetta",spoon:"cucchiaio",knife:"coltello",plate:"piatto",bottle:"bottiglia",pot:"pentola",butter:"burro",sugar:"zucchero",salt:"sale",oil:"olio",honey:"miele",soup:"zuppa",salad:"insalata",chicken:"pollo",potato:"patata",candy:"caramella",fruit:"frutta",food:"cibo",drink:"bevanda",yogurt:"yogurt",chew:"masticare"});
 /* ---- cibo: seconda serie (dalla lista ARASAAC «cibo») ---- */
@@ -1629,7 +1634,7 @@ const DEFID={voi:7306,riso:39387,basta:28429,compagno:39421,compagni:39421,compa
 function val(k){
   let u=uget(k);if(u!==undefined)return u;const b=base(k);
   if(STY==="lt"&&LANG==="it"&&ho(LTP,b)&&uget(b)===undefined)return"lt:"+LTP[b];
-  if(ARTOPT&&LANG==="it"&&ho(LTART,b)&&uget(b)===undefined)return"lt:"+LTART[b];
+  if(isArt(b)&&uget(b)===undefined)return"lt:"+artMap()[b];
   if(stop(b))return"";u=uget(b);if(u!==undefined)return u;
   if(/^\d{1,3}$/.test(b))return"num:"+b;
   for(const c of cands(b)){u=uget(c);if(u!==undefined)return u}
@@ -1663,7 +1668,7 @@ function lightOk(tk,k){let m=k;while(m<tk.length-1&&stop(core(tk[m]))&&core(tk[m
 function span(tk,i){
   let j=i;
   while(j<tk.length-1&&core(tk[j+1])){
-    const w=core(tk[j]),nx=core(tk[j+1]);let go=stop(w)&&!isPA(w)&&!(STY==="lt"&&LANG==="it"&&ho(LTP,w))&&!(ARTOPT&&LANG==="it"&&ho(LTART,w));
+    const w=core(tk[j]),nx=core(tk[j+1]);let go=stop(w)&&!isPA(w)&&!(STY==="lt"&&LANG==="it"&&ho(LTP,w))&&!isArt(w);
     if(!go&&LANG==="it"){
       if(part(nx)){
         if(isAv(w))go=true;
@@ -1703,7 +1708,7 @@ function plan(par,off){
     /* "a __": l'articolo o la preposizione va nello spazio da completare */
     if(stop(core(t))&&i+1<tk.length&&/^_{2,}\W*$/.test(tk[i+1])){out.push({b:1,label:pre+t+" "+tk[i+1],s:pos(i),e:end(i+1)});pre="";i+=2;continue}
     let n=0,key="",k0=i,f=i;
-    while(f<tk.length-1&&stop(core(tk[f]))&&!isPA(core(tk[f]))&&!(ARTOPT&&LANG==="it"&&ho(LTART,core(tk[f])))&&core(tk[f+1]))f++;
+    while(f<tk.length-1&&stop(core(tk[f]))&&!isPA(core(tk[f]))&&!isArt(core(tk[f]))&&core(tk[f+1]))f++;
     for(const st of(f>i?[i,f]:[i])){
       for(let m=Math.min(MW,tk.length-st);m>1;m--){const ws=tk.slice(st,st+m);if(ws.some(x=>!core(x)))continue;const k=ws.map(core).join(" ");if(uget(k)!==undefined||phr(k)){n=st+m-i;key=k;k0=st;break}}
       if(n)break}
@@ -2679,8 +2684,11 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bn",true));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-21";
+const VER="2026-11-25";
 const NEWS=[
+{v:"2026-11-25",h:"Articoli in inglese",t:[
+"Con la lingua simboli English, le parole «the», «a» e «an» ora hanno il loro simbolo, in un riquadro separato.",
+"Per vederli attiva la casella «Articoli» in alto, la stessa che già serviva per gli articoli italiani. Gli articoli inglesi non hanno genere, quindi il simbolo è neutro."]},
 {v:"2026-11-21",h:"Finestra «Cambia simbolo» più ordinata",t:[
 "La finestra per cambiare un simbolo ora è divisa in sezioni che si aprono e si chiudono toccando il titolo: Cerca in ARASAAC, Simboli di CAA Studio, Foto da internet, Immagine dal computer, Emoji, Parola e unione. Si parte con la ricerca ARASAAC già aperta, e il programma ricorda le sezioni che lasci aperte.",
 "In alto ci sono l'anteprima del simbolo e le due scelte «Anche le altre forme» e «Solo questo riquadro». I pulsanti «Apri tutto» e «Chiudi tutto» aprono o chiudono tutte le sezioni; «Ripristina automatico» e «Vai al testo» restano sempre in fondo."]},
