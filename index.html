@@ -344,7 +344,7 @@ h3,.qh{break-after:avoid;page-break-after:avoid}
 <button data-g="ex" data-t="h">Intestazione</button><button data-g="ex" data-t="li">Elenco</button><button data-g="ex" data-t="mc">Scelta multipla</button><button data-g="ex" data-t="vf">Vero/Falso</button><button data-g="ex" data-t="sn">Sì/No</button><button data-g="ex" data-t="col">Collegamento</button><button data-g="ex" data-t="cmp">Completa</button><button data-g="ex" data-t="ord">Ordina</button><button data-g="ex" data-t="open">Risposta aperta</button><button data-g="ex" id="tbopen">▦ Tabella…</button>
 <button data-g="ma" data-t="gr">Grafico a quadretti</button><button data-g="ma" data-t="ad">Addizione</button><button data-g="ma" data-t="su">Sottrazione</button><button data-g="ma" data-t="mu">Moltiplicazione</button><button data-g="ma" data-t="di">Divisione</button>
 <button data-g="mu" data-t="mel">Melodia</button><button data-g="mu" data-t="nom">Nomi delle note</button><button data-g="mu" data-t="dur">Durate</button><button data-g="mu" data-t="vuo">Pentagramma vuoto</button><button data-g="mu" id="mopen">🎹 Scrivi le note…</button>
-<button data-g="ge" data-t="gre">Retta</button><button data-g="ge" data-t="gsr">Semiretta</button><button data-g="ge" data-t="gsg">Segmento</button><button data-g="ge" data-t="gpa">Rette parallele</button><button data-g="ge" data-t="gin">Rette incidenti</button><button data-g="ge" data-t="gpe">Rette perpendicolari</button><button data-g="ge" data-t="gri">Riconosci la linea</button><button data-g="ge" data-t="gpi">Il piano</button><button data-g="ge" data-t="ggr">Lettere greche</button><button data-g="ge" data-t="gap">Appartiene o no?</button>
+<button data-g="ge" data-t="gre">Retta</button><button data-g="ge" data-t="gsr">Semiretta</button><button data-g="ge" data-t="gsg">Segmento</button><button data-g="ge" data-t="gpa">Rette parallele</button><button data-g="ge" data-t="gin">Rette incidenti</button><button data-g="ge" data-t="gpe">Rette perpendicolari</button><button data-g="ge" data-t="sgc">Segmenti consecutivi</button><button data-g="ge" data-t="sga">Segmenti adiacenti</button><button data-g="ge" data-t="sgi">Segmenti incidenti</button><button data-g="ge" data-t="sgp">Segmenti paralleli</button><button data-g="ge" data-t="sgq">Segmenti perpendicolari</button><button data-g="ge" data-t="sgs">Segmenti sovrapposti</button><button data-g="ge" data-t="sgd">Segmenti disgiunti</button><button data-g="ge" data-t="sgr">Riconosci i segmenti</button><button data-g="ge" data-t="gri">Riconosci la linea</button><button data-g="ge" data-t="gpi">Il piano</button><button data-g="ge" data-t="ggr">Lettere greche</button><button data-g="ge" data-t="gap">Appartiene o no?</button>
 </div>
 <div class="taw"><div id="tab" aria-hidden="true"></div><textarea id="ta" spellcheck="false" aria-label="Testo del foglio"></textarea></div>
 <details><summary>Come si scrive</summary>
@@ -354,6 +354,7 @@ h3,.qh{break-after:avoid;page-break-after:avoid}
 <p><b>N: do re mi | sol:2 sol:2</b> pentagramma. Durate: <b>:4</b> semibreve, <b>:2</b> minima, <b>:1</b> semiminima (se non scrivi niente), <b>:1/2</b> croma, <b>:1/4</b> semicroma, <b>:3</b> o <b>:1.5</b> col punto. <b>p</b> pausa, <b>|</b> battuta, <b>||</b> fine, <b>4/4</b> misura, <b>do5</b> ottava sopra, <b>fa#</b> diesis, <b>sib</b> bemolle, <b>t=100</b> velocità. <b>N?:</b> nasconde i nomi delle note.</p>
 <p><b>Tabella:</b> una riga per ogni riga della tabella, con le colonne separate da <b>|</b>, per esempio <b>| Animale | Cosa mangia |</b>. Una riga <b>|---|---|</b> sotto la prima la rende la riga dei titoli. Le celle vuote restano da compilare. Più comodo: <b>▦ Tabella…</b> apre una griglia dove scrivi nelle celle e aggiungi o togli righe e colonne. Per cambiare una tabella già fatta, doppio clic su di essa (o sul pulsante ✎).</p>
 <p><b>G: retta r A B</b> retta infinita (frecce da tutte e due le parti) con nome <b>r</b> e punti <b>A</b> e <b>B</b>. <b>G: semiretta s A</b> parte dal punto A e va avanti. <b>G: segmento A B</b> ha un inizio e una fine. <b>G: parallele r s</b>, <b>G: incidenti r s P</b>, <b>G: perpendicolari r s P</b> disegnano due rette. Per cambiare la posizione aggiungi <b>verticale</b>, <b>obliqua</b> (o <b>sinistra</b> per la semiretta). <b>G?:</b> nasconde il nome del tipo di linea (si vede con «Mostra risultati»).</p>
+<p><b>G: segmenti consecutivi A B C</b> disegna due segmenti con l’estremo B in comune. Gli altri tipi: <b>adiacenti</b> (sulla stessa retta), <b>incidenti</b> (si incontrano in P), <b>paralleli</b>, <b>perpendicolari</b>, <b>sovrapposti</b>, <b>disgiunti</b>. Le lettere sono i nomi dei punti: se non le scrivi, il programma le sceglie da solo. <b>G?:</b> nasconde il nome del tipo.</p>
 <p><b>G: piano alfa A B fuori C</b> disegna un piano con i punti A e B sopra e C fuori; sotto compaiono <b>A ∈ α</b>, <b>C ∉ α</b>. Nomi del piano: <b>alfa beta gamma omega sigma</b> (o α β γ ω σ). Nel testo, <b>∈</b> = appartiene e <b>∉</b> = non appartiene, con il loro pittogramma.</p>
 </details>
 </section>
@@ -1949,11 +1950,12 @@ function relinkPlay(){if(!PLAY||PLAY.s===undefined||PLAY.s===-1)return;const b=$
 
 /* ---------- foglio ---------- */
 /* ---------- geometria: rette, semirette, segmenti ---------- */
-const GT={piano:"Piano",retta:"Retta",semiretta:"Semiretta",segmento:"Segmento",parallele:"Rette parallele",incidenti:"Rette incidenti",perpendicolari:"Rette perpendicolari"};
+const GT={piano:"Piano",retta:"Retta",semiretta:"Semiretta",segmento:"Segmento",parallele:"Rette parallele",incidenti:"Rette incidenti",perpendicolari:"Rette perpendicolari",s_consecutivi:"Segmenti consecutivi",s_adiacenti:"Segmenti adiacenti",s_incidenti:"Segmenti incidenti",s_paralleli:"Segmenti paralleli",s_perpendicolari:"Segmenti perpendicolari",s_sovrapposti:"Segmenti sovrapposti",s_disgiunti:"Segmenti disgiunti"};
 const GA={piano:"piano",retta:"retta",semiretta:"semiretta",segmento:"segmento",parallele:"parallele",parallela:"parallele",incidenti:"incidenti",incidente:"incidenti",perpendicolari:"perpendicolari",perpendicolare:"perpendicolari"};
 const GO={orizzontale:"h",verticale:"v",obliqua:"o",obliqui:"o"};
 const GG={alfa:"α",alpha:"α",beta:"β",gamma:"γ",delta:"δ",omega:"ω",sigma:"σ",pi:"π"};
 const gown=(o,k)=>Object.prototype.hasOwnProperty.call(o,k)?o[k]:"";
+const GS={consecutivi:"consecutivi",consecutivo:"consecutivi",adiacenti:"adiacenti",adiacente:"adiacenti",incidenti:"incidenti",incidente:"incidenti",paralleli:"paralleli",parallelo:"paralleli",perpendicolari:"perpendicolari",perpendicolare:"perpendicolari",sovrapposti:"sovrapposti",sovrapposto:"sovrapposti",disgiunti:"disgiunti",disgiunto:"disgiunti"};
 const GB={h:[[24,92],[316,92]],v:[[170,168],[170,16]],o:[[50,142],[290,64]]};
 const GC="#2b6cb0",GI="#1f2430",f1=x=>x.toFixed(1);
 const gv=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
@@ -1961,7 +1963,8 @@ function parseGeo(src){
   const d={type:"",names:[],pts:[],out2:[],out:false,ori:"h",left:false,errs:[]};
   const tk=src.replace(/[|,;]/g," ").split(/\s+/).filter(Boolean);
   if(tk.length&&nz(tk[0])==="rette")tk.shift();
-  const t0=tk.length?gown(GA,nz(tk[0])):"";
+  if(tk.length&&nz(tk[0])==="segmenti"){tk.shift();const k=tk.length?gown(GS,nz(tk[0])):"";if(k){d.type="s_"+k;tk.shift()}else d.errs.push("segmenti")}
+  const t0=d.type?"":tk.length?gown(GA,nz(tk[0])):"";
   if(t0){d.type=t0;tk.shift()}
   for(const raw of tk){const w=nz(raw);
     if(w==="sinistra")d.left=true;
@@ -1973,6 +1976,7 @@ function parseGeo(src){
     else if(/^[a-z][0-9]?$/.test(raw))d.names.push(raw);
     else d.errs.push(raw)}
   d.pts=d.pts.slice(0,6);d.out2=d.out2.slice(0,4);d.names=d.names.slice(0,2);
+  if(d.type.startsWith("s_")){const n={s_consecutivi:3,s_adiacenti:3,s_incidenti:5,s_perpendicolari:5}[d.type]||4,pool="ABCDEFGHIJKLMNOQRSTUVWXYZP";while(d.pts.length<n){const i=d.pts.length,pr=i===4&&(d.type==="s_incidenti"||d.type==="s_perpendicolari")&&!d.pts.includes("P")?"P":[...pool].find(x=>!d.pts.includes(x));d.pts.push(pr)}}
   if(d.type==="segmento"&&d.pts.length<2)d.pts=d.pts.length?[d.pts[0],String.fromCharCode(d.pts[0].charCodeAt(0)+1)]:["A","B"];
   return d}
 function gArrow(tip,u){const b=[tip[0]-u[0]*15,tip[1]-u[1]*15],p=[-u[1]*7,u[0]*7],q=x=>f1(x[0])+","+f1(x[1]);
@@ -1984,11 +1988,34 @@ const gTx=(p,t,it)=>'<text x="'+f1(p[0])+'" y="'+f1(p[1])+'" font-size="20" font
 const gDot=(p,t,dx,dy)=>'<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="5.5" fill="'+GI+'"/>'+(t?gTx([p[0]+dx,p[1]+dy],t):"");
 function gUN(a,b){const L=Math.hypot(b[0]-a[0],b[1]-a[1]),u=[(b[0]-a[0])/L,(b[1]-a[1])/L];let n=[u[1],-u[0]];if(n[1]>.01||(Math.abs(n[1])<=.01&&n[0]>0))n=[-n[0],-n[1]];return{u,n}}
 const gName=(e,u,n,sg)=>[e[0]-u[0]*40+n[0]*20*sg,e[1]-u[1]*40+n[1]*20*sg];
+const gX=(a,b,c,d)=>{const r=[b[0]-a[0],b[1]-a[1]],t=[d[0]-c[0],d[1]-c[1]],q=((c[0]-a[0])*t[1]-(c[1]-a[1])*t[0])/(r[0]*t[1]-r[1]*t[0]);return[a[0]+r[0]*q,a[1]+r[1]*q]};
+const GOR="#d97706";
+const gSg=(a,b,c)=>'<line x1="'+f1(a[0])+'" y1="'+f1(a[1])+'" x2="'+f1(b[0])+'" y2="'+f1(b[1])+'" stroke="'+c+'" stroke-width="4" stroke-linecap="round"/>';
+function gOut(p,q,t){const L=Math.hypot(p[0]-q[0],p[1]-q[1])||1;return gDot(p,t,(p[0]-q[0])/L*21,(p[1]-q[1])/L*21)}
+function gSegs(d){
+  const P=d.pts,k=d.type.slice(2),B1=GC,O=GOR;let s="";
+  if(k==="consecutivi"){const a=[40,140],b=[150,48],c=[295,120];s=gSg(a,b,B1)+gSg(b,c,O)+gOut(a,b,P[0])+gOut(c,b,P[2])+gDot(b,P[1],0,-22)}
+  else if(k==="adiacenti"){const a=[40,100],b=[165,100],c=[300,100];s=gSg(a,b,B1)+gSg(b,c,O)+gDot(a,P[0],0,24)+gDot(b,P[1],0,24)+gDot(c,P[2],0,24)}
+  else if(k==="incidenti"||k==="perpendicolari"){
+    let a,b,c,e;
+    if(k==="incidenti"){a=[45,146];b=[295,40];c=[55,40];e=[290,148]}else{a=[36,112];b=[304,112];c=[170,34];e=[170,150]}
+    const X=gX(a,b,c,e);s=gSg(a,b,B1)+gSg(c,e,O)+gOut(a,X,P[0])+gOut(b,X,P[1])+gOut(c,X,P[2])+gOut(e,X,P[3]);
+    if(k==="perpendicolari")s+='<polyline points="'+f1(X[0]+14)+","+f1(X[1])+" "+f1(X[0]+14)+","+f1(X[1]-14)+" "+f1(X[0])+","+f1(X[1]-14)+'" fill="none" stroke="'+GI+'" stroke-width="2.2"/>'+gDot(X,P[4],-17,22);
+    else s+=gDot(X,P[4],0,26)}
+  else if(k==="paralleli"){
+    const a=[40,62],b=[270,62],c=[70,126],e=[300,126],mk=(x,y)=>'<polyline points="'+(x-5)+","+(y-8)+" "+(x+3)+","+y+" "+(x-5)+","+(y+8)+'" fill="none" stroke="'+GI+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+    s=gSg(a,b,B1)+gSg(c,e,O)+mk(155,62)+mk(185,126)+gDot(a,P[0],0,-22)+gDot(b,P[1],0,-22)+gDot(c,P[2],0,24)+gDot(e,P[3],0,24)}
+  else if(k==="sovrapposti"){
+    const y1=78,y2=106;
+    s='<path d="M120 '+y1+'V'+y2+'M225 '+y1+'V'+y2+'" stroke="#9aa5b5" stroke-width="2" stroke-dasharray="4 4" fill="none"/>'+gSg([40,y1],[225,y1],B1)+gSg([120,y2],[305,y2],O)+gDot([40,y1],P[0],0,-22)+gDot([225,y1],P[1],0,-22)+gDot([120,y2],P[2],0,24)+gDot([305,y2],P[3],0,24)}
+  else{const a=[40,126],b=[140,48],c=[195,58],e=[300,132];s=gSg(a,b,B1)+gSg(c,e,O)+gOut(a,b,P[0])+gOut(b,a,P[1])+gOut(c,e,P[2])+gOut(e,c,P[3])}
+  return s}
 function geoSvg(d){
   const B=GB[d.ori];let a=B[0],b=B[1],s="";
   if(d.type==="semiretta"&&d.left){a=B[1];b=B[0]}
   const{u,n}=gUN(a,b),nm=d.names[0]||"",pl=(p,t)=>gDot(p,t,-n[0]*22,-n[1]*22),NN2=[d.names[0]||"r",d.names[1]||"s"];
-  if(d.type==="retta"){
+  if(d.type.startsWith("s_"))s+=gSegs(d);
+  else if(d.type==="retta"){
     s+=gLn(a,b,1,1);const c=d.pts.length;
     d.pts.forEach((t,i)=>{s+=pl(gv(a,b,c===1?.5:.22+.56*i/(c-1)),t)});
     if(nm)s+=gTx(gName(b,u,n,1),nm,1)}
@@ -2018,8 +2045,9 @@ function geoSvg(d){
 function geo(src,hide,s,e){
   const d=parseGeo(src),w=el("div","mus geo");w.dataset.s=s;w.dataset.e=e;
   if(d.type){w.insertAdjacentHTML("beforeend",geoSvg(d));const c=el("div","gcap"+(hide?" mans":""));c.textContent=GT[d.type];w.append(c)}
-  if(!d.type||d.errs.length){const x=el("div","merr");x.textContent=d.type?"Non capisco: "+d.errs.join(" ")+". Dopo il tipo scrivi i nomi delle rette (r s), i punti (A B), verticale o obliqua.":"Non capisco: "+src+". Scrivi G: retta r A B, G: semiretta s A, G: segmento A B, G: parallele r s, G: incidenti r s P, G: perpendicolari r s P, G: piano alfa A fuori C.";w.append(x)}
+  if(!d.type||d.errs.length){const x=el("div","merr");x.textContent=d.type?"Non capisco: "+d.errs.join(" ")+". Dopo il tipo scrivi i nomi delle rette (r s), i punti (A B), verticale o obliqua.":"Non capisco: "+src+". Scrivi G: segmenti consecutivi A B C, G: retta r A B, G: semiretta s A, G: segmento A B, G: parallele r s, G: incidenti r s P, G: perpendicolari r s P, G: piano alfa A fuori C.";w.append(x)}
   if(d.type==="piano"&&(d.pts.length||d.out2.length)){const g=d.names[0]||"α",i=el("div","gcap"+(hide?" mans":""));i.style.textTransform="none";i.textContent=d.pts.map(t=>t+" ∈ "+g).concat(d.out2.map(t=>t+" ∉ "+g)).join("   ");w.append(i)}
+  if(d.type==="s_paralleli"||d.type==="s_perpendicolari"){const i=el("div","gcap"+(hide?" mans":""));i.style.textTransform="none";i.textContent=d.pts[0]+d.pts[1]+(d.type==="s_paralleli"?" ∥ ":" ⊥ ")+d.pts[2]+d.pts[3];w.append(i)}
   w.onclick=ev=>{ev.stopPropagation();selRange(s,e,LASTP!=="touch")};
   return w}
 
@@ -2256,6 +2284,14 @@ gsg:"1. Il segmento.\nG: segmento A B\n",
 gpa:"1. Rette parallele.\nG: parallele r s\n",
 gin:"1. Rette incidenti.\nG: incidenti r s P\n",
 gpe:"1. Rette perpendicolari.\nG: perpendicolari r s P\n",
+sgc:"1. Segmenti consecutivi.\nG: segmenti consecutivi A B C\n",
+sga:"1. Segmenti adiacenti.\nG: segmenti adiacenti A B C\n",
+sgi:"1. Segmenti incidenti.\nG: segmenti incidenti A B C D P\n",
+sgp:"1. Segmenti paralleli.\nG: segmenti paralleli A B C D\n",
+sgq:"1. Segmenti perpendicolari.\nG: segmenti perpendicolari A B C D P\n",
+sgs:"1. Segmenti sovrapposti.\nG: segmenti sovrapposti A B C D\n",
+sgd:"1. Segmenti disgiunti.\nG: segmenti disgiunti A B C D\n",
+sgr:"1. Che segmenti sono? Scrivi il nome.\nG?: segmenti consecutivi A B C\n\n2. Che segmenti sono? Scrivi il nome.\nG?: segmenti adiacenti A B C\n\n3. Che segmenti sono? Scrivi il nome.\nG?: segmenti incidenti A B C D P\n\n4. Che segmenti sono? Scrivi il nome.\nG?: segmenti paralleli A B C D\n",
 gri:"1. Che linea è? Scrivi il nome.\nG?: semiretta s A\n\n2. Che linea è? Scrivi il nome.\nG?: segmento A B\n\n3. Che linea è? Scrivi il nome.\nG?: retta r\n",
 gpi:"# Il piano\n1. Il piano è una superficie piatta. Il piano non ha fine.\nG: piano alfa\n2. Il piano si indica con una lettera greca.\nParole: alfa, beta, gamma, omega, sigma\n3. I punti possono stare sul piano oppure fuori dal piano.\nG: piano alfa A B fuori C\nIl punto A appartiene al piano alfa.\nIl punto B appartiene al piano alfa.\nIl punto C non appartiene al piano alfa.\n",
 ggr:"1. Le lettere greche.\nParole: alfa, beta, gamma, omega, sigma\nParole: α, β, γ, ω, σ\n",
@@ -2684,8 +2720,12 @@ $("mcol").checked=ld("caa_mc",true);setBW(ld("caa_bn",true));setTab(TAB);
  PM=PM.filter(m=>m&&m.s>=0&&m.e<=prevT.length&&m.e>m.s&&!/\s/.test(prevT.slice(m.s,m.e)))}
 cnt();setMode(ld("caa_mode","ins"));render();
 /* ---------- avviso delle novità (compare una sola volta dopo ogni aggiornamento) ---------- */
-const VER="2026-11-25";
+const VER="2026-11-26";
 const NEWS=[
+{v:"2026-11-26",h:"Geometria: i tipi di segmenti",t:[
+"Nella scheda Geometria ci sono i nuovi modelli per disegnare due segmenti: consecutivi, adiacenti, incidenti, paralleli, perpendicolari, sovrapposti e disgiunti. Si scrive, per esempio, G: segmenti consecutivi A B C.",
+"Le lettere sono i nomi dei punti: se non le scrivi, il programma le sceglie da solo. Con paralleli e perpendicolari compare anche AB ∥ CD oppure AB ⊥ CD.",
+"G?: nasconde il nome del tipo (si vede con «Mostra risultati»); c'è il modello «Riconosci i segmenti» per gli esercizi."]},
 {v:"2026-11-25",h:"Articoli in inglese",t:[
 "Con la lingua simboli English, le parole «the», «a» e «an» ora hanno il loro simbolo, in un riquadro separato.",
 "Per vederli attiva la casella «Articoli» in alto, la stessa che già serviva per gli articoli italiani. Gli articoli inglesi non hanno genere, quindi il simbolo è neutro."]},
